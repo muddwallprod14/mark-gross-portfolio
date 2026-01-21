@@ -325,59 +325,67 @@
                 <div class="detail-block full-width">
                     <h4>Core Implementation</h4>
                     <div class="code-block">
-                        <div class="code-label">Naming Convention Parser</div>
-                        <pre><span class="keyword">def</span> <span class="function">check_filename_parts</span>(filename):
-    <span class="string">"""Parse Universal/Paramount naming conventions"""</span>
-    parts = filename.split(<span class="string">'_'</span>)
+                        <div class="code-label">Cross-Platform Path Handler (from FileSorterv02.06.py)</div>
+                        <pre><span class="comment"># Check Operating system and return filepath accordingly</span>
+<span class="keyword">def</span> <span class="function">OSFilePathFilter</span>():
+    <span class="keyword">global</span> mainLog, backupLog, UniFilePathRoot, destination_rootFolder
     
-    <span class="comment"># Universal: STUDIO_RATIO_SPOTNAME_DURATION_RES_VERSION.ext</span>
-    <span class="comment"># Paramount: PARA_TITLE_RATIO_DURATION_FORMAT.ext</span>
-    
-    studio_prefixes = {
-        <span class="string">'UNI'</span>: <span class="string">'Universal'</span>,
-        <span class="string">'PARA'</span>: <span class="string">'Paramount'</span>,
-        <span class="string">'UNV'</span>: <span class="string">'Universal_Alt'</span>
-    }
-    
-    <span class="keyword">if</span> parts[<span class="number">0</span>] <span class="keyword">in</span> studio_prefixes:
-        <span class="keyword">return</span> {
-            <span class="string">'studio'</span>: studio_prefixes[parts[<span class="number">0</span>]],
-            <span class="string">'ratio'</span>: <span class="function">checkRatio</span>(parts[<span class="number">1</span>]),
-            <span class="string">'spot_name'</span>: parts[<span class="number">2</span>],
-            <span class="string">'duration'</span>: <span class="function">removeSeconds</span>(parts[<span class="number">3</span>]),
-            <span class="string">'resolution'</span>: parts[<span class="number">-3</span>]
-        }
-    <span class="keyword">return</span> <span class="keyword">None</span></pre>
-                    </div>
-                    <div class="code-block">
-                        <div class="code-label">Cross-Platform Path Handler</div>
-                        <pre><span class="keyword">def</span> <span class="function">OSFilePathFilter</span>(path):
-    <span class="string">"""Handle macOS/Windows path differences"""</span>
-    <span class="keyword">if</span> platform.system() == <span class="string">'Darwin'</span>:  <span class="comment"># macOS</span>
-        <span class="keyword">return</span> path.replace(<span class="string">'\\\\'</span>, <span class="string">'/'</span>)
-    <span class="keyword">elif</span> platform.system() == <span class="string">'Windows'</span>:
-        <span class="keyword">return</span> path.replace(<span class="string">'/'</span>, <span class="string">'\\\\'</span>)
-    <span class="keyword">return</span> path
+    system = platform.system()
 
-<span class="keyword">def</span> <span class="function">create_directory_if_not_exists</span>(filepath):
-    directory = os.path.dirname(filepath)
-    <span class="keyword">if not</span> os.path.exists(directory):
-        os.makedirs(directory)
-        logging.info(<span class="string">f"Created: {directory}"</span>)</pre>
+    <span class="keyword">if</span> system == <span class="string">"Linux"</span>:
+        <span class="keyword">pass</span>
+    <span class="keyword">elif</span> system == <span class="string">"Darwin"</span>:  <span class="comment"># macOS</span>
+        <span class="keyword">pass</span>
+    <span class="keyword">elif</span> system == <span class="string">"Windows"</span>:
+        mainLog = Path(<span class="string">rf'C:\\Users\Administrator\Documents\delete\Logs'</span>)
+        backupLog = Path(<span class="string">rf'C:\\Users\Administrator\Documents\delete\Logs'</span>)
+        UniFilePathRoot = <span class="string">rf"\\10.1.12.100\flex-Source-Materials_1"</span>
+        destination_rootFolder = <span class="string">rf"\\10.1.12.100\flex-Source-Materials_1"</span>
+
+    <span class="keyword">return</span> mainLog, backupLog, UniFilePathRoot, destination_rootFolder</pre>
                     </div>
                     <div class="code-block">
-                        <div class="code-label">Aspect Ratio Detection</div>
-                        <pre><span class="keyword">def</span> <span class="function">checkRatio</span>(ratio_string):
-    <span class="string">"""Convert ratio codes to folder names"""</span>
-    ratio_map = {
-        <span class="string">'16x9'</span>: <span class="string">'16x9_Landscape'</span>,
-        <span class="string">'9x16'</span>: <span class="string">'9x16_Vertical'</span>,
-        <span class="string">'1x1'</span>: <span class="string">'1x1_Square'</span>,
-        <span class="string">'Flat'</span>: <span class="string">'1.85_Flat'</span>,
-        <span class="string">'Scope'</span>: <span class="string">'2.39_Scope'</span>,
-        <span class="string">'IMAX'</span>: <span class="string">'1.43_IMAX'</span>
-    }
-    <span class="keyword">return</span> ratio_map.get(ratio_string, ratio_string)</pre>
+                        <div class="code-label">Colorized Logging System</div>
+                        <pre><span class="keyword">import</span> logging
+<span class="keyword">import</span> datetime
+<span class="keyword">import</span> colorama
+<span class="keyword">import</span> socket
+<span class="keyword">import</span> getpass
+
+<span class="comment"># Get Machine and User info</span>
+hostname = socket.gethostname()
+username = getpass.getuser()
+
+<span class="comment"># Initialize Colorama for cross-platform colors</span>
+colorama.init()
+
+<span class="comment"># Configure format for logging to both console and file</span>
+logger_format = logging.Formatter(
+    <span class="string">f"{formatted_time}\033[90m(%(filename)s) -\033[0m "</span>
+    <span class="string">f"%(message)s \033[36m - {username}@{hostname}\033[0m"</span>
+)
+
+<span class="keyword">def</span> <span class="function">swapLogDestination</span>(mainLog, backupLog):
+    <span class="keyword">if</span> os.path.exists(mainLog):
+        <span class="keyword">return</span> mainLog
+    <span class="keyword">else</span>:
+        <span class="keyword">return</span> backupLog</pre>
+                    </div>
+                    <div class="code-block">
+                        <div class="code-label">File Extension Filtering</div>
+                        <pre>file_extensions = [<span class="string">'.mov'</span>, <span class="string">'.wav'</span>, <span class="string">'.zip'</span>]
+exclude_folders = [<span class="string">'#unsorted'</span>]
+
+<span class="keyword">def</span> <span class="function">find_and_check_files</span>(directory):
+    <span class="string">"""Recursively find files matching extensions"""</span>
+    <span class="keyword">for</span> root, dirs, files <span class="keyword">in</span> os.walk(directory):
+        <span class="comment"># Skip excluded folders</span>
+        dirs[:] = [d <span class="keyword">for</span> d <span class="keyword">in</span> dirs <span class="keyword">if</span> d <span class="keyword">not in</span> exclude_folders]
+        
+        <span class="keyword">for</span> file <span class="keyword">in</span> files:
+            <span class="keyword">if</span> <span class="keyword">any</span>(file.endswith(ext) <span class="keyword">for</span> ext <span class="keyword">in</span> file_extensions):
+                filepath = os.path.join(root, file)
+                <span class="function">check_filename_parts</span>(file, filepath)</pre>
                     </div>
                 </div>
                 <div class="detail-block">
@@ -668,6 +676,11 @@ exportBtn.onClick = <span class="keyword">function</span>() {
                 </div>
             </div>
 
+            <!-- Screenshot placeholder -->
+            <div class="screenshot-area">
+                <img src="screenshots/ableton-screenshot.png" alt="Ableton Project Generator Screenshot" class="project-screenshot" onerror="this.style.display='none'">
+            </div>
+
             <div class="case-details">
                 <div class="detail-block">
                     <h4>The Challenge</h4>
@@ -675,17 +688,62 @@ exportBtn.onClick = <span class="keyword">function</span>() {
                 </div>
                 <div class="detail-block">
                     <h4>My Role</h4>
-                    <p>Developed the project generation engine that parses Ableton's XML-based .als file format, manipulates project structure programmatically, and generates ready-to-use sessions.</p>
+                    <p>Developed the project generation engine using the Ableton Live API, manipulates project structure programmatically, and generates ready-to-use sessions with markers and placeholder clips.</p>
                 </div>
-                <div class="detail-block">
-                    <h4>Key Features</h4>
-                    <ul class="feature-list">
-                        <li>Template-based generation with customizable presets</li>
-                        <li>Automatic track creation with color coding</li>
-                        <li>Plugin chain pre-configuration</li>
-                        <li>Marker/locator placement from timecode data</li>
-                        <li>Integration with project management systems</li>
-                    </ul>
+                <div class="detail-block full-width">
+                    <h4>Core Implementation (from Ableton.py)</h4>
+                    <div class="code-block">
+                        <div class="code-label">Template Structure Definition</div>
+                        <pre><span class="keyword">import</span> Live
+<span class="keyword">import</span> os
+
+TEMPLATE_STRUCTURE = [
+    (<span class="string">"Intro"</span>, <span class="number">8</span>),     <span class="comment"># 8 bars intro</span>
+    (<span class="string">"Verse 1"</span>, <span class="number">16</span>),
+    (<span class="string">"Chorus 1"</span>, <span class="number">8</span>),
+    (<span class="string">"Verse 2"</span>, <span class="number">16</span>),
+    (<span class="string">"Chorus 2"</span>, <span class="number">8</span>),
+    (<span class="string">"Bridge"</span>, <span class="number">8</span>),
+    (<span class="string">"Chorus 3"</span>, <span class="number">8</span>),
+    (<span class="string">"Outro"</span>, <span class="number">8</span>)
+]</pre>
+                    </div>
+                    <div class="code-block">
+                        <div class="code-label">Song Template Generator</div>
+                        <pre><span class="keyword">def</span> <span class="function">create_song_template</span>(song, audio_file_path):
+    <span class="string">"""Arrange Locators/Markers and place audio clips in arrangement."""</span>
+    tempo = song.tempo
+    signature_numerator = song.signature_numerator
+    
+    <span class="comment"># Find or create template audio track</span>
+    audio_track = <span class="keyword">None</span>
+    <span class="keyword">for</span> track <span class="keyword">in</span> song.tracks:
+        <span class="keyword">if</span> track.has_audio_input <span class="keyword">and</span> track.name == <span class="string">"TEMPLATE AUDIO"</span>:
+            audio_track = track
+            <span class="keyword">break</span>
+    <span class="keyword">if</span> audio_track <span class="keyword">is</span> <span class="keyword">None</span>:
+        audio_track = song.create_audio_track(<span class="number">-1</span>)
+        audio_track.name = <span class="string">"TEMPLATE AUDIO"</span>
+
+    <span class="comment"># Place Markers at each section</span>
+    abs_beat = <span class="number">0.0</span>
+    <span class="keyword">for</span> section_name, bars <span class="keyword">in</span> TEMPLATE_STRUCTURE:
+        time_sec = abs_beat * <span class="number">60.0</span> / tempo
+        song.add_arrangement_locator(time_sec, section_name)
+        abs_beat += bars * signature_numerator</pre>
+                    </div>
+                    <div class="code-block">
+                        <div class="code-label">MIDI Remote Script Integration</div>
+                        <pre><span class="keyword">class</span> <span class="function">PlaceTemplateScript</span>(object):
+    <span class="keyword">def</span> <span class="function">__init__</span>(self, c_instance):
+        self.c_instance = c_instance
+        self.song = Live.Application.get_application().get_document()
+
+    <span class="keyword">def</span> <span class="function">handle_file_dragged</span>(self, file_path):
+        <span class="string">"""Called when a file is dropped in the plugin UI"""</span>
+        <span class="keyword">if</span> file_path.endswith((<span class="string">".wav"</span>, <span class="string">".mp3"</span>, <span class="string">".aiff"</span>, <span class="string">".flac"</span>)):
+            <span class="function">create_song_template</span>(self.song, file_path)</pre>
+                    </div>
                 </div>
                 <div class="detail-block">
                     <h4>Tech Stack</h4>
@@ -908,6 +966,11 @@ exportBtn.onClick = <span class="keyword">function</span>() {
                 </div>
             </div>
 
+            <!-- Screenshot placeholder -->
+            <div class="screenshot-area">
+                <img src="screenshots/flex-viewer-screenshot.png" alt="Flex Job Viewer Screenshot" class="project-screenshot" onerror="this.style.display='none'">
+            </div>
+
             <div class="case-details">
                 <div class="detail-block">
                     <h4>The Challenge</h4>
@@ -917,24 +980,89 @@ exportBtn.onClick = <span class="keyword">function</span>() {
                     <h4>My Role</h4>
                     <p>Full-stack development of the viewer application, including the real-time sync engine, responsive UI, and integration with the existing Flex production tracking database.</p>
                 </div>
-                <div class="detail-block">
-                    <h4>Key Features</h4>
-                    <ul class="feature-list">
-                        <li>Real-time job status updates via WebSocket</li>
-                        <li>Filterable views by status, artist, priority</li>
-                        <li>Due date tracking with visual indicators</li>
-                        <li>Mobile-responsive for on-set access</li>
-                        <li>Direct links to source files and review sessions</li>
-                    </ul>
+                <div class="detail-block full-width">
+                    <h4>Core Implementation (from flex_job_monitor_gui.py)</h4>
+                    <div class="code-block">
+                        <div class="code-label">Job Status Enum & Data Classes</div>
+                        <pre><span class="keyword">class</span> <span class="function">JobStatus</span>(Enum):
+    PENDING = <span class="string">"PENDING"</span>
+    QUEUED = <span class="string">"QUEUED"</span>
+    RESERVED = <span class="string">"RESERVED"</span>
+    RUNNING = <span class="string">"RUNNING"</span>
+    PROCESSING = <span class="string">"PROCESSING"</span>
+    COMPLETED = <span class="string">"COMPLETED"</span>
+    FAILED = <span class="string">"FAILED"</span>
+    CANCELLED = <span class="string">"CANCELLED"</span>
+    UNKNOWN = <span class="string">"UNKNOWN"</span>
+
+<span class="keyword">@dataclass</span>
+<span class="keyword">class</span> <span class="function">JobInfo</span>:
+    job_id: str
+    name: str = <span class="string">""</span>
+    status: JobStatus = JobStatus.UNKNOWN
+    machine: str = <span class="string">""</span>
+    started_at: Optional[datetime] = <span class="keyword">None</span>
+    completed_at: Optional[datetime] = <span class="keyword">None</span>
+    progress: int = <span class="number">0</span>
+    current_step: str = <span class="string">""</span>
+    logs: List[LogEntry] = field(default_factory=list)</pre>
+                    </div>
+                    <div class="code-block">
+                        <div class="code-label">SSH Connection Worker Thread</div>
+                        <pre><span class="keyword">class</span> <span class="function">FlexConnectionWorker</span>(QThread):
+    <span class="string">"""Background worker for SSH connection and job monitoring"""</span>
+    connected = pyqtSignal(bool, str)
+    job_updated = pyqtSignal(dict)
+    log_received = pyqtSignal(dict)
+    machine_status = pyqtSignal(dict)
+    error_occurred = pyqtSignal(str)
+    
+    <span class="keyword">def</span> <span class="function">__init__</span>(self, host: str, username: str, password: str):
+        <span class="keyword">super</span>().__init__()
+        self.host = host
+        self.username = username
+        self.password = password
+        self.ssh_client = <span class="keyword">None</span>
+        self.running = <span class="keyword">False</span>
+        self.monitored_jobs: Dict[str, JobInfo] = {}
+        
+    <span class="keyword">def</span> <span class="function">connect_ssh</span>(self) -> bool:
+        self.ssh_client = paramiko.SSHClient()
+        self.ssh_client.set_missing_host_key_policy(paramiko.AutoAddPolicy())
+        self.ssh_client.connect(
+            hostname=self.host,
+            username=self.username,
+            password=self.password
+        )</pre>
+                    </div>
+                    <div class="code-block">
+                        <div class="code-label">Machine Reservation Tracking</div>
+                        <pre><span class="keyword">@dataclass</span>
+<span class="keyword">class</span> <span class="function">MachineReservation</span>:
+    machine_name: str
+    job_id: str
+    reserved_at: datetime
+    status: str = <span class="string">"RESERVED"</span>
+    cpu_usage: float = <span class="number">0.0</span>
+    memory_usage: float = <span class="number">0.0</span>
+
+<span class="keyword">@dataclass</span>
+<span class="keyword">class</span> <span class="function">LogEntry</span>:
+    timestamp: datetime
+    level: str  <span class="comment"># INFO, WARNING, ERROR, DEBUG</span>
+    message: str
+    source: str = <span class="string">""</span>
+    job_id: str = <span class="string">""</span></pre>
+                    </div>
                 </div>
                 <div class="detail-block">
                     <h4>Tech Stack</h4>
                     <div class="tech-tags">
-                        <span>React</span>
-                        <span>Node.js</span>
-                        <span>WebSocket</span>
-                        <span>PostgreSQL</span>
-                        <span>Tailwind CSS</span>
+                        <span>Python</span>
+                        <span>PyQt5</span>
+                        <span>Paramiko SSH</span>
+                        <span>Threading</span>
+                        <span>Dataclasses</span>
                     </div>
                 </div>
             </div>
