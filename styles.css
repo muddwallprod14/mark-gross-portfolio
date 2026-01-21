@@ -131,10 +131,10 @@ h3 {
     font-size: clamp(1.25rem, 2.5vw, 1.75rem);
 }
 
-/* === Glitch Effect === */
+/* === Glitch Effect (Hover Only) === */
 .glitch {
     position: relative;
-    animation: glitch-skew 4s infinite linear alternate-reverse;
+    cursor: default;
 }
 
 .glitch::before,
@@ -145,20 +145,34 @@ h3 {
     left: 0;
     width: 100%;
     height: 100%;
+    opacity: 0;
+    pointer-events: none;
 }
 
 .glitch::before {
     left: 2px;
     text-shadow: -2px 0 #ff0000;
     clip: rect(24px, 550px, 90px, 0);
-    animation: glitch-anim 3s infinite linear alternate-reverse;
 }
 
 .glitch::after {
     left: -2px;
     text-shadow: -2px 0 #00fff9;
     clip: rect(85px, 550px, 140px, 0);
-    animation: glitch-anim2 2s infinite linear alternate-reverse;
+}
+
+.glitch:hover {
+    animation: glitch-skew 0.5s infinite linear alternate-reverse;
+}
+
+.glitch:hover::before {
+    opacity: 1;
+    animation: glitch-anim 0.3s infinite linear alternate-reverse;
+}
+
+.glitch:hover::after {
+    opacity: 1;
+    animation: glitch-anim2 0.2s infinite linear alternate-reverse;
 }
 
 @keyframes glitch-anim {
