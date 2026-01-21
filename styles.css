@@ -416,7 +416,8 @@ code {
 /* === Work Section === */
 .work-section {
     padding: 6rem 4rem;
-    background: var(--bg-primary);
+    background: transparent;
+    position: relative;
 }
 
 .section-header {
@@ -433,7 +434,9 @@ code {
 .case-study {
     margin-bottom: 4rem;
     padding: 3rem;
-    background: var(--bg-secondary);
+    background: rgba(248, 249, 250, 0.92);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
     border-radius: 12px;
     border: 1px solid var(--border);
     transition: all 0.3s ease;
@@ -1201,7 +1204,9 @@ code {
 /* === About Section === */
 .about-section {
     padding: 6rem 4rem;
-    background: var(--bg-secondary);
+    background: rgba(248, 249, 250, 0.95);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
 }
 
 .about-content {
@@ -1259,7 +1264,9 @@ code {
 /* === Contact Section === */
 .contact-section {
     padding: 6rem 4rem;
-    background: var(--bg-primary);
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
 }
 
 .contact-content {
