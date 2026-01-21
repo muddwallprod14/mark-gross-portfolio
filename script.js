@@ -71,9 +71,9 @@ window.addEventListener('scroll', () => {
     const currentScroll = window.pageYOffset;
     
     if (currentScroll > 100) {
-        navbar.style.background = 'rgba(10, 10, 12, 0.95)';
+        navbar.classList.add('scrolled');
     } else {
-        navbar.style.background = 'linear-gradient(to bottom, var(--bg-primary), transparent)';
+        navbar.classList.remove('scrolled');
     }
     
     lastScroll = currentScroll;
