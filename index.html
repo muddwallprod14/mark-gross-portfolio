@@ -14,7 +14,7 @@
     <meta property="og:type" content="website">
     <meta property="og:title" content="Mark Gross — Technical Artist">
     <meta property="og:description" content="Building bridges between creativity and technology — crafting tools, pipelines, and systems that empower artists.">
-    <meta property="og:url" content="https://muddwallprod14.github.io/mark-gross-portfolio/">
+    <meta property="og:url" content="https://cmptr.com/">
     
     <!-- Twitter Card -->
     <meta name="twitter:card" content="summary_large_image">
@@ -49,6 +49,8 @@
         <a href="#hero" class="logo">MG</a>
         <div class="nav-links">
             <a href="#work">Work</a>
+            <a href="#planning">Planning</a>
+            <a href="#applications">Applications</a>
             <a href="#about">About</a>
             <a href="#contact">Contact</a>
         </div>
@@ -1295,6 +1297,434 @@ TEMPLATE_STRUCTURE = [
             </div>
         </article>
 
+    </section>
+
+    <!-- Project Planning Section -->
+    <section id="planning" class="planning-section">
+        <div class="section-header">
+            <span class="section-tag">Pipeline Architecture</span>
+            <h2 class="glitch" data-text="Project Planning">Project Planning</h2>
+        </div>
+
+        <!-- FBX to USD Migration -->
+        <div class="workflow-card">
+            <div class="workflow-header">
+                <h3 class="glitch" data-text="FBX to USD Migration">FBX to USD Migration</h3>
+                <p class="workflow-desc">Transitioning from FBX to Universal Scene Description (USD) for improved interoperability, better scene composition, and non-destructive workflows.</p>
+            </div>
+
+            <div class="workflow-diagram">
+                <div class="diagram-title">Legacy FBX Pipeline</div>
+                <div class="pipeline-flow legacy">
+                    <div class="pipeline-node">
+                        <div class="node-icon">
+                            <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/maya/maya-original.svg" alt="Maya" class="app-logo-sm">
+                        </div>
+                        <span>Maya</span>
+                    </div>
+                    <div class="pipeline-arrow">
+                        <span class="format-tag fbx">FBX</span>
+                    </div>
+                    <div class="pipeline-node">
+                        <div class="node-icon max-icon">3ds</div>
+                        <span>3ds Max</span>
+                    </div>
+                    <div class="pipeline-arrow">
+                        <span class="format-tag fbx">FBX</span>
+                    </div>
+                    <div class="pipeline-node">
+                        <div class="node-icon houdini-icon">H</div>
+                        <span>Houdini</span>
+                    </div>
+                    <div class="pipeline-arrow">
+                        <span class="format-tag fbx">FBX</span>
+                    </div>
+                    <div class="pipeline-node">
+                        <div class="node-icon ue-icon">UE</div>
+                        <span>Unreal</span>
+                    </div>
+                </div>
+                <div class="pipeline-issues">
+                    <span class="issue-tag">Data Loss on Export</span>
+                    <span class="issue-tag">No Layering</span>
+                    <span class="issue-tag">Single File Bottleneck</span>
+                    <span class="issue-tag">Material Conversion Issues</span>
+                </div>
+            </div>
+
+            <div class="workflow-diagram">
+                <div class="diagram-title">Modern USD Pipeline</div>
+                <div class="pipeline-flow modern">
+                    <div class="pipeline-node">
+                        <div class="node-icon">
+                            <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/maya/maya-original.svg" alt="Maya" class="app-logo-sm">
+                        </div>
+                        <span>Maya USD</span>
+                    </div>
+                    <div class="pipeline-arrow usd">
+                        <span class="format-tag usd">USD</span>
+                    </div>
+                    <div class="pipeline-node central">
+                        <div class="node-icon usd-icon">USD</div>
+                        <span>Asset Library</span>
+                    </div>
+                    <div class="pipeline-branches">
+                        <div class="branch">
+                            <div class="pipeline-arrow usd"></div>
+                            <div class="pipeline-node">
+                                <div class="node-icon houdini-icon">H</div>
+                                <span>Solaris</span>
+                            </div>
+                        </div>
+                        <div class="branch">
+                            <div class="pipeline-arrow usd"></div>
+                            <div class="pipeline-node">
+                                <div class="node-icon ue-icon">UE</div>
+                                <span>Unreal USD</span>
+                            </div>
+                        </div>
+                        <div class="branch">
+                            <div class="pipeline-arrow usd"></div>
+                            <div class="pipeline-node">
+                                <div class="node-icon nuke-icon">Nk</div>
+                                <span>Nuke</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="pipeline-benefits">
+                    <span class="benefit-tag">Non-Destructive Layers</span>
+                    <span class="benefit-tag">Scene Composition</span>
+                    <span class="benefit-tag">Parallel Workflows</span>
+                    <span class="benefit-tag">MaterialX Support</span>
+                </div>
+            </div>
+
+            <div class="migration-steps">
+                <h4>Migration Strategy</h4>
+                <div class="steps-timeline">
+                    <div class="step">
+                        <div class="step-number">01</div>
+                        <div class="step-content">
+                            <h5>Asset Audit</h5>
+                            <p>Inventory all FBX assets, identify dependencies, document material setups and rigs.</p>
+                        </div>
+                    </div>
+                    <div class="step">
+                        <div class="step-number">02</div>
+                        <div class="step-content">
+                            <h5>USD Schema Design</h5>
+                            <p>Define custom schemas for studio-specific data, establish naming conventions and layer structure.</p>
+                        </div>
+                    </div>
+                    <div class="step">
+                        <div class="step-number">03</div>
+                        <div class="step-content">
+                            <h5>Conversion Tools</h5>
+                            <p>Build batch conversion scripts with Python USD API, handle material translation to MaterialX.</p>
+                        </div>
+                    </div>
+                    <div class="step">
+                        <div class="step-number">04</div>
+                        <div class="step-content">
+                            <h5>Validation & QC</h5>
+                            <p>Automated testing pipeline to verify geometry, materials, and animation integrity post-conversion.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 3ds Max to Maya Migration -->
+        <div class="workflow-card">
+            <div class="workflow-header">
+                <h3 class="glitch" data-text="3ds Max → Maya Migration">3ds Max → Maya Migration</h3>
+                <p class="workflow-desc">Strategic transition from Autodesk 3ds Max to Maya for improved cross-platform compatibility, better pipeline integration, and unified tooling.</p>
+            </div>
+
+            <div class="comparison-grid">
+                <div class="comparison-column">
+                    <div class="column-header max-header">
+                        <div class="app-badge">
+                            <span class="max-icon">3ds</span>
+                            <span>3ds Max</span>
+                        </div>
+                    </div>
+                    <ul class="feature-comparison">
+                        <li class="con">Windows-only platform</li>
+                        <li class="con">MaxScript (proprietary)</li>
+                        <li class="con">Limited USD support</li>
+                        <li class="neutral">Strong modifier stack</li>
+                        <li class="neutral">Arch-viz focused</li>
+                    </ul>
+                </div>
+                <div class="comparison-arrow">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M5 12h14M12 5l7 7-7 7"/>
+                    </svg>
+                </div>
+                <div class="comparison-column">
+                    <div class="column-header maya-header">
+                        <div class="app-badge">
+                            <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/maya/maya-original.svg" alt="Maya" class="app-logo-md">
+                            <span>Maya</span>
+                        </div>
+                    </div>
+                    <ul class="feature-comparison">
+                        <li class="pro">Cross-platform (Win/Mac/Linux)</li>
+                        <li class="pro">Python & MEL scripting</li>
+                        <li class="pro">Native USD integration</li>
+                        <li class="pro">Industry-standard rigging</li>
+                        <li class="pro">VFX/Animation focused</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="workflow-diagram">
+                <div class="diagram-title">Migration Workflow</div>
+                <div class="migration-flow">
+                    <div class="flow-stage">
+                        <div class="stage-icon">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+                                <path d="M14 2v6h6"/>
+                                <path d="M16 13H8M16 17H8M10 9H8"/>
+                            </svg>
+                        </div>
+                        <h5>Asset Export</h5>
+                        <p>Export .max files via FBX/Alembic with full material data</p>
+                    </div>
+                    <div class="flow-connector"></div>
+                    <div class="flow-stage">
+                        <div class="stage-icon">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/>
+                            </svg>
+                        </div>
+                        <h5>Script Translation</h5>
+                        <p>Convert MaxScript tools to Python/MEL equivalents</p>
+                    </div>
+                    <div class="flow-connector"></div>
+                    <div class="flow-stage">
+                        <div class="stage-icon">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <rect x="3" y="3" width="18" height="18" rx="2" ry="2"/>
+                                <path d="M3 9h18M9 21V9"/>
+                            </svg>
+                        </div>
+                        <h5>Rig Rebuild</h5>
+                        <p>Recreate rigs in Maya with Advanced Skeleton or custom setups</p>
+                    </div>
+                    <div class="flow-connector"></div>
+                    <div class="flow-stage">
+                        <div class="stage-icon">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/>
+                                <path d="M22 4L12 14.01l-3-3"/>
+                            </svg>
+                        </div>
+                        <h5>Validation</h5>
+                        <p>Automated QC checks for geometry, UVs, and animation curves</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="code-block">
+                <div class="code-label">Asset Migration Script (Python)</div>
+                <pre><span class="keyword">import</span> maya.cmds <span class="keyword">as</span> cmds
+<span class="keyword">from</span> pathlib <span class="keyword">import</span> Path
+
+<span class="keyword">def</span> <span class="function">migrate_max_asset</span>(fbx_path: str, output_dir: str) -> dict:
+    <span class="string">"""Import FBX from Max export and restructure for Maya pipeline"""</span>
+    
+    <span class="comment"># Import FBX with specific settings</span>
+    cmds.<span class="function">file</span>(fbx_path, i=<span class="keyword">True</span>, type=<span class="string">"FBX"</span>,
+              options=<span class="string">"fbx;importMode=merge"</span>)
+    
+    <span class="comment"># Fix Max-specific naming conventions</span>
+    <span class="keyword">for</span> node <span class="keyword">in</span> cmds.<span class="function">ls</span>(type=<span class="string">"transform"</span>):
+        <span class="keyword">if</span> node.startswith(<span class="string">"Box"</span>) <span class="keyword">or</span> node.startswith(<span class="string">"Cylinder"</span>):
+            new_name = <span class="function">convert_max_naming</span>(node)
+            cmds.<span class="function">rename</span>(node, new_name)
+    
+    <span class="comment"># Convert V-Ray materials to Arnold</span>
+    vray_mats = cmds.<span class="function">ls</span>(type=<span class="string">"VRayMtl"</span>)
+    <span class="keyword">for</span> mat <span class="keyword">in</span> vray_mats:
+        <span class="function">convert_vray_to_arnold</span>(mat)
+    
+    <span class="comment"># Rebuild hierarchy to Maya standards</span>
+    <span class="function">create_maya_hierarchy</span>()
+    
+    <span class="keyword">return</span> {<span class="string">"status"</span>: <span class="string">"success"</span>, <span class="string">"nodes"</span>: cmds.<span class="function">ls</span>(dag=<span class="keyword">True</span>)}</pre>
+            </div>
+        </div>
+    </section>
+
+    <!-- Applications Section -->
+    <section id="applications" class="applications-section">
+        <div class="section-header">
+            <span class="section-tag">Technical Proficiency</span>
+            <h2 class="glitch" data-text="Applications">Applications</h2>
+        </div>
+
+        <div class="apps-grid">
+            <!-- 3D & VFX -->
+            <div class="app-category">
+                <h4>3D & VFX</h4>
+                <div class="app-cards">
+                    <div class="app-card">
+                        <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/maya/maya-original.svg" alt="Maya" class="app-logo">
+                        <span class="app-name">Maya</span>
+                        <span class="app-level expert">Expert</span>
+                    </div>
+                    <div class="app-card">
+                        <div class="app-logo-placeholder houdini">H</div>
+                        <span class="app-name">Houdini</span>
+                        <span class="app-level advanced">Advanced</span>
+                    </div>
+                    <div class="app-card">
+                        <div class="app-logo-placeholder nuke">Nk</div>
+                        <span class="app-name">Nuke</span>
+                        <span class="app-level advanced">Advanced</span>
+                    </div>
+                    <div class="app-card">
+                        <div class="app-logo-placeholder max">3ds</div>
+                        <span class="app-name">3ds Max</span>
+                        <span class="app-level intermediate">Intermediate</span>
+                    </div>
+                    <div class="app-card">
+                        <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/blender/blender-original.svg" alt="Blender" class="app-logo">
+                        <span class="app-name">Blender</span>
+                        <span class="app-level intermediate">Intermediate</span>
+                    </div>
+                    <div class="app-card">
+                        <div class="app-logo-placeholder c4d">C4D</div>
+                        <span class="app-name">Cinema 4D</span>
+                        <span class="app-level advanced">Advanced</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Motion & Video -->
+            <div class="app-category">
+                <h4>Motion & Video</h4>
+                <div class="app-cards">
+                    <div class="app-card">
+                        <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/aftereffects/aftereffects-original.svg" alt="After Effects" class="app-logo">
+                        <span class="app-name">After Effects</span>
+                        <span class="app-level expert">Expert</span>
+                    </div>
+                    <div class="app-card">
+                        <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/premierepro/premierepro-original.svg" alt="Premiere Pro" class="app-logo">
+                        <span class="app-name">Premiere Pro</span>
+                        <span class="app-level expert">Expert</span>
+                    </div>
+                    <div class="app-card">
+                        <div class="app-logo-placeholder resolve">DaV</div>
+                        <span class="app-name">DaVinci Resolve</span>
+                        <span class="app-level intermediate">Intermediate</span>
+                    </div>
+                    <div class="app-card">
+                        <div class="app-logo-placeholder mocha">M</div>
+                        <span class="app-name">Mocha Pro</span>
+                        <span class="app-level advanced">Advanced</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Design -->
+            <div class="app-category">
+                <h4>Design</h4>
+                <div class="app-cards">
+                    <div class="app-card">
+                        <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/photoshop/photoshop-original.svg" alt="Photoshop" class="app-logo">
+                        <span class="app-name">Photoshop</span>
+                        <span class="app-level expert">Expert</span>
+                    </div>
+                    <div class="app-card">
+                        <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/illustrator/illustrator-plain.svg" alt="Illustrator" class="app-logo">
+                        <span class="app-name">Illustrator</span>
+                        <span class="app-level advanced">Advanced</span>
+                    </div>
+                    <div class="app-card">
+                        <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/figma/figma-original.svg" alt="Figma" class="app-logo">
+                        <span class="app-name">Figma</span>
+                        <span class="app-level advanced">Advanced</span>
+                    </div>
+                    <div class="app-card">
+                        <div class="app-logo-placeholder substance">Sb</div>
+                        <span class="app-name">Substance</span>
+                        <span class="app-level intermediate">Intermediate</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Audio -->
+            <div class="app-category">
+                <h4>Audio</h4>
+                <div class="app-cards">
+                    <div class="app-card">
+                        <div class="app-logo-placeholder ableton">Live</div>
+                        <span class="app-name">Ableton Live</span>
+                        <span class="app-level advanced">Advanced</span>
+                    </div>
+                    <div class="app-card">
+                        <div class="app-logo-placeholder protools">PT</div>
+                        <span class="app-name">Pro Tools</span>
+                        <span class="app-level intermediate">Intermediate</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Development -->
+            <div class="app-category">
+                <h4>Development & Pipeline</h4>
+                <div class="app-cards">
+                    <div class="app-card">
+                        <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/python/python-original.svg" alt="Python" class="app-logo">
+                        <span class="app-name">Python</span>
+                        <span class="app-level expert">Expert</span>
+                    </div>
+                    <div class="app-card">
+                        <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/vscode/vscode-original.svg" alt="VS Code" class="app-logo">
+                        <span class="app-name">VS Code</span>
+                        <span class="app-level expert">Expert</span>
+                    </div>
+                    <div class="app-card">
+                        <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/git/git-original.svg" alt="Git" class="app-logo">
+                        <span class="app-name">Git</span>
+                        <span class="app-level expert">Expert</span>
+                    </div>
+                    <div class="app-card">
+                        <div class="app-logo-placeholder shotgrid">SG</div>
+                        <span class="app-name">ShotGrid</span>
+                        <span class="app-level advanced">Advanced</span>
+                    </div>
+                    <div class="app-card">
+                        <div class="app-logo-placeholder deadline">DL</div>
+                        <span class="app-name">Deadline</span>
+                        <span class="app-level advanced">Advanced</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Game Engines -->
+            <div class="app-category">
+                <h4>Game Engines</h4>
+                <div class="app-cards">
+                    <div class="app-card">
+                        <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/unrealengine/unrealengine-original.svg" alt="Unreal Engine" class="app-logo">
+                        <span class="app-name">Unreal Engine</span>
+                        <span class="app-level intermediate">Intermediate</span>
+                    </div>
+                    <div class="app-card">
+                        <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/unity/unity-original.svg" alt="Unity" class="app-logo">
+                        <span class="app-name">Unity</span>
+                        <span class="app-level intermediate">Intermediate</span>
+                    </div>
+                </div>
+            </div>
+        </div>
     </section>
 
     <section id="about" class="about-section">
