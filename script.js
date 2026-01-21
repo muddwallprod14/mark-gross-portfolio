@@ -131,14 +131,26 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
 
 // === Navbar Background on Scroll ===
 const navbar = document.querySelector('.navbar');
+const heroBackground = document.querySelector('.hero-background');
+const heroSection = document.querySelector('.hero');
 
 window.addEventListener('scroll', () => {
     const currentScroll = window.pageYOffset;
+    const heroHeight = heroSection ? heroSection.offsetHeight : 600;
     
     if (currentScroll > 100) {
         navbar.classList.add('scrolled');
     } else {
         navbar.classList.remove('scrolled');
+    }
+    
+    // Switch to video background when past hero
+    if (heroBackground) {
+        if (currentScroll > heroHeight * 0.7) {
+            heroBackground.classList.add('show-video');
+        } else {
+            heroBackground.classList.remove('show-video');
+        }
     }
     
     // Back to Top button visibility
