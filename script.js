@@ -1,29 +1,97 @@
-// === Intersection Observer for Animations ===
-const observerOptions = {
-    threshold: 0.1,
-    rootMargin: '0px 0px -50px 0px'
-};
+// === Loading Screen ===
+window.addEventListener('load', () => {
+    const loadingScreen = document.getElementById('loadingScreen');
+    setTimeout(() => {
+        loadingScreen.classList.add('hidden');
+        document.body.classList.add('loaded');
+        initScrollReveal();
+    }, 800);
+});
 
-const observer = new IntersectionObserver((entries) => {
+// === Scroll Reveal Animation ===
+function initScrollReveal() {
+    const revealElements = document.querySelectorAll('.case-study, .skill-category, .detail-block, .section-header');
+    
+    const revealObserver = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('scroll-reveal', 'revealed');
+                revealObserver.unobserve(entry.target);
+            }
+        });
+    }, {
+        threshold: 0.1,
+        rootMargin: '0px 0px -50px 0px'
+    });
+    
+    revealElements.forEach(el => {
+        el.classList.add('scroll-reveal');
+        revealObserver.observe(el);
+    });
+}
+
+// === Stats Counter Animation ===
+function animateCounters() {
+    const counters = document.querySelectorAll('.stat-number[data-target]');
+    
+    const counterObserver = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting && !entry.target.classList.contains('counted')) {
+                entry.target.classList.add('counted');
+                animateCounter(entry.target);
+            }
+        });
+    }, { threshold: 0.5 });
+    
+    counters.forEach(counter => counterObserver.observe(counter));
+}
+
+function animateCounter(element) {
+    const target = parseInt(element.dataset.target);
+    const duration = 2000;
+    const start = performance.now();
+    
+    function update(currentTime) {
+        const elapsed = currentTime - start;
+        const progress = Math.min(elapsed / duration, 1);
+        
+        // Ease out expo
+        const eased = 1 - Math.pow(2, -10 * progress);
+        const current = Math.round(eased * target);
+        
+        // Add + suffix for large numbers
+        if (target >= 1000) {
+            element.textContent = current.toLocaleString() + '+';
+        } else {
+            element.textContent = current + '+';
+        }
+        
+        if (progress < 1) {
+            requestAnimationFrame(update);
+        }
+    }
+    
+    requestAnimationFrame(update);
+}
+
+// === Dashboard Stat Animation ===
+const statObserver = new IntersectionObserver((entries) => {
     entries.forEach(entry => {
         if (entry.isIntersecting) {
             entry.target.classList.add('visible');
             
-            // Animate stat counters when visible
             if (entry.target.classList.contains('stat-value')) {
-                animateCounter(entry.target);
+                animateStatValue(entry.target);
             }
         }
     });
-}, observerOptions);
+}, { threshold: 0.1 });
 
-// Observe all case studies and stat values
-document.querySelectorAll('.case-study, .stat-value').forEach(el => {
-    observer.observe(el);
+document.querySelectorAll('.stat-value').forEach(el => {
+    statObserver.observe(el);
 });
 
-// === Counter Animation ===
-function animateCounter(element) {
+function animateStatValue(element) {
     const target = parseInt(element.dataset.count);
     if (!target || element.classList.contains('counted')) return;
     
@@ -34,8 +102,6 @@ function animateCounter(element) {
     function update(currentTime) {
         const elapsed = currentTime - start;
         const progress = Math.min(elapsed / duration, 1);
-        
-        // Ease out quart
         const eased = 1 - Math.pow(1 - progress, 4);
         const current = Math.round(eased * target);
         
@@ -65,7 +131,6 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
 
 // === Navbar Background on Scroll ===
 const navbar = document.querySelector('.navbar');
-let lastScroll = 0;
 
 window.addEventListener('scroll', () => {
     const currentScroll = window.pageYOffset;
@@ -76,7 +141,21 @@ window.addEventListener('scroll', () => {
         navbar.classList.remove('scrolled');
     }
     
-    lastScroll = currentScroll;
+    // Back to Top button visibility
+    const backToTop = document.getElementById('backToTop');
+    if (currentScroll > 500) {
+        backToTop.classList.add('visible');
+    } else {
+        backToTop.classList.remove('visible');
+    }
+});
+
+// === Back to Top Button ===
+document.getElementById('backToTop')?.addEventListener('click', () => {
+    window.scrollTo({
+        top: 0,
+        behavior: 'smooth'
+    });
 });
 
 // === Parallax Effect for Floating Cards ===
@@ -86,11 +165,34 @@ document.addEventListener('mousemove', (e) => {
     const mouseY = e.clientY / window.innerHeight - 0.5;
     
     cards.forEach((card, index) => {
-        const factor = (index + 1) * 5;
+        const factor = (index + 1) * 8;
         const x = mouseX * factor;
         const y = mouseY * factor;
         card.style.transform = `translate(${x}px, ${y}px)`;
     });
+});
+
+// === Project Nav Active State ===
+const projectNavItems = document.querySelectorAll('.project-nav-item');
+const caseStudies = document.querySelectorAll('.case-study');
+
+const navObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+        if (entry.isIntersecting) {
+            const id = entry.target.id;
+            projectNavItems.forEach(item => {
+                if (item.getAttribute('href') === `#${id}`) {
+                    item.classList.add('active');
+                } else {
+                    item.classList.remove('active');
+                }
+            });
+        }
+    });
+}, { threshold: 0.3 });
+
+caseStudies.forEach(study => {
+    if (study.id) navObserver.observe(study);
 });
 
 // === Chart Bar Animation ===
@@ -99,31 +201,14 @@ chartBars.forEach((bar, index) => {
     bar.style.animationDelay = `${index * 0.1}s`;
 });
 
-// === Code Syntax Highlighting Enhancement ===
-// Already handled in HTML with span classes
-
-// === Add subtle hover effects to tech tags ===
-document.querySelectorAll('.tech-tags span').forEach(tag => {
-    tag.addEventListener('mouseenter', () => {
-        tag.style.borderColor = 'var(--accent-primary)';
-        tag.style.color = 'var(--accent-primary)';
-    });
-    
-    tag.addEventListener('mouseleave', () => {
-        tag.style.borderColor = 'var(--border)';
-        tag.style.color = 'var(--text-secondary)';
-    });
-});
-
 // === Initialize ===
 document.addEventListener('DOMContentLoaded', () => {
-    // Add loaded class for any initial animations
-    document.body.classList.add('loaded');
+    animateCounters();
     
     // Trigger counter animation for visible elements
     document.querySelectorAll('.stat-value').forEach(el => {
         if (el.getBoundingClientRect().top < window.innerHeight) {
-            animateCounter(el);
+            animateStatValue(el);
         }
     });
 });

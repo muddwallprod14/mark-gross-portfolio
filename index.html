@@ -4,6 +4,25 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Mark Gross — Technical Artist</title>
+    
+    <!-- SEO Meta Tags -->
+    <meta name="description" content="Mark Gross - Technical Artist & Creative Developer specializing in pipeline automation, After Effects scripting, and production tools.">
+    <meta name="keywords" content="Technical Artist, Creative Developer, Pipeline Automation, After Effects, Python, Motion Graphics">
+    <meta name="author" content="Mark Gross">
+    
+    <!-- Open Graph / Social Media -->
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="Mark Gross — Technical Artist">
+    <meta property="og:description" content="Building bridges between creativity and technology — crafting tools, pipelines, and systems that empower artists.">
+    <meta property="og:url" content="https://muddwallprod14.github.io/mark-gross-portfolio/">
+    
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Mark Gross — Technical Artist">
+    <meta name="twitter:description" content="Building bridges between creativity and technology — crafting tools, pipelines, and systems that empower artists.">
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>⚡</text></svg>">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
@@ -60,10 +79,45 @@
         </div>
     </section>
 
+    <!-- Stats Banner -->
+    <section class="stats-banner">
+        <div class="stats-container">
+            <div class="stat-item">
+                <span class="stat-number" data-target="6">0</span>
+                <span class="stat-text">Projects</span>
+            </div>
+            <div class="stat-divider"></div>
+            <div class="stat-item">
+                <span class="stat-number" data-target="5">0</span>
+                <span class="stat-text">Years Experience</span>
+            </div>
+            <div class="stat-divider"></div>
+            <div class="stat-item">
+                <span class="stat-number" data-target="15">0</span>
+                <span class="stat-text">Studios Served</span>
+            </div>
+            <div class="stat-divider"></div>
+            <div class="stat-item">
+                <span class="stat-number" data-target="1000">0</span>
+                <span class="stat-text">Hours Saved</span>
+            </div>
+        </div>
+    </section>
+
     <section id="work" class="work-section">
         <div class="section-header">
             <span class="section-tag">Selected Projects</span>
             <h2>Case Studies</h2>
+        </div>
+        
+        <!-- Project Quick Nav -->
+        <div class="project-nav">
+            <a href="#job-monitor" class="project-nav-item">01 Job Monitor</a>
+            <a href="#file-sorter" class="project-nav-item">02 File Sorter</a>
+            <a href="#ae-marker" class="project-nav-item">03 AE Marker</a>
+            <a href="#ableton-generator" class="project-nav-item">04 Ableton Gen</a>
+            <a href="#data-io" class="project-nav-item">05 Data IO</a>
+            <a href="#flex-viewer" class="project-nav-item">06 Flex Viewer</a>
         </div>
 
         <!-- Case Study 1: Job Monitor Platform -->
@@ -828,6 +882,20 @@
     <footer class="footer">
         <p>© 2026 Mark Gross — Technical Artist</p>
     </footer>
+
+    <!-- Back to Top Button -->
+    <button class="back-to-top" id="backToTop" aria-label="Back to top">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M18 15l-6-6-6 6"/>
+        </svg>
+    </button>
+
+    <!-- Loading Screen -->
+    <div class="loading-screen" id="loadingScreen">
+        <div class="loader">
+            <span class="loader-text">MG</span>
+        </div>
+    </div>
 
     <script src="script.js"></script>
 </body>
