@@ -52,8 +52,8 @@ body {
     font-weight: 400;
 }
 
-/* === Video Background === */
-.video-background {
+/* === Hero Background === */
+.hero-background {
     position: fixed;
     top: 0;
     left: 0;
@@ -63,7 +63,18 @@ body {
     overflow: hidden;
 }
 
-.video-background video {
+.hero-cover-image {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center top;
+}
+
+.hero-video {
+    display: none; /* Hidden when using cover image */
     position: absolute;
     top: 50%;
     left: 50%;
@@ -75,7 +86,7 @@ body {
     object-fit: cover;
 }
 
-.video-overlay {
+.hero-overlay {
     position: absolute;
     top: 0;
     left: 0;
@@ -83,8 +94,8 @@ body {
     height: 100%;
     background: linear-gradient(
         to bottom,
-        rgba(0, 0, 0, 0.4) 0%,
-        rgba(0, 0, 0, 0.5) 50%,
+        rgba(0, 0, 0, 0.3) 0%,
+        rgba(0, 0, 0, 0.4) 60%,
         rgba(255, 255, 255, 1) 100%
     );
 }
