@@ -53,13 +53,13 @@
             <h2>Case Studies</h2>
         </div>
 
-        <!-- Case Study 1: Caviar Job Monitor -->
-        <article class="case-study" id="caviar">
+        <!-- Case Study 1: Job Monitor Platform -->
+        <article class="case-study" id="job-monitor">
             <div class="case-study-header">
                 <div class="case-number">01</div>
                 <div class="case-meta">
                     <span class="case-category">Production Operations • Dashboard Development</span>
-                    <h3>Caviar Job Monitor Platform</h3>
+                    <h3>Job Monitor Platform</h3>
                     <p class="case-intro">A real-time monitoring dashboard for tracking job status, resource allocation, and production metrics across distributed creative teams.</p>
                 </div>
             </div>
@@ -70,7 +70,7 @@
                         <div class="window-dots">
                             <span></span><span></span><span></span>
                         </div>
-                        <span class="mockup-title">Caviar Job Monitor</span>
+                        <span class="mockup-title">Job Monitor Platform</span>
                     </div>
                     <div class="mockup-content">
                         <div class="dashboard-grid">
@@ -168,10 +168,126 @@
             </div>
         </article>
 
-        <!-- Case Study 2: AE Marker Exporter -->
-        <article class="case-study" id="ae-marker">
+        <!-- Case Study 2: File Sorter -->
+        <article class="case-study" id="file-sorter">
             <div class="case-study-header">
                 <div class="case-number">02</div>
+                <div class="case-meta">
+                    <span class="case-category">Pipeline Automation • Python • File Management</span>
+                    <h3>File Sorter</h3>
+                    <p class="case-intro">An intelligent file organization system that automatically sorts media assets based on studio-specific naming conventions, supporting multiple workflows across macOS and Windows.</p>
+                </div>
+            </div>
+
+            <div class="case-visual">
+                <div class="code-window">
+                    <div class="window-header">
+                        <div class="window-dots">
+                            <span></span><span></span><span></span>
+                        </div>
+                        <span class="file-tabs">
+                            <span class="tab active">filesorter.py</span>
+                            <span class="tab">config.json</span>
+                        </span>
+                    </div>
+                    <div class="code-content">
+                        <pre><code><span class="comment"># Universal Naming Convention File Sorter</span>
+<span class="comment"># Supports: Universal, Paramount, Custom Studios</span>
+
+<span class="keyword">def</span> <span class="function">sortUniversal</span>(filename, directory, root_parts):
+    filename_parts = filename.split(<span class="string">'_'</span>)
+    
+    <span class="comment"># Extract metadata from naming convention</span>
+    spotName = filename_parts[<span class="number">2</span>]
+    duration = removeSeconds(filename_parts[<span class="number">3</span>])
+    ratios = split_string_by_hyphens(filename_parts[<span class="number">1</span>])
+    res = checkRatio(filename_parts[<span class="number">-3</span>])
+    
+    <span class="comment"># Construct destination path</span>
+    destination = os.path.join(
+        directory, spotName, ratios, duration, filename
+    )
+    
+    <span class="comment"># Create directory and move file</span>
+    create_directory_if_not_exists(destination)
+    shutil.move(source, destination)
+    
+    logging.info(<span class="string">f"Sorted: {filename} → {destination}"</span>)</code></pre>
+                    </div>
+                </div>
+                <div class="terminal-mockup">
+                    <div class="terminal-header">
+                        <div class="window-dots">
+                            <span></span><span></span><span></span>
+                        </div>
+                        <span class="terminal-title">FileSorter Output</span>
+                    </div>
+                    <div class="terminal-content">
+                        <div class="log-line"><span class="log-time">14:32</span> <span class="log-info">INFO:</span> <span class="log-text">Studio Name: Universal</span></div>
+                        <div class="log-line"><span class="log-time">14:32</span> <span class="log-info">INFO:</span> <span class="log-text">Project Name: Brand_Campaign</span></div>
+                        <div class="log-line"><span class="log-time">14:32</span> <span class="log-moved">MOVED:</span> <span class="log-text">UNI_16x9_Spot01_30s_1920x1080.mov</span></div>
+                        <div class="log-line"><span class="log-time">14:32</span> <span class="log-info">INFO:</span> <span class="log-text">→ /Spot01/16x9/30/</span></div>
+                        <div class="log-line"><span class="log-time">14:32</span> <span class="log-success">SUCCESS:</span> <span class="log-text">File sorted successfully ✓</span></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="case-details">
+                <div class="detail-block">
+                    <h4>The Challenge</h4>
+                    <p>Media teams managing thousands of video and audio assets needed an automated system to organize files based on complex, studio-specific naming conventions. Manual sorting was error-prone and time-consuming.</p>
+                </div>
+                <div class="detail-block">
+                    <h4>My Role</h4>
+                    <p>Sole developer responsible for designing the file parsing logic, implementing cross-platform support (macOS/Windows), building the logging system with color-coded output, and creating studio-specific sorting rules.</p>
+                </div>
+                <div class="detail-block">
+                    <h4>Key Features</h4>
+                    <ul class="feature-list">
+                        <li>Parses Universal Naming Convention with intelligent pattern matching</li>
+                        <li>Supports multiple studios: Universal, Paramount, and custom workflows</li>
+                        <li>Cross-platform: macOS and Windows with automatic path handling</li>
+                        <li>Color-coded logging with daily log file generation</li>
+                        <li>Handles trailers, TV spots, audio files with different rules</li>
+                        <li>Automatic aspect ratio detection (16:9, 9:16, 1:1, Flat, Scope)</li>
+                    </ul>
+                </div>
+                <div class="detail-block">
+                    <h4>Tech Stack</h4>
+                    <div class="tech-tags">
+                        <span>Python 3.11</span>
+                        <span>shutil</span>
+                        <span>pathlib</span>
+                        <span>Colorama</span>
+                        <span>Regex</span>
+                        <span>Logging</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="case-outcomes">
+                <h4>Impact</h4>
+                <div class="outcomes-grid">
+                    <div class="outcome">
+                        <div class="outcome-value">1000s</div>
+                        <div class="outcome-label">Files sorted automatically per project</div>
+                    </div>
+                    <div class="outcome">
+                        <div class="outcome-value">Zero</div>
+                        <div class="outcome-label">Manual file organization needed</div>
+                    </div>
+                    <div class="outcome">
+                        <div class="outcome-value">5+ Studios</div>
+                        <div class="outcome-label">Naming conventions supported</div>
+                    </div>
+                </div>
+            </div>
+        </article>
+
+        <!-- Case Study 3: AE Marker Exporter -->
+        <article class="case-study" id="ae-marker">
+            <div class="case-study-header">
+                <div class="case-number">03</div>
                 <div class="case-meta">
                     <span class="case-category">After Effects • Pipeline Tools • Data-Driven Animation</span>
                     <h3>AE Marker Exporter & JSON Integration</h3>
@@ -204,16 +320,6 @@
       <span class="key">"params"</span>: {
         <span class="key">"transitionType"</span>: <span class="string">"fade"</span>,
         <span class="key">"duration"</span>: <span class="number">0.5</span>
-      }
-    },
-    {
-      <span class="key">"time"</span>: <span class="number">8.75</span>,
-      <span class="key">"comment"</span>: <span class="string">"Logo_Reveal"</span>,
-      <span class="key">"chapter"</span>: <span class="string">"Branding"</span>,
-      <span class="key">"cuePoint"</span>: <span class="boolean">true</span>,
-      <span class="key">"params"</span>: {
-        <span class="key">"scale"</span>: <span class="number">1.2</span>,
-        <span class="key">"easing"</span>: <span class="string">"easeOutExpo"</span>
       }
     }
   ]
@@ -249,54 +355,11 @@
             <div class="case-details">
                 <div class="detail-block">
                     <h4>The Challenge</h4>
-                    <p>Motion designers needed to export chapter markers and cue points from After Effects for use in interactive players, subtitle systems, and audio editing tools. Conversely, they wanted to drive AE animations from external data sources without manual keyframing.</p>
+                    <p>Motion designers needed to export chapter markers and cue points from After Effects for use in interactive players, subtitle systems, and audio editing tools.</p>
                 </div>
                 <div class="detail-block">
                     <h4>My Role</h4>
                     <p>Sole developer of the ExtendScript toolkit, including the export panel UI, JSON schema design, and expression templates for data-driven animations using AE's native <code>footage().sourceData</code> functionality.</p>
-                </div>
-                <div class="detail-block full-width">
-                    <h4>Technical Deep Dive</h4>
-                    <div class="code-block">
-                        <div class="code-label">ExtendScript: Marker Export</div>
-                        <pre><code><span class="comment">// Extract markers from selected composition</span>
-<span class="keyword">function</span> <span class="function">exportMarkersToJSON</span>(comp) {
-    <span class="keyword">var</span> markers = comp.markerProperty;
-    <span class="keyword">var</span> output = {
-        projectName: app.project.file.name,
-        composition: comp.name,
-        frameRate: comp.frameRate,
-        markers: []
-    };
-    
-    <span class="keyword">for</span> (<span class="keyword">var</span> i = <span class="number">1</span>; i <= markers.numKeys; i++) {
-        <span class="keyword">var</span> mv = markers.keyValue(i);
-        output.markers.push({
-            time: markers.keyTime(i),
-            comment: mv.comment,
-            chapter: mv.chapter,
-            cuePoint: mv.cuePointName !== <span class="string">""</span>,
-            url: mv.url,
-            params: mv.getParameters()
-        });
-    }
-    
-    <span class="keyword">return</span> JSON.stringify(output, <span class="keyword">null</span>, <span class="number">2</span>);
-}</code></pre>
-                    </div>
-                    <div class="code-block">
-                        <div class="code-label">AE Expression: Reading JSON Data</div>
-                        <pre><code><span class="comment">// Data-driven text from JSON</span>
-<span class="keyword">var</span> data = footage(<span class="string">"project_data.json"</span>).sourceData;
-<span class="keyword">var</span> currentMarker = thisLayer.marker.nearestKey(time);
-<span class="keyword">var</span> idx = currentMarker.index - <span class="number">1</span>;
-
-<span class="keyword">if</span> (data.markers[idx]) {
-    data.markers[idx].comment;
-} <span class="keyword">else</span> {
-    <span class="string">"Loading..."</span>;
-}</code></pre>
-                    </div>
                 </div>
                 <div class="detail-block">
                     <h4>Features</h4>
@@ -305,7 +368,6 @@
                         <li>Customizable JSON schema with metadata</li>
                         <li>Round-trip editing (export → modify → reimport)</li>
                         <li>Expression templates for common use cases</li>
-                        <li>Integration with subtitle/caption workflows</li>
                     </ul>
                 </div>
                 <div class="detail-block">
@@ -325,7 +387,7 @@
                 <div class="outcomes-grid">
                     <div class="outcome">
                         <div class="outcome-value">3hrs+</div>
-                        <div class="outcome-label">Saved per project on marker transcription</div>
+                        <div class="outcome-label">Saved per project</div>
                     </div>
                     <div class="outcome">
                         <div class="outcome-value">15+</div>
@@ -333,11 +395,362 @@
                     </div>
                     <div class="outcome">
                         <div class="outcome-value">Zero</div>
-                        <div class="outcome-label">Manual keyframes for data-driven content</div>
+                        <div class="outcome-label">Manual keyframes needed</div>
                     </div>
                 </div>
             </div>
         </article>
+
+        <!-- Case Study 4: Ableton Project Generator -->
+        <article class="case-study" id="ableton-generator">
+            <div class="case-study-header">
+                <div class="case-number">04</div>
+                <div class="case-meta">
+                    <span class="case-category">Audio Production • Python • Automation</span>
+                    <h3>Ableton Project Generator</h3>
+                    <p class="case-intro">An automated tool that generates Ableton Live project files from templates, pre-configuring tracks, plugins, and routing based on project specifications.</p>
+                </div>
+            </div>
+
+            <div class="case-visual">
+                <div class="dashboard-mockup dark-theme">
+                    <div class="mockup-header">
+                        <div class="window-dots">
+                            <span></span><span></span><span></span>
+                        </div>
+                        <span class="mockup-title">Ableton Project Generator</span>
+                    </div>
+                    <div class="mockup-content">
+                        <div class="generator-ui">
+                            <div class="gen-field">
+                                <label>Project Name</label>
+                                <div class="gen-input">Brand_Campaign_Audio_v1</div>
+                            </div>
+                            <div class="gen-field">
+                                <label>Template</label>
+                                <div class="gen-select">
+                                    <span class="selected">🎬 Trailer Mix Template</span>
+                                    <span class="dropdown-arrow">▼</span>
+                                </div>
+                            </div>
+                            <div class="gen-field">
+                                <label>Duration</label>
+                                <div class="gen-input">2:30</div>
+                            </div>
+                            <div class="gen-tracks">
+                                <div class="track-preview">
+                                    <span class="track-color" style="background: #ff6b6b"></span>
+                                    <span>Dialog</span>
+                                </div>
+                                <div class="track-preview">
+                                    <span class="track-color" style="background: #4ecdc4"></span>
+                                    <span>Music</span>
+                                </div>
+                                <div class="track-preview">
+                                    <span class="track-color" style="background: #ffe66d"></span>
+                                    <span>SFX</span>
+                                </div>
+                                <div class="track-preview">
+                                    <span class="track-color" style="background: #a855f7"></span>
+                                    <span>Mix Bus</span>
+                                </div>
+                            </div>
+                            <div class="gen-button">Generate Project →</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="case-details">
+                <div class="detail-block">
+                    <h4>The Challenge</h4>
+                    <p>Audio engineers spent significant time setting up new Ableton projects with consistent track layouts, plugin chains, and routing configurations. Each project type (trailer, TV spot, social) required different setups.</p>
+                </div>
+                <div class="detail-block">
+                    <h4>My Role</h4>
+                    <p>Developed the project generation engine that parses Ableton's XML-based .als file format, manipulates project structure programmatically, and generates ready-to-use sessions.</p>
+                </div>
+                <div class="detail-block">
+                    <h4>Key Features</h4>
+                    <ul class="feature-list">
+                        <li>Template-based generation with customizable presets</li>
+                        <li>Automatic track creation with color coding</li>
+                        <li>Plugin chain pre-configuration</li>
+                        <li>Marker/locator placement from timecode data</li>
+                        <li>Integration with project management systems</li>
+                    </ul>
+                </div>
+                <div class="detail-block">
+                    <h4>Tech Stack</h4>
+                    <div class="tech-tags">
+                        <span>Python</span>
+                        <span>XML Parsing</span>
+                        <span>Ableton ALS Format</span>
+                        <span>gzip</span>
+                        <span>Tkinter GUI</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="case-outcomes">
+                <h4>Impact</h4>
+                <div class="outcomes-grid">
+                    <div class="outcome">
+                        <div class="outcome-value">15min</div>
+                        <div class="outcome-label">Setup time saved per project</div>
+                    </div>
+                    <div class="outcome">
+                        <div class="outcome-value">100%</div>
+                        <div class="outcome-label">Consistent track naming</div>
+                    </div>
+                    <div class="outcome">
+                        <div class="outcome-value">8+</div>
+                        <div class="outcome-label">Template presets available</div>
+                    </div>
+                </div>
+            </div>
+        </article>
+
+        <!-- Case Study 5: Data IO Manager -->
+        <article class="case-study" id="data-io">
+            <div class="case-study-header">
+                <div class="case-number">05</div>
+                <div class="case-meta">
+                    <span class="case-category">Data Management • File Transfer • Production Pipeline</span>
+                    <h3>Data IO Manager</h3>
+                    <p class="case-intro">A comprehensive data input/output management system for tracking file transfers, validating deliverables, and maintaining audit trails across production workflows.</p>
+                </div>
+            </div>
+
+            <div class="case-visual">
+                <div class="dashboard-mockup">
+                    <div class="mockup-header">
+                        <div class="window-dots">
+                            <span></span><span></span><span></span>
+                        </div>
+                        <span class="mockup-title">Data IO Manager</span>
+                    </div>
+                    <div class="mockup-content">
+                        <div class="io-dashboard">
+                            <div class="io-stats">
+                                <div class="io-stat">
+                                    <div class="io-icon incoming">↓</div>
+                                    <div class="io-info">
+                                        <span class="io-label">Incoming</span>
+                                        <span class="io-value">2.4 TB</span>
+                                    </div>
+                                </div>
+                                <div class="io-stat">
+                                    <div class="io-icon outgoing">↑</div>
+                                    <div class="io-info">
+                                        <span class="io-label">Outgoing</span>
+                                        <span class="io-value">1.8 TB</span>
+                                    </div>
+                                </div>
+                                <div class="io-stat">
+                                    <div class="io-icon pending">⏳</div>
+                                    <div class="io-info">
+                                        <span class="io-label">Pending</span>
+                                        <span class="io-value">47 files</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="transfer-list">
+                                <div class="transfer-item">
+                                    <span class="transfer-status success"></span>
+                                    <span class="transfer-name">Campaign_Master_v3.mov</span>
+                                    <span class="transfer-size">4.2 GB</span>
+                                    <span class="transfer-checksum">✓ MD5</span>
+                                </div>
+                                <div class="transfer-item">
+                                    <span class="transfer-status in-progress"></span>
+                                    <span class="transfer-name">Audio_Stems_Final.zip</span>
+                                    <span class="transfer-size">1.8 GB</span>
+                                    <span class="transfer-progress">67%</span>
+                                </div>
+                                <div class="transfer-item">
+                                    <span class="transfer-status queued"></span>
+                                    <span class="transfer-name">GFX_Package_r4.zip</span>
+                                    <span class="transfer-size">890 MB</span>
+                                    <span class="transfer-checksum">Queued</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="case-details">
+                <div class="detail-block">
+                    <h4>The Challenge</h4>
+                    <p>Production facilities needed to track massive file transfers between locations, validate deliverables against specifications, and maintain complete audit trails for client reporting and compliance.</p>
+                </div>
+                <div class="detail-block">
+                    <h4>My Role</h4>
+                    <p>Architected and developed the transfer monitoring system, checksum validation engine, and reporting dashboard. Integrated with existing storage infrastructure and delivery platforms.</p>
+                </div>
+                <div class="detail-block">
+                    <h4>Key Features</h4>
+                    <ul class="feature-list">
+                        <li>Real-time transfer monitoring with progress tracking</li>
+                        <li>MD5/SHA256 checksum validation</li>
+                        <li>Automated deliverable spec verification</li>
+                        <li>Audit trail logging with timestamps</li>
+                        <li>Client-ready delivery reports</li>
+                    </ul>
+                </div>
+                <div class="detail-block">
+                    <h4>Tech Stack</h4>
+                    <div class="tech-tags">
+                        <span>Python</span>
+                        <span>Flask</span>
+                        <span>SQLite</span>
+                        <span>hashlib</span>
+                        <span>watchdog</span>
+                        <span>REST API</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="case-outcomes">
+                <h4>Impact</h4>
+                <div class="outcomes-grid">
+                    <div class="outcome">
+                        <div class="outcome-value">100%</div>
+                        <div class="outcome-label">Transfer verification rate</div>
+                    </div>
+                    <div class="outcome">
+                        <div class="outcome-value">TB/day</div>
+                        <div class="outcome-label">Data throughput managed</div>
+                    </div>
+                    <div class="outcome">
+                        <div class="outcome-value">Zero</div>
+                        <div class="outcome-label">Corrupted deliverables shipped</div>
+                    </div>
+                </div>
+            </div>
+        </article>
+
+        <!-- Case Study 6: Flex Job Viewer -->
+        <article class="case-study" id="flex-viewer">
+            <div class="case-study-header">
+                <div class="case-number">06</div>
+                <div class="case-meta">
+                    <span class="case-category">Production Tracking • Web Application • Real-time Updates</span>
+                    <h3>Flex Job Viewer</h3>
+                    <p class="case-intro">A web-based job viewing application providing artists and coordinators with real-time visibility into project status, assignments, and deliverable timelines.</p>
+                </div>
+            </div>
+
+            <div class="case-visual">
+                <div class="dashboard-mockup flex-theme">
+                    <div class="mockup-header">
+                        <div class="window-dots">
+                            <span></span><span></span><span></span>
+                        </div>
+                        <span class="mockup-title">Flex Job Viewer</span>
+                    </div>
+                    <div class="mockup-content">
+                        <div class="flex-grid">
+                            <div class="flex-sidebar">
+                                <div class="flex-filter active">All Jobs</div>
+                                <div class="flex-filter">In Progress</div>
+                                <div class="flex-filter">Review</div>
+                                <div class="flex-filter">Approved</div>
+                            </div>
+                            <div class="flex-jobs">
+                                <div class="flex-job">
+                                    <div class="job-header">
+                                        <span class="job-id">#2847</span>
+                                        <span class="job-priority high">High</span>
+                                    </div>
+                                    <div class="job-title">Hero Spot - Final Comp</div>
+                                    <div class="job-meta">
+                                        <span class="job-artist">🎨 Sarah M.</span>
+                                        <span class="job-due">Due: Today 5pm</span>
+                                    </div>
+                                    <div class="job-bar" style="--progress: 85%"></div>
+                                </div>
+                                <div class="flex-job">
+                                    <div class="job-header">
+                                        <span class="job-id">#2849</span>
+                                        <span class="job-priority medium">Med</span>
+                                    </div>
+                                    <div class="job-title">Social Cutdowns - 6 versions</div>
+                                    <div class="job-meta">
+                                        <span class="job-artist">🎨 Mike T.</span>
+                                        <span class="job-due">Due: Tomorrow</span>
+                                    </div>
+                                    <div class="job-bar" style="--progress: 45%"></div>
+                                </div>
+                                <div class="flex-job review">
+                                    <div class="job-header">
+                                        <span class="job-id">#2845</span>
+                                        <span class="job-priority review">Review</span>
+                                    </div>
+                                    <div class="job-title">Trailer - Audio Mix</div>
+                                    <div class="job-meta">
+                                        <span class="job-artist">🎧 Alex K.</span>
+                                        <span class="job-due">Client Review</span>
+                                    </div>
+                                    <div class="job-bar" style="--progress: 100%"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="case-details">
+                <div class="detail-block">
+                    <h4>The Challenge</h4>
+                    <p>Artists and production coordinators needed a lightweight, fast way to view job assignments and status without navigating complex project management systems or waiting for slow database queries.</p>
+                </div>
+                <div class="detail-block">
+                    <h4>My Role</h4>
+                    <p>Full-stack development of the viewer application, including the real-time sync engine, responsive UI, and integration with the existing Flex production tracking database.</p>
+                </div>
+                <div class="detail-block">
+                    <h4>Key Features</h4>
+                    <ul class="feature-list">
+                        <li>Real-time job status updates via WebSocket</li>
+                        <li>Filterable views by status, artist, priority</li>
+                        <li>Due date tracking with visual indicators</li>
+                        <li>Mobile-responsive for on-set access</li>
+                        <li>Direct links to source files and review sessions</li>
+                    </ul>
+                </div>
+                <div class="detail-block">
+                    <h4>Tech Stack</h4>
+                    <div class="tech-tags">
+                        <span>React</span>
+                        <span>Node.js</span>
+                        <span>WebSocket</span>
+                        <span>PostgreSQL</span>
+                        <span>Tailwind CSS</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="case-outcomes">
+                <h4>Impact</h4>
+                <div class="outcomes-grid">
+                    <div class="outcome">
+                        <div class="outcome-value">&lt;1s</div>
+                        <div class="outcome-label">Page load time</div>
+                    </div>
+                    <div class="outcome">
+                        <div class="outcome-value">50+</div>
+                        <div class="outcome-label">Daily active users</div>
+                    </div>
+                    <div class="outcome">
+                        <div class="outcome-value">Real-time</div>
+                        <div class="outcome-label">Status synchronization</div>
+                    </div>
+                </div>
+            </div>
+        </article>
+
     </section>
 
     <section id="about" class="about-section">
@@ -361,7 +774,7 @@
                         <li>After Effects</li>
                         <li>Cinema 4D</li>
                         <li>Premiere Pro</li>
-                        <li>Nuke</li>
+                        <li>Ableton Live</li>
                     </ul>
                 </div>
                 <div class="skill-category">
