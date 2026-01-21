@@ -78,7 +78,7 @@
             <a href="#meshy-3d" class="project-nav-item">02 Meshy 3D</a>
             <a href="#ae-marker" class="project-nav-item">03 AE Marker</a>
             <a href="#ableton-generator" class="project-nav-item">04 Ableton Gen</a>
-            <a href="#data-io" class="project-nav-item">05 Data IO</a>
+            <a href="#shotgrid-workload" class="project-nav-item">05 ShotGrid</a>
             <a href="#flex-viewer" class="project-nav-item">06 Flex Viewer</a>
         </div>
 
@@ -775,70 +775,145 @@ TEMPLATE_STRUCTURE = [
             </div>
         </article>
 
-        <!-- Case Study 5: Data IO Manager -->
-        <article class="case-study" id="data-io">
+        <!-- Case Study 5: ShotGrid Workload Dashboard -->
+        <article class="case-study" id="shotgrid-workload">
             <div class="case-study-header">
                 <div class="case-number">05</div>
                 <div class="case-meta">
-                    <span class="case-category">Data Management • File Transfer • Production Pipeline</span>
-                    <h3 class="glitch" data-text="Data IO Manager">Data IO Manager</h3>
-                    <p class="case-intro">A comprehensive data input/output management system for tracking file transfers, validating deliverables, and maintaining audit trails across production workflows.</p>
+                    <span class="case-category">ShotGrid Integration • Production Management • Data Visualization</span>
+                    <h3 class="glitch" data-text="ShotGrid Workload Dashboard">ShotGrid Workload Dashboard</h3>
+                    <p class="case-intro">A desktop application for visualizing artist task assignments, workload distribution, and deadline tracking by integrating directly with ShotGrid's API.</p>
                 </div>
             </div>
 
             <div class="case-visual">
-                <div class="dashboard-mockup">
-                    <div class="mockup-header">
-                        <div class="window-dots">
-                            <span></span><span></span><span></span>
+                <!-- PyQt5 Workload Dashboard Mockup -->
+                <div class="app-mockup pyqt-mockup">
+                    <div class="titlebar">
+                        <div class="titlebar-buttons">
+                            <span class="titlebar-btn close"></span>
+                            <span class="titlebar-btn minimize"></span>
+                            <span class="titlebar-btn maximize"></span>
                         </div>
-                        <span class="mockup-title">Data IO Manager</span>
+                        <span class="titlebar-title">ShotGrid Artist Workload Dashboard</span>
                     </div>
-                    <div class="mockup-content">
-                        <div class="io-dashboard">
-                            <div class="io-stats">
-                                <div class="io-stat">
-                                    <div class="io-icon incoming">↓</div>
-                                    <div class="io-info">
-                                        <span class="io-label">Incoming</span>
-                                        <span class="io-value">2.4 TB</span>
-                                    </div>
+                    <div class="toolbar" style="justify-content: space-between;">
+                        <div style="display: flex; gap: 12px; align-items: center;">
+                            <span style="color: #888; font-size: 11px;">Department:</span>
+                            <span style="background: #333; padding: 4px 12px; border-radius: 4px; color: #ccc; font-size: 11px;">All Departments</span>
+                            <span style="color: #888; font-size: 11px;">Status:</span>
+                            <span style="background: #333; padding: 4px 12px; border-radius: 4px; color: #ccc; font-size: 11px;">All Statuses</span>
+                        </div>
+                        <div style="display: flex; gap: 8px;">
+                            <button class="toolbar-btn">Load Demo</button>
+                            <button class="toolbar-btn primary">Connect to ShotGrid</button>
+                        </div>
+                    </div>
+                    <div class="main-area" style="grid-template-columns: 320px 1fr;">
+                        <div class="sidebar" style="padding: 16px;">
+                            <div style="display: flex; justify-content: space-between; margin-bottom: 12px;">
+                                <span style="font-size: 12px; font-weight: bold; color: #fff;">Artists</span>
+                                <span style="font-size: 10px; color: #888;">12 artists</span>
+                            </div>
+                            <input type="text" placeholder="Search artists..." style="width: 100%; background: #333; border: 1px solid #444; border-radius: 4px; padding: 8px; color: #fff; font-size: 11px; margin-bottom: 12px;">
+                            
+                            <!-- Artist Card 1 -->
+                            <div style="background: #1e3a5f; border: 2px solid #0078d4; border-radius: 8px; padding: 12px; margin-bottom: 8px;">
+                                <div style="display: flex; justify-content: space-between; margin-bottom: 6px;">
+                                    <span style="font-weight: bold; color: #fff; font-size: 12px;">Sarah Mitchell</span>
+                                    <span style="background: #333; padding: 2px 8px; border-radius: 4px; font-size: 9px; color: #888;">Animation</span>
                                 </div>
-                                <div class="io-stat">
-                                    <div class="io-icon outgoing">↑</div>
-                                    <div class="io-info">
-                                        <span class="io-label">Outgoing</span>
-                                        <span class="io-value">1.8 TB</span>
-                                    </div>
+                                <div style="font-size: 10px; color: #888; margin-bottom: 8px;">6 tasks assigned</div>
+                                <div style="height: 6px; background: #2a2a2a; border-radius: 3px; overflow: hidden; display: flex;">
+                                    <div style="width: 50%; background: #3b82f6;"></div>
+                                    <div style="width: 33%; background: #f59e0b;"></div>
+                                    <div style="width: 17%; background: #10b981;"></div>
                                 </div>
-                                <div class="io-stat">
-                                    <div class="io-icon pending">⏳</div>
-                                    <div class="io-info">
-                                        <span class="io-label">Pending</span>
-                                        <span class="io-value">47 files</span>
-                                    </div>
+                                <div style="display: flex; gap: 8px; margin-top: 6px; font-size: 9px;">
+                                    <span style="color: #3b82f6;">● 3 IP</span>
+                                    <span style="color: #f59e0b;">● 2 Review</span>
+                                    <span style="color: #10b981;">● 1 Done</span>
                                 </div>
                             </div>
-                            <div class="transfer-list">
-                                <div class="transfer-item">
-                                    <span class="transfer-status success"></span>
-                                    <span class="transfer-name">Campaign_Master_v3.mov</span>
-                                    <span class="transfer-size">4.2 GB</span>
-                                    <span class="transfer-checksum">✓ MD5</span>
+                            
+                            <!-- Artist Card 2 -->
+                            <div style="background: #252525; border: 1px solid #333; border-radius: 8px; padding: 12px; margin-bottom: 8px;">
+                                <div style="display: flex; justify-content: space-between; margin-bottom: 6px;">
+                                    <span style="font-weight: bold; color: #fff; font-size: 12px;">James Chen</span>
+                                    <span style="background: #333; padding: 2px 8px; border-radius: 4px; font-size: 9px; color: #888;">Lighting</span>
                                 </div>
-                                <div class="transfer-item">
-                                    <span class="transfer-status in-progress"></span>
-                                    <span class="transfer-name">Audio_Stems_Final.zip</span>
-                                    <span class="transfer-size">1.8 GB</span>
-                                    <span class="transfer-progress">67%</span>
-                                </div>
-                                <div class="transfer-item">
-                                    <span class="transfer-status queued"></span>
-                                    <span class="transfer-name">GFX_Package_r4.zip</span>
-                                    <span class="transfer-size">890 MB</span>
-                                    <span class="transfer-checksum">Queued</span>
+                                <div style="font-size: 10px; color: #888; margin-bottom: 8px;">4 tasks assigned</div>
+                                <div style="height: 6px; background: #2a2a2a; border-radius: 3px; overflow: hidden; display: flex;">
+                                    <div style="width: 25%; background: #6b7280;"></div>
+                                    <div style="width: 50%; background: #3b82f6;"></div>
+                                    <div style="width: 25%; background: #f59e0b;"></div>
                                 </div>
                             </div>
+                            
+                            <!-- Artist Card 3 -->
+                            <div style="background: #252525; border: 1px solid #333; border-radius: 8px; padding: 12px;">
+                                <div style="display: flex; justify-content: space-between; margin-bottom: 6px;">
+                                    <span style="font-weight: bold; color: #fff; font-size: 12px;">Maria Garcia</span>
+                                    <span style="background: #333; padding: 2px 8px; border-radius: 4px; font-size: 9px; color: #888;">Comp</span>
+                                </div>
+                                <div style="font-size: 10px; color: #888; margin-bottom: 8px;">5 tasks assigned</div>
+                                <div style="height: 6px; background: #2a2a2a; border-radius: 3px; overflow: hidden; display: flex;">
+                                    <div style="width: 40%; background: #3b82f6;"></div>
+                                    <div style="width: 40%; background: #10b981;"></div>
+                                    <div style="width: 20%; background: #ef4444;"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="content-area">
+                            <div style="font-size: 13px; font-weight: bold; color: #fff; margin-bottom: 16px;">Sarah Mitchell's Tasks</div>
+                            <div style="display: flex; gap: 12px; margin-bottom: 16px;">
+                                <div style="background: #252525; border-radius: 8px; padding: 12px 16px; flex: 1;">
+                                    <div style="font-size: 20px; font-weight: bold; color: #fff;">6</div>
+                                    <div style="font-size: 10px; color: #888;">Total</div>
+                                </div>
+                                <div style="background: #252525; border-radius: 8px; padding: 12px 16px; flex: 1;">
+                                    <div style="font-size: 20px; font-weight: bold; color: #3b82f6;">3</div>
+                                    <div style="font-size: 10px; color: #888;">In Progress</div>
+                                </div>
+                                <div style="background: #252525; border-radius: 8px; padding: 12px 16px; flex: 1;">
+                                    <div style="font-size: 20px; font-weight: bold; color: #f59e0b;">2</div>
+                                    <div style="font-size: 10px; color: #888;">Review</div>
+                                </div>
+                                <div style="background: #252525; border-radius: 8px; padding: 12px 16px; flex: 1;">
+                                    <div style="font-size: 20px; font-weight: bold; color: #ef4444;">1</div>
+                                    <div style="font-size: 10px; color: #888;">Due Soon</div>
+                                </div>
+                            </div>
+                            <table class="table-mock">
+                                <thead>
+                                    <tr>
+                                        <th>Task</th>
+                                        <th>Entity</th>
+                                        <th>Status</th>
+                                        <th>Due Date</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>Anim_primary</td>
+                                        <td>Shot: shot_020</td>
+                                        <td><span class="status-badge running">IN PROGRESS</span></td>
+                                        <td style="color: #ef4444;">Jan 22 (1d)</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Anim_secondary</td>
+                                        <td>Shot: shot_030</td>
+                                        <td><span class="status-badge queued">REVIEW</span></td>
+                                        <td>Jan 25</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Anim_final</td>
+                                        <td>Asset: char_hero</td>
+                                        <td><span class="status-badge running">IN PROGRESS</span></td>
+                                        <td>Jan 28</td>
+                                    </tr>
+                                </tbody>
+                            </table>
                         </div>
                     </div>
                 </div>
@@ -847,31 +922,93 @@ TEMPLATE_STRUCTURE = [
             <div class="case-details">
                 <div class="detail-block">
                     <h4>The Challenge</h4>
-                    <p>Production facilities needed to track massive file transfers between locations, validate deliverables against specifications, and maintain complete audit trails for client reporting and compliance.</p>
+                    <p>Production supervisors needed real-time visibility into artist workloads to balance task distribution, identify bottlenecks, and ensure deadlines are met without overwhelming individual team members.</p>
                 </div>
                 <div class="detail-block">
                     <h4>My Role</h4>
-                    <p>Architected and developed the transfer monitoring system, checksum validation engine, and reporting dashboard. Integrated with existing storage infrastructure and delivery platforms.</p>
+                    <p>Sole developer of the desktop application, including ShotGrid API integration, custom workload visualization widgets, filtering system, and task detail views with deadline tracking.</p>
+                </div>
+                <div class="detail-block full-width">
+                    <h4>Core Implementation (from shotgrid_workload_dashboard.py)</h4>
+                    <div class="code-block">
+                        <div class="code-label">Artist Data Model with Workload Calculation</div>
+                        <pre><span class="keyword">@dataclass</span>
+<span class="keyword">class</span> <span class="function">Artist</span>:
+    id: int
+    name: str
+    department: str
+    tasks: List[Task] = field(default_factory=list)
+    capacity_hours: float = <span class="number">40.0</span>  <span class="comment"># weekly capacity</span>
+    
+    <span class="keyword">@property</span>
+    <span class="keyword">def</span> <span class="function">tasks_by_status</span>(self) -> Dict[str, int]:
+        counts = defaultdict(int)
+        <span class="keyword">for</span> task <span class="keyword">in</span> self.tasks:
+            counts[task.status] += <span class="number">1</span>
+        <span class="keyword">return</span> dict(counts)
+    
+    <span class="keyword">@property</span>
+    <span class="keyword">def</span> <span class="function">workload_percentage</span>(self) -> float:
+        active = sum(<span class="number">1</span> <span class="keyword">for</span> t <span class="keyword">in</span> self.tasks <span class="keyword">if</span> t.status <span class="keyword">in</span> [<span class="string">"ip"</span>, <span class="string">"rev"</span>])
+        <span class="keyword">return</span> min((active / <span class="number">5</span>) * <span class="number">100</span>, <span class="number">100</span>)</pre>
+                    </div>
+                    <div class="code-block">
+                        <div class="code-label">ShotGrid API Worker Thread</div>
+                        <pre><span class="keyword">class</span> <span class="function">ShotGridWorker</span>(QThread):
+    data_loaded = pyqtSignal(dict)
+    error_occurred = pyqtSignal(str)
+    
+    <span class="keyword">def</span> <span class="function">load_real_data</span>(self):
+        <span class="comment"># Get all active users</span>
+        users = self.sg.find(<span class="string">"HumanUser"</span>, 
+            [[<span class="string">"sg_status_list"</span>, <span class="string">"is"</span>, <span class="string">"act"</span>]],
+            [<span class="string">"id"</span>, <span class="string">"name"</span>, <span class="string">"department"</span>]
+        )
+        
+        <span class="comment"># Get all tasks with assignees</span>
+        tasks = self.sg.find(<span class="string">"Task"</span>,
+            [[<span class="string">"task_assignees"</span>, <span class="string">"is_not"</span>, <span class="keyword">None</span>]],
+            [<span class="string">"content"</span>, <span class="string">"sg_status_list"</span>, <span class="string">"task_assignees"</span>, 
+             <span class="string">"entity"</span>, <span class="string">"due_date"</span>, <span class="string">"time_logs_sum"</span>]
+        )</pre>
+                    </div>
+                    <div class="code-block">
+                        <div class="code-label">Custom Workload Visualization Widget</div>
+                        <pre><span class="keyword">class</span> <span class="function">WorkloadBar</span>(QWidget):
+    <span class="string">"""Horizontal bar showing task status distribution"""</span>
+    
+    <span class="keyword">def</span> <span class="function">paintEvent</span>(self, event):
+        painter = QPainter(self)
+        total = sum(self.tasks_by_status.values())
+        
+        x = <span class="number">0</span>
+        <span class="keyword">for</span> status, count <span class="keyword">in</span> self.tasks_by_status.items():
+            segment_width = (count / total) * self.width()
+            color = QColor(STATUS_COLORS[status])
+            painter.fillRect(int(x), <span class="number">0</span>, int(segment_width), self.height(), color)
+            x += segment_width</pre>
+                    </div>
                 </div>
                 <div class="detail-block">
                     <h4>Key Features</h4>
                     <ul class="feature-list">
-                        <li>Real-time transfer monitoring with progress tracking</li>
-                        <li>MD5/SHA256 checksum validation</li>
-                        <li>Automated deliverable spec verification</li>
-                        <li>Audit trail logging with timestamps</li>
-                        <li>Client-ready delivery reports</li>
+                        <li>Real-time ShotGrid API integration</li>
+                        <li>Visual workload bars showing task status distribution</li>
+                        <li>Filter by department, status, and search</li>
+                        <li>Deadline tracking with overdue indicators</li>
+                        <li>Demo mode for testing without ShotGrid access</li>
+                        <li>Click-to-select artist cards with task details</li>
                     </ul>
                 </div>
                 <div class="detail-block">
                     <h4>Tech Stack</h4>
                     <div class="tech-tags">
-                        <span>Python</span>
-                        <span>Flask</span>
-                        <span>SQLite</span>
-                        <span>hashlib</span>
-                        <span>watchdog</span>
-                        <span>REST API</span>
+                        <span>Python 3.11</span>
+                        <span>PyQt5</span>
+                        <span>ShotGrid API</span>
+                        <span>QThread</span>
+                        <span>QPainter</span>
+                        <span>Dataclasses</span>
                     </div>
                 </div>
             </div>
@@ -880,16 +1017,16 @@ TEMPLATE_STRUCTURE = [
                 <h4>Impact</h4>
                 <div class="outcomes-grid">
                     <div class="outcome">
-                        <div class="outcome-value">100%</div>
-                        <div class="outcome-label">Transfer verification rate</div>
+                        <div class="outcome-value">Real-time</div>
+                        <div class="outcome-label">Workload visibility for supervisors</div>
                     </div>
                     <div class="outcome">
-                        <div class="outcome-value">TB/day</div>
-                        <div class="outcome-label">Data throughput managed</div>
+                        <div class="outcome-value">50+</div>
+                        <div class="outcome-label">Artists tracked per project</div>
                     </div>
                     <div class="outcome">
-                        <div class="outcome-value">Zero</div>
-                        <div class="outcome-label">Corrupted deliverables shipped</div>
+                        <div class="outcome-value">Instant</div>
+                        <div class="outcome-label">Bottleneck identification</div>
                     </div>
                 </div>
             </div>
