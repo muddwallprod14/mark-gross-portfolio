@@ -291,19 +291,39 @@
     logging.info(<span class="string">f"Sorted: {filename} → {destination}"</span>)</code></pre>
                     </div>
                 </div>
-                <div class="terminal-mockup">
-                    <div class="terminal-header">
-                        <div class="window-dots">
-                            <span></span><span></span><span></span>
+                <div class="terminal-enhanced">
+                    <div class="term-header">
+                        <div class="term-dots">
+                            <span class="term-dot red"></span>
+                            <span class="term-dot yellow"></span>
+                            <span class="term-dot green"></span>
                         </div>
-                        <span class="terminal-title">FileSorter Output</span>
+                        <span class="term-title">markg@PPC-LA — python3 FileSorterv02.06.py</span>
                     </div>
-                    <div class="terminal-content">
-                        <div class="log-line"><span class="log-time">14:32</span> <span class="log-info">INFO:</span> <span class="log-text">Studio Name: Universal</span></div>
-                        <div class="log-line"><span class="log-time">14:32</span> <span class="log-info">INFO:</span> <span class="log-text">Project Name: Brand_Campaign</span></div>
-                        <div class="log-line"><span class="log-time">14:32</span> <span class="log-moved">MOVED:</span> <span class="log-text">UNI_16x9_Spot01_30s_1920x1080.mov</span></div>
-                        <div class="log-line"><span class="log-time">14:32</span> <span class="log-info">INFO:</span> <span class="log-text">→ /Spot01/16x9/30/</span></div>
-                        <div class="log-line"><span class="log-time">14:32</span> <span class="log-success">SUCCESS:</span> <span class="log-text">File sorted successfully ✓</span></div>
+                    <div class="term-body">
+                        <div class="term-line"><span class="prompt">$</span> <span class="cmd">python3 FileSorterv02.06.py</span></div>
+                        <div class="term-line"><span class="output">═══════════════════════════════════════════════════════════</span></div>
+                        <div class="term-line"><span class="info">  FILE SORTER v02.06 — Universal Naming Convention</span></div>
+                        <div class="term-line"><span class="output">═══════════════════════════════════════════════════════════</span></div>
+                        <div class="term-line"></div>
+                        <div class="term-line"><span class="timestamp">[14:32:18]</span> <span class="info">INFO:</span> <span class="output">Scanning: \\10.1.12.100\flex-Source-Materials_1</span></div>
+                        <div class="term-line"><span class="timestamp">[14:32:18]</span> <span class="info">INFO:</span> <span class="output">Studio detected: Universal</span></div>
+                        <div class="term-line"><span class="timestamp">[14:32:18]</span> <span class="info">INFO:</span> <span class="output">Project: Brand_Campaign_2026</span></div>
+                        <div class="term-line"></div>
+                        <div class="term-line"><span class="timestamp">[14:32:19]</span> <span class="success">MOVED:</span> <span class="output">UNI_16x9_HeroSpot_30s_1920x1080_v1.mov</span></div>
+                        <div class="term-line"><span class="output">        → /HeroSpot/16x9/30/</span></div>
+                        <div class="term-line"><span class="timestamp">[14:32:19]</span> <span class="success">MOVED:</span> <span class="output">UNI_9x16_HeroSpot_30s_1080x1920_v1.mov</span></div>
+                        <div class="term-line"><span class="output">        → /HeroSpot/9x16/30/</span></div>
+                        <div class="term-line"><span class="timestamp">[14:32:20]</span> <span class="success">MOVED:</span> <span class="output">UNI_1x1_HeroSpot_15s_1080x1080_v1.mov</span></div>
+                        <div class="term-line"><span class="output">        → /HeroSpot/1x1/15/</span></div>
+                        <div class="term-line"><span class="timestamp">[14:32:20]</span> <span class="warning">WARN:</span> <span class="output">Skipping: .DS_Store (not a media file)</span></div>
+                        <div class="term-line"><span class="timestamp">[14:32:21]</span> <span class="success">MOVED:</span> <span class="output">UNI_16x9_Cutdown_06s_1920x1080_v2.mov</span></div>
+                        <div class="term-line"><span class="output">        → /Cutdown/16x9/06/</span></div>
+                        <div class="term-line"></div>
+                        <div class="term-line"><span class="output">═══════════════════════════════════════════════════════════</span></div>
+                        <div class="term-line"><span class="success">✓ Complete:</span> <span class="output">47 files sorted | 2 skipped | 0 errors</span></div>
+                        <div class="term-line"><span class="info">Log saved:</span> <span class="output">/Logs/FileSorter_2026-01-21.log</span></div>
+                        <div class="term-line"><span class="output">═══════════════════════════════════════════════════════════</span></div>
                     </div>
                 </div>
             </div>
@@ -908,58 +928,131 @@ TEMPLATE_STRUCTURE = [
             </div>
 
             <div class="case-visual">
-                <div class="dashboard-mockup flex-theme">
-                    <div class="mockup-header">
-                        <div class="window-dots">
-                            <span></span><span></span><span></span>
+                <!-- PyQt5 GUI Mockup -->
+                <div class="app-mockup pyqt-mockup">
+                    <div class="titlebar">
+                        <div class="titlebar-buttons">
+                            <span class="titlebar-btn close"></span>
+                            <span class="titlebar-btn minimize"></span>
+                            <span class="titlebar-btn maximize"></span>
                         </div>
-                        <span class="mockup-title">Flex Job Viewer</span>
+                        <span class="titlebar-title">Flex Job Monitor — ppc@flex-server</span>
                     </div>
-                    <div class="mockup-content">
-                        <div class="flex-grid">
-                            <div class="flex-sidebar">
-                                <div class="flex-filter active">All Jobs</div>
-                                <div class="flex-filter">In Progress</div>
-                                <div class="flex-filter">Review</div>
-                                <div class="flex-filter">Approved</div>
+                    <div class="menubar">
+                        <span class="menu-item">File</span>
+                        <span class="menu-item">Edit</span>
+                        <span class="menu-item">View</span>
+                        <span class="menu-item">Jobs</span>
+                        <span class="menu-item">Help</span>
+                    </div>
+                    <div class="toolbar">
+                        <button class="toolbar-btn primary">Connect</button>
+                        <button class="toolbar-btn">Refresh</button>
+                        <button class="toolbar-btn">Add Job</button>
+                        <button class="toolbar-btn">Kill Selected</button>
+                    </div>
+                    <div class="main-area">
+                        <div class="sidebar">
+                            <div class="sidebar-title">Active Jobs</div>
+                            <div class="sidebar-item active">
+                                <span class="status-dot running"></span>
+                                JOB-2847 Final Comp
                             </div>
-                            <div class="flex-jobs">
-                                <div class="flex-job">
-                                    <div class="job-header">
-                                        <span class="job-id">#2847</span>
-                                        <span class="job-priority high">High</span>
-                                    </div>
-                                    <div class="job-title">Hero Spot - Final Comp</div>
-                                    <div class="job-meta">
-                                        <span class="job-artist">🎨 Sarah M.</span>
-                                        <span class="job-due">Due: Today 5pm</span>
-                                    </div>
-                                    <div class="job-bar" style="--progress: 85%"></div>
-                                </div>
-                                <div class="flex-job">
-                                    <div class="job-header">
-                                        <span class="job-id">#2849</span>
-                                        <span class="job-priority medium">Med</span>
-                                    </div>
-                                    <div class="job-title">Social Cutdowns - 6 versions</div>
-                                    <div class="job-meta">
-                                        <span class="job-artist">🎨 Mike T.</span>
-                                        <span class="job-due">Due: Tomorrow</span>
-                                    </div>
-                                    <div class="job-bar" style="--progress: 45%"></div>
-                                </div>
-                                <div class="flex-job review">
-                                    <div class="job-header">
-                                        <span class="job-id">#2845</span>
-                                        <span class="job-priority review">Review</span>
-                                    </div>
-                                    <div class="job-title">Trailer - Audio Mix</div>
-                                    <div class="job-meta">
-                                        <span class="job-artist">🎧 Alex K.</span>
-                                        <span class="job-due">Client Review</span>
-                                    </div>
-                                    <div class="job-bar" style="--progress: 100%"></div>
-                                </div>
+                            <div class="sidebar-item">
+                                <span class="status-dot running"></span>
+                                JOB-2849 Render v3
+                            </div>
+                            <div class="sidebar-item">
+                                <span class="status-dot queued"></span>
+                                JOB-2851 Export
+                            </div>
+                            <div class="sidebar-title" style="margin-top: 16px;">Completed</div>
+                            <div class="sidebar-item">
+                                <span class="status-dot" style="background: #0078d4;"></span>
+                                JOB-2845 Preview
+                            </div>
+                            <div class="sidebar-item">
+                                <span class="status-dot failed"></span>
+                                JOB-2843 Failed
+                            </div>
+                        </div>
+                        <div class="content-area">
+                            <table class="table-mock">
+                                <thead>
+                                    <tr>
+                                        <th>Job ID</th>
+                                        <th>Name</th>
+                                        <th>Machine</th>
+                                        <th>Status</th>
+                                        <th>Progress</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>JOB-2847</td>
+                                        <td>Final_Comp_v3.aep</td>
+                                        <td>RENDER-01</td>
+                                        <td><span class="status-badge running">RUNNING</span></td>
+                                        <td>78%</td>
+                                    </tr>
+                                    <tr>
+                                        <td>JOB-2849</td>
+                                        <td>Social_Cutdowns.prproj</td>
+                                        <td>RENDER-02</td>
+                                        <td><span class="status-badge running">RUNNING</span></td>
+                                        <td>45%</td>
+                                    </tr>
+                                    <tr>
+                                        <td>JOB-2851</td>
+                                        <td>Hero_Export_4K.aep</td>
+                                        <td>—</td>
+                                        <td><span class="status-badge queued">QUEUED</span></td>
+                                        <td>0%</td>
+                                    </tr>
+                                    <tr>
+                                        <td>JOB-2845</td>
+                                        <td>Preview_Render.aep</td>
+                                        <td>RENDER-03</td>
+                                        <td><span class="status-badge completed">COMPLETED</span></td>
+                                        <td>100%</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="details-panel">
+                            <div class="details-title">JOB-2847 Details</div>
+                            <div class="detail-row">
+                                <span class="label">Status</span>
+                                <span class="value" style="color: #28c840;">RUNNING</span>
+                            </div>
+                            <div class="detail-row">
+                                <span class="label">Machine</span>
+                                <span class="value">RENDER-01</span>
+                            </div>
+                            <div class="detail-row">
+                                <span class="label">CPU</span>
+                                <span class="value">87%</span>
+                            </div>
+                            <div class="detail-row">
+                                <span class="label">Memory</span>
+                                <span class="value">24.6 GB</span>
+                            </div>
+                            <div class="detail-row">
+                                <span class="label">Started</span>
+                                <span class="value">14:32:18</span>
+                            </div>
+                            <div class="detail-row">
+                                <span class="label">ETA</span>
+                                <span class="value">~12 min</span>
+                            </div>
+                            <div class="progress-bar-mock">
+                                <div class="fill" style="width: 78%;"></div>
+                            </div>
+                            <div class="log-area">
+                                <div class="log-line"><span class="time">[14:32:18]</span> <span class="info">INFO:</span> Job started</div>
+                                <div class="log-line"><span class="time">[14:32:19]</span> <span class="info">INFO:</span> Loading project...</div>
+                                <div class="log-line"><span class="time">[14:33:45]</span> <span class="success">OK:</span> Comp loaded</div>
+                                <div class="log-line"><span class="time">[14:45:22]</span> <span class="info">INFO:</span> Rendering frame 1872/2400</div>
                             </div>
                         </div>
                     </div>
