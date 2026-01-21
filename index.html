@@ -151,6 +151,11 @@
                 </div>
             </div>
 
+            <!-- Screenshot placeholder -->
+            <div class="screenshot-area">
+                <img src="screenshots/job-monitor-screenshot.png" alt="Job Monitor Platform Screenshot" class="project-screenshot" onerror="this.style.display='none'">
+            </div>
+
             <div class="case-details">
                 <div class="detail-block">
                     <h4>The Challenge</h4>
@@ -160,9 +165,51 @@
                     <h4>My Role</h4>
                     <p>Lead technical artist responsible for system architecture, API design, front-end dashboard development, and integration with existing production tools including Deadline, Shotgrid, and custom pipeline scripts.</p>
                 </div>
-                <div class="detail-block">
-                    <h4>Solution</h4>
-                    <p>Designed a WebSocket-powered dashboard that aggregates job data from multiple sources into a unified view. Built custom visualization components showing real-time progress, resource utilization, and predictive completion estimates.</p>
+                <div class="detail-block full-width">
+                    <h4>Core Implementation</h4>
+                    <div class="code-block">
+                        <div class="code-label">WebSocket Connection Handler</div>
+                        <pre><span class="keyword">class</span> <span class="function">JobMonitorSocket</span>:
+    <span class="keyword">def</span> <span class="function">__init__</span>(self, farm_endpoints):
+        self.connections = {}
+        self.job_cache = {}
+        
+    <span class="keyword">async def</span> <span class="function">connect_all</span>(self):
+        <span class="keyword">for</span> endpoint <span class="keyword">in</span> self.farm_endpoints:
+            ws = <span class="keyword">await</span> websockets.connect(endpoint)
+            self.connections[endpoint] = ws
+            asyncio.create_task(self.<span class="function">listen</span>(ws, endpoint))
+    
+    <span class="keyword">async def</span> <span class="function">listen</span>(self, ws, endpoint):
+        <span class="keyword">async for</span> message <span class="keyword">in</span> ws:
+            data = json.loads(message)
+            <span class="keyword">await</span> self.<span class="function">update_job_status</span>(data)
+            <span class="keyword">await</span> self.<span class="function">broadcast_to_clients</span>(data)</pre>
+                    </div>
+                    <div class="code-block">
+                        <div class="code-label">React Dashboard Component</div>
+                        <pre><span class="keyword">const</span> <span class="function">JobStatusCard</span> = ({ job }) => {
+  <span class="keyword">const</span> [progress, setProgress] = <span class="function">useState</span>(job.progress);
+  
+  <span class="function">useEffect</span>(() => {
+    <span class="keyword">const</span> ws = <span class="keyword">new</span> WebSocket(<span class="string">'ws://monitor/jobs'</span>);
+    ws.onmessage = (e) => {
+      <span class="keyword">const</span> data = JSON.parse(e.data);
+      <span class="keyword">if</span> (data.jobId === job.id) {
+        setProgress(data.progress);
+      }
+    };
+    <span class="keyword">return</span> () => ws.close();
+  }, [job.id]);
+  
+  <span class="keyword">return</span> (
+    &lt;<span class="function">Card</span> status={job.status}&gt;
+      &lt;ProgressBar value={progress} /&gt;
+      &lt;JobMeta job={job} /&gt;
+    &lt;/<span class="function">Card</span>&gt;
+  );
+};</pre>
+                    </div>
                 </div>
                 <div class="detail-block">
                     <h4>Tech Stack</h4>
@@ -261,6 +308,11 @@
                 </div>
             </div>
 
+            <!-- Screenshot placeholder -->
+            <div class="screenshot-area">
+                <img src="screenshots/file-sorter-screenshot.png" alt="File Sorter Screenshot" class="project-screenshot" onerror="this.style.display='none'">
+            </div>
+
             <div class="case-details">
                 <div class="detail-block">
                     <h4>The Challenge</h4>
@@ -269,6 +321,64 @@
                 <div class="detail-block">
                     <h4>My Role</h4>
                     <p>Sole developer responsible for designing the file parsing logic, implementing cross-platform support (macOS/Windows), building the logging system with color-coded output, and creating studio-specific sorting rules.</p>
+                </div>
+                <div class="detail-block full-width">
+                    <h4>Core Implementation</h4>
+                    <div class="code-block">
+                        <div class="code-label">Naming Convention Parser</div>
+                        <pre><span class="keyword">def</span> <span class="function">check_filename_parts</span>(filename):
+    <span class="string">"""Parse Universal/Paramount naming conventions"""</span>
+    parts = filename.split(<span class="string">'_'</span>)
+    
+    <span class="comment"># Universal: STUDIO_RATIO_SPOTNAME_DURATION_RES_VERSION.ext</span>
+    <span class="comment"># Paramount: PARA_TITLE_RATIO_DURATION_FORMAT.ext</span>
+    
+    studio_prefixes = {
+        <span class="string">'UNI'</span>: <span class="string">'Universal'</span>,
+        <span class="string">'PARA'</span>: <span class="string">'Paramount'</span>,
+        <span class="string">'UNV'</span>: <span class="string">'Universal_Alt'</span>
+    }
+    
+    <span class="keyword">if</span> parts[<span class="number">0</span>] <span class="keyword">in</span> studio_prefixes:
+        <span class="keyword">return</span> {
+            <span class="string">'studio'</span>: studio_prefixes[parts[<span class="number">0</span>]],
+            <span class="string">'ratio'</span>: <span class="function">checkRatio</span>(parts[<span class="number">1</span>]),
+            <span class="string">'spot_name'</span>: parts[<span class="number">2</span>],
+            <span class="string">'duration'</span>: <span class="function">removeSeconds</span>(parts[<span class="number">3</span>]),
+            <span class="string">'resolution'</span>: parts[<span class="number">-3</span>]
+        }
+    <span class="keyword">return</span> <span class="keyword">None</span></pre>
+                    </div>
+                    <div class="code-block">
+                        <div class="code-label">Cross-Platform Path Handler</div>
+                        <pre><span class="keyword">def</span> <span class="function">OSFilePathFilter</span>(path):
+    <span class="string">"""Handle macOS/Windows path differences"""</span>
+    <span class="keyword">if</span> platform.system() == <span class="string">'Darwin'</span>:  <span class="comment"># macOS</span>
+        <span class="keyword">return</span> path.replace(<span class="string">'\\\\'</span>, <span class="string">'/'</span>)
+    <span class="keyword">elif</span> platform.system() == <span class="string">'Windows'</span>:
+        <span class="keyword">return</span> path.replace(<span class="string">'/'</span>, <span class="string">'\\\\'</span>)
+    <span class="keyword">return</span> path
+
+<span class="keyword">def</span> <span class="function">create_directory_if_not_exists</span>(filepath):
+    directory = os.path.dirname(filepath)
+    <span class="keyword">if not</span> os.path.exists(directory):
+        os.makedirs(directory)
+        logging.info(<span class="string">f"Created: {directory}"</span>)</pre>
+                    </div>
+                    <div class="code-block">
+                        <div class="code-label">Aspect Ratio Detection</div>
+                        <pre><span class="keyword">def</span> <span class="function">checkRatio</span>(ratio_string):
+    <span class="string">"""Convert ratio codes to folder names"""</span>
+    ratio_map = {
+        <span class="string">'16x9'</span>: <span class="string">'16x9_Landscape'</span>,
+        <span class="string">'9x16'</span>: <span class="string">'9x16_Vertical'</span>,
+        <span class="string">'1x1'</span>: <span class="string">'1x1_Square'</span>,
+        <span class="string">'Flat'</span>: <span class="string">'1.85_Flat'</span>,
+        <span class="string">'Scope'</span>: <span class="string">'2.39_Scope'</span>,
+        <span class="string">'IMAX'</span>: <span class="string">'1.43_IMAX'</span>
+    }
+    <span class="keyword">return</span> ratio_map.get(ratio_string, ratio_string)</pre>
+                    </div>
                 </div>
                 <div class="detail-block">
                     <h4>Key Features</h4>
@@ -381,6 +491,11 @@
                 </div>
             </div>
 
+            <!-- Screenshot placeholder -->
+            <div class="screenshot-area">
+                <img src="screenshots/ae-marker-screenshot.png" alt="AE Marker Exporter Screenshot" class="project-screenshot" onerror="this.style.display='none'">
+            </div>
+
             <div class="case-details">
                 <div class="detail-block">
                     <h4>The Challenge</h4>
@@ -390,14 +505,77 @@
                     <h4>My Role</h4>
                     <p>Sole developer of the ExtendScript toolkit, including the export panel UI, JSON schema design, and expression templates for data-driven animations using AE's native <code>footage().sourceData</code> functionality.</p>
                 </div>
-                <div class="detail-block">
-                    <h4>Features</h4>
-                    <ul class="feature-list">
-                        <li>Batch export markers from multiple compositions</li>
-                        <li>Customizable JSON schema with metadata</li>
-                        <li>Round-trip editing (export → modify → reimport)</li>
-                        <li>Expression templates for common use cases</li>
-                    </ul>
+                <div class="detail-block full-width">
+                    <h4>ExtendScript Implementation</h4>
+                    <div class="code-block">
+                        <div class="code-label">Marker Export Function</div>
+                        <pre><span class="keyword">function</span> <span class="function">exportMarkersToJSON</span>(comp) {
+    <span class="keyword">var</span> markers = comp.markerProperty;
+    <span class="keyword">var</span> markerData = [];
+    
+    <span class="keyword">for</span> (<span class="keyword">var</span> i = <span class="number">1</span>; i <= markers.numKeys; i++) {
+        <span class="keyword">var</span> marker = markers.keyValue(i);
+        markerData.push({
+            time: markers.keyTime(i),
+            comment: marker.comment,
+            chapter: marker.chapter,
+            cuePoint: marker.cuePointName !== <span class="string">""</span>,
+            duration: marker.duration,
+            params: <span class="function">parseMarkerParams</span>(marker.comment)
+        });
+    }
+    
+    <span class="keyword">return</span> {
+        projectName: app.project.file.name,
+        composition: comp.name,
+        frameRate: comp.frameRate,
+        duration: comp.duration,
+        markers: markerData
+    };
+}</pre>
+                    </div>
+                    <div class="code-block">
+                        <div class="code-label">Data-Driven Expression Template</div>
+                        <pre><span class="comment">// Apply to any property for JSON-driven animation</span>
+<span class="keyword">var</span> jsonData = footage(<span class="string">"data.json"</span>).sourceData;
+<span class="keyword">var</span> markers = jsonData.markers;
+
+<span class="comment">// Find current marker based on time</span>
+<span class="keyword">var</span> currentMarker = <span class="keyword">null</span>;
+<span class="keyword">for</span> (<span class="keyword">var</span> i = <span class="number">0</span>; i < markers.length; i++) {
+    <span class="keyword">if</span> (time >= markers[i].time) {
+        currentMarker = markers[i];
+    }
+}
+
+<span class="comment">// Return value based on marker data</span>
+<span class="keyword">if</span> (currentMarker && currentMarker.params.scale) {
+    currentMarker.params.scale;
+} <span class="keyword">else</span> {
+    value;
+}</pre>
+                    </div>
+                    <div class="code-block">
+                        <div class="code-label">ScriptUI Panel</div>
+                        <pre><span class="keyword">var</span> panel = <span class="keyword">new</span> Window(<span class="string">"palette"</span>, <span class="string">"Marker Exporter"</span>);
+
+panel.add(<span class="string">"statictext"</span>, <span class="keyword">undefined</span>, <span class="string">"Select Composition:"</span>);
+<span class="keyword">var</span> compDropdown = panel.add(<span class="string">"dropdownlist"</span>);
+
+<span class="comment">// Populate with project compositions</span>
+<span class="keyword">for</span> (<span class="keyword">var</span> i = <span class="number">1</span>; i <= app.project.numItems; i++) {
+    <span class="keyword">if</span> (app.project.item(i) <span class="keyword">instanceof</span> CompItem) {
+        compDropdown.add(<span class="string">"item"</span>, app.project.item(i).name);
+    }
+}
+
+<span class="keyword">var</span> exportBtn = panel.add(<span class="string">"button"</span>, <span class="keyword">undefined</span>, <span class="string">"Export JSON"</span>);
+exportBtn.onClick = <span class="keyword">function</span>() {
+    <span class="keyword">var</span> comp = <span class="function">getCompByName</span>(compDropdown.selection.text);
+    <span class="keyword">var</span> data = <span class="function">exportMarkersToJSON</span>(comp);
+    <span class="function">saveJSON</span>(data);
+};</pre>
+                    </div>
                 </div>
                 <div class="detail-block">
                     <h4>Tech Stack</h4>

@@ -803,6 +803,26 @@ code {
     color: #d4d4d4;
 }
 
+/* === Screenshot Area === */
+.screenshot-area {
+    margin: 2rem 0;
+    border-radius: 12px;
+    overflow: hidden;
+    background: var(--bg-tertiary);
+    border: 1px solid var(--border);
+}
+
+.project-screenshot {
+    width: 100%;
+    height: auto;
+    display: block;
+}
+
+.screenshot-area:empty,
+.screenshot-area:has(img[style*="display: none"]) {
+    display: none;
+}
+
 .feature-list {
     list-style: none;
 }
