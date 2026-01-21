@@ -1,0 +1,408 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mark Gross — Technical Artist</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Instrument+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="noise-overlay"></div>
+    
+    <nav class="navbar">
+        <a href="#hero" class="logo">MG</a>
+        <div class="nav-links">
+            <a href="#work">Work</a>
+            <a href="#about">About</a>
+            <a href="#contact">Contact</a>
+        </div>
+    </nav>
+
+    <section id="hero" class="hero">
+        <div class="hero-content">
+            <div class="hero-tag">Technical Artist & Creative Developer</div>
+            <h1>Mark Gross</h1>
+            <p class="hero-subtitle">Building bridges between creativity and technology — crafting tools, pipelines, and systems that empower artists and streamline production.</p>
+            <div class="hero-cta">
+                <a href="#work" class="btn btn-primary">View Work</a>
+                <a href="#contact" class="btn btn-outline">Get in Touch</a>
+            </div>
+        </div>
+        <div class="hero-visual">
+            <div class="floating-card card-1">
+                <div class="card-icon">⚡</div>
+                <span>Pipeline Automation</span>
+            </div>
+            <div class="floating-card card-2">
+                <div class="card-icon">🎬</div>
+                <span>After Effects Scripting</span>
+            </div>
+            <div class="floating-card card-3">
+                <div class="card-icon">📊</div>
+                <span>Data Visualization</span>
+            </div>
+        </div>
+    </section>
+
+    <section id="work" class="work-section">
+        <div class="section-header">
+            <span class="section-tag">Selected Projects</span>
+            <h2>Case Studies</h2>
+        </div>
+
+        <!-- Case Study 1: Caviar Job Monitor -->
+        <article class="case-study" id="caviar">
+            <div class="case-study-header">
+                <div class="case-number">01</div>
+                <div class="case-meta">
+                    <span class="case-category">Production Operations • Dashboard Development</span>
+                    <h3>Caviar Job Monitor Platform</h3>
+                    <p class="case-intro">A real-time monitoring dashboard for tracking job status, resource allocation, and production metrics across distributed creative teams.</p>
+                </div>
+            </div>
+
+            <div class="case-visual caviar-visual">
+                <div class="dashboard-mockup">
+                    <div class="mockup-header">
+                        <div class="window-dots">
+                            <span></span><span></span><span></span>
+                        </div>
+                        <span class="mockup-title">Caviar Job Monitor</span>
+                    </div>
+                    <div class="mockup-content">
+                        <div class="dashboard-grid">
+                            <div class="stat-card">
+                                <div class="stat-value" data-count="247">0</div>
+                                <div class="stat-label">Active Jobs</div>
+                                <div class="stat-trend positive">+12%</div>
+                            </div>
+                            <div class="stat-card">
+                                <div class="stat-value" data-count="98">0</div>
+                                <div class="stat-label">Completion Rate</div>
+                                <div class="stat-trend positive">+3%</div>
+                            </div>
+                            <div class="stat-card">
+                                <div class="stat-value" data-count="42">0</div>
+                                <div class="stat-label">Artists Online</div>
+                                <div class="stat-trend neutral">—</div>
+                            </div>
+                            <div class="chart-area">
+                                <div class="chart-bars">
+                                    <div class="bar" style="height: 60%"></div>
+                                    <div class="bar" style="height: 80%"></div>
+                                    <div class="bar" style="height: 45%"></div>
+                                    <div class="bar" style="height: 90%"></div>
+                                    <div class="bar" style="height: 70%"></div>
+                                    <div class="bar" style="height: 85%"></div>
+                                    <div class="bar active" style="height: 95%"></div>
+                                </div>
+                            </div>
+                            <div class="job-list">
+                                <div class="job-item">
+                                    <span class="job-status running"></span>
+                                    <span class="job-name">PROJ-2847 • Final Comp</span>
+                                    <span class="job-progress">78%</span>
+                                </div>
+                                <div class="job-item">
+                                    <span class="job-status queued"></span>
+                                    <span class="job-name">PROJ-2849 • Color Grade</span>
+                                    <span class="job-progress">Queued</span>
+                                </div>
+                                <div class="job-item">
+                                    <span class="job-status complete"></span>
+                                    <span class="job-name">PROJ-2845 • Export H.264</span>
+                                    <span class="job-progress">Done</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="case-details">
+                <div class="detail-block">
+                    <h4>The Challenge</h4>
+                    <p>Production teams struggled with visibility into job queues spread across multiple render farms and workstations. Supervisors lacked real-time insight into bottlenecks, causing delays and miscommunication during crunch periods.</p>
+                </div>
+                <div class="detail-block">
+                    <h4>My Role</h4>
+                    <p>Lead technical artist responsible for system architecture, API design, front-end dashboard development, and integration with existing production tools including Deadline, Shotgrid, and custom pipeline scripts.</p>
+                </div>
+                <div class="detail-block">
+                    <h4>Solution</h4>
+                    <p>Designed a WebSocket-powered dashboard that aggregates job data from multiple sources into a unified view. Built custom visualization components showing real-time progress, resource utilization, and predictive completion estimates.</p>
+                </div>
+                <div class="detail-block">
+                    <h4>Tech Stack</h4>
+                    <div class="tech-tags">
+                        <span>React</span>
+                        <span>Node.js</span>
+                        <span>WebSocket</span>
+                        <span>D3.js</span>
+                        <span>Python</span>
+                        <span>REST API</span>
+                        <span>MongoDB</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="case-outcomes">
+                <h4>Key Outcomes</h4>
+                <div class="outcomes-grid">
+                    <div class="outcome">
+                        <div class="outcome-value">40%</div>
+                        <div class="outcome-label">Reduction in job queue wait times</div>
+                    </div>
+                    <div class="outcome">
+                        <div class="outcome-value">Real-time</div>
+                        <div class="outcome-label">Visibility for 8 production teams</div>
+                    </div>
+                    <div class="outcome">
+                        <div class="outcome-value">85%</div>
+                        <div class="outcome-label">Fewer "status check" interruptions</div>
+                    </div>
+                </div>
+            </div>
+        </article>
+
+        <!-- Case Study 2: AE Marker Exporter -->
+        <article class="case-study" id="ae-marker">
+            <div class="case-study-header">
+                <div class="case-number">02</div>
+                <div class="case-meta">
+                    <span class="case-category">After Effects • Pipeline Tools • Data-Driven Animation</span>
+                    <h3>AE Marker Exporter & JSON Integration</h3>
+                    <p class="case-intro">A bidirectional ExtendScript toolkit enabling After Effects to export marker data to JSON and read external JSON files for data-driven animations.</p>
+                </div>
+            </div>
+
+            <div class="case-visual ae-visual">
+                <div class="code-window">
+                    <div class="window-header">
+                        <div class="window-dots">
+                            <span></span><span></span><span></span>
+                        </div>
+                        <span class="file-tabs">
+                            <span class="tab active">markers_export.json</span>
+                            <span class="tab">expression.jsx</span>
+                        </span>
+                    </div>
+                    <div class="code-content">
+                        <pre><code>{
+  <span class="key">"projectName"</span>: <span class="string">"Brand_Campaign_2026"</span>,
+  <span class="key">"composition"</span>: <span class="string">"Main_Comp_v3"</span>,
+  <span class="key">"frameRate"</span>: <span class="number">24</span>,
+  <span class="key">"markers"</span>: [
+    {
+      <span class="key">"time"</span>: <span class="number">1.25</span>,
+      <span class="key">"comment"</span>: <span class="string">"Scene_Start"</span>,
+      <span class="key">"chapter"</span>: <span class="string">"Introduction"</span>,
+      <span class="key">"cuePoint"</span>: <span class="boolean">true</span>,
+      <span class="key">"params"</span>: {
+        <span class="key">"transitionType"</span>: <span class="string">"fade"</span>,
+        <span class="key">"duration"</span>: <span class="number">0.5</span>
+      }
+    },
+    {
+      <span class="key">"time"</span>: <span class="number">8.75</span>,
+      <span class="key">"comment"</span>: <span class="string">"Logo_Reveal"</span>,
+      <span class="key">"chapter"</span>: <span class="string">"Branding"</span>,
+      <span class="key">"cuePoint"</span>: <span class="boolean">true</span>,
+      <span class="key">"params"</span>: {
+        <span class="key">"scale"</span>: <span class="number">1.2</span>,
+        <span class="key">"easing"</span>: <span class="string">"easeOutExpo"</span>
+      }
+    }
+  ]
+}</code></pre>
+                    </div>
+                </div>
+                <div class="flow-diagram">
+                    <div class="flow-node">
+                        <div class="node-icon">🎬</div>
+                        <span>After Effects</span>
+                    </div>
+                    <div class="flow-arrow">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M5 12h14M12 5l7 7-7 7"/>
+                        </svg>
+                    </div>
+                    <div class="flow-node center">
+                        <div class="node-icon">{ }</div>
+                        <span>JSON</span>
+                    </div>
+                    <div class="flow-arrow">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M5 12h14M12 5l7 7-7 7"/>
+                        </svg>
+                    </div>
+                    <div class="flow-node">
+                        <div class="node-icon">🔧</div>
+                        <span>External Tools</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="case-details">
+                <div class="detail-block">
+                    <h4>The Challenge</h4>
+                    <p>Motion designers needed to export chapter markers and cue points from After Effects for use in interactive players, subtitle systems, and audio editing tools. Conversely, they wanted to drive AE animations from external data sources without manual keyframing.</p>
+                </div>
+                <div class="detail-block">
+                    <h4>My Role</h4>
+                    <p>Sole developer of the ExtendScript toolkit, including the export panel UI, JSON schema design, and expression templates for data-driven animations using AE's native <code>footage().sourceData</code> functionality.</p>
+                </div>
+                <div class="detail-block full-width">
+                    <h4>Technical Deep Dive</h4>
+                    <div class="code-block">
+                        <div class="code-label">ExtendScript: Marker Export</div>
+                        <pre><code><span class="comment">// Extract markers from selected composition</span>
+<span class="keyword">function</span> <span class="function">exportMarkersToJSON</span>(comp) {
+    <span class="keyword">var</span> markers = comp.markerProperty;
+    <span class="keyword">var</span> output = {
+        projectName: app.project.file.name,
+        composition: comp.name,
+        frameRate: comp.frameRate,
+        markers: []
+    };
+    
+    <span class="keyword">for</span> (<span class="keyword">var</span> i = <span class="number">1</span>; i <= markers.numKeys; i++) {
+        <span class="keyword">var</span> mv = markers.keyValue(i);
+        output.markers.push({
+            time: markers.keyTime(i),
+            comment: mv.comment,
+            chapter: mv.chapter,
+            cuePoint: mv.cuePointName !== <span class="string">""</span>,
+            url: mv.url,
+            params: mv.getParameters()
+        });
+    }
+    
+    <span class="keyword">return</span> JSON.stringify(output, <span class="keyword">null</span>, <span class="number">2</span>);
+}</code></pre>
+                    </div>
+                    <div class="code-block">
+                        <div class="code-label">AE Expression: Reading JSON Data</div>
+                        <pre><code><span class="comment">// Data-driven text from JSON</span>
+<span class="keyword">var</span> data = footage(<span class="string">"project_data.json"</span>).sourceData;
+<span class="keyword">var</span> currentMarker = thisLayer.marker.nearestKey(time);
+<span class="keyword">var</span> idx = currentMarker.index - <span class="number">1</span>;
+
+<span class="keyword">if</span> (data.markers[idx]) {
+    data.markers[idx].comment;
+} <span class="keyword">else</span> {
+    <span class="string">"Loading..."</span>;
+}</code></pre>
+                    </div>
+                </div>
+                <div class="detail-block">
+                    <h4>Features</h4>
+                    <ul class="feature-list">
+                        <li>Batch export markers from multiple compositions</li>
+                        <li>Customizable JSON schema with metadata</li>
+                        <li>Round-trip editing (export → modify → reimport)</li>
+                        <li>Expression templates for common use cases</li>
+                        <li>Integration with subtitle/caption workflows</li>
+                    </ul>
+                </div>
+                <div class="detail-block">
+                    <h4>Tech Stack</h4>
+                    <div class="tech-tags">
+                        <span>ExtendScript</span>
+                        <span>After Effects API</span>
+                        <span>JSON</span>
+                        <span>ScriptUI</span>
+                        <span>Expressions</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="case-outcomes">
+                <h4>Impact</h4>
+                <div class="outcomes-grid">
+                    <div class="outcome">
+                        <div class="outcome-value">3hrs+</div>
+                        <div class="outcome-label">Saved per project on marker transcription</div>
+                    </div>
+                    <div class="outcome">
+                        <div class="outcome-value">15+</div>
+                        <div class="outcome-label">Studios using the toolkit</div>
+                    </div>
+                    <div class="outcome">
+                        <div class="outcome-value">Zero</div>
+                        <div class="outcome-label">Manual keyframes for data-driven content</div>
+                    </div>
+                </div>
+            </div>
+        </article>
+    </section>
+
+    <section id="about" class="about-section">
+        <div class="about-content">
+            <span class="section-tag">About</span>
+            <h2>Technical Artist with a passion for building tools that make creative work faster and more enjoyable.</h2>
+            <p>With experience spanning motion graphics, pipeline development, and interactive systems, I specialize in creating solutions that bridge the gap between artistic vision and technical execution.</p>
+            <div class="skills-grid">
+                <div class="skill-category">
+                    <h4>Scripting & Development</h4>
+                    <ul>
+                        <li>Python</li>
+                        <li>JavaScript / Node.js</li>
+                        <li>ExtendScript (AE, PS, AI)</li>
+                        <li>React / Vue</li>
+                    </ul>
+                </div>
+                <div class="skill-category">
+                    <h4>Creative Tools</h4>
+                    <ul>
+                        <li>After Effects</li>
+                        <li>Cinema 4D</li>
+                        <li>Premiere Pro</li>
+                        <li>Nuke</li>
+                    </ul>
+                </div>
+                <div class="skill-category">
+                    <h4>Pipeline & Infrastructure</h4>
+                    <ul>
+                        <li>Shotgrid / ftrack</li>
+                        <li>Deadline Render Manager</li>
+                        <li>REST APIs</li>
+                        <li>Database Design</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="contact" class="contact-section">
+        <div class="contact-content">
+            <span class="section-tag">Get in Touch</span>
+            <h2>Let's build something together.</h2>
+            <p>Open to freelance projects, consulting, and full-time opportunities in technical art and creative development.</p>
+            <div class="contact-links">
+                <a href="mailto:mark.gross@example.com" class="contact-link">
+                    <span class="contact-icon">✉️</span>
+                    <span>mark.gross@example.com</span>
+                </a>
+                <a href="https://linkedin.com" class="contact-link" target="_blank">
+                    <span class="contact-icon">💼</span>
+                    <span>LinkedIn</span>
+                </a>
+                <a href="https://github.com" class="contact-link" target="_blank">
+                    <span class="contact-icon">💻</span>
+                    <span>GitHub</span>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <footer class="footer">
+        <p>© 2026 Mark Gross — Technical Artist</p>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>
