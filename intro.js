@@ -6,6 +6,7 @@ class IntroExperience {
         this.scene = null;
         this.camera = null;
         this.renderer = null;
+        this.canvas = null;
         this.light = null;
         this.lightOrb = null;
         this.particles = null;
@@ -18,21 +19,42 @@ class IntroExperience {
         this.prevTime = performance.now();
         this.isLocked = false;
         this.hasEntered = false;
-        this.isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+        this.controlsSetup = false;
+        
+        // Improved mobile detection
+        this.isMobile = this.detectMobile();
         
         // Mobile touch controls
         this.touchStartX = 0;
         this.touchStartY = 0;
+        this.lastTouchX = 0;
+        this.lastTouchY = 0;
         this.joystickActive = false;
         this.joystickX = 0;
         this.joystickY = 0;
+        this.lookTouchId = null; // Track which touch is for looking
+        this.joystickTouchId = null; // Track which touch is for joystick
         
         this.init();
+    }
+
+    detectMobile() {
+        // More comprehensive mobile detection
+        const userAgent = navigator.userAgent || navigator.vendor || window.opera;
+        const mobileRegex = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini|Mobile|mobile|CriOS/i;
+        const isTouchDevice = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
+        const isSmallScreen = window.innerWidth <= 768;
+        
+        return mobileRegex.test(userAgent) || (isTouchDevice && isSmallScreen);
     }
 
     init() {
         // Create container
         this.container = document.getElementById('intro-container');
+        if (!this.container) {
+            console.error('Intro container not found');
+            return;
+        }
         
         // Scene
         this.scene = new THREE.Scene();
@@ -44,12 +66,16 @@ class IntroExperience {
         this.camera.position.set(0, 1.6, 12);
 
         // Renderer
-        this.renderer = new THREE.WebGLRenderer({ antialias: true });
+        this.renderer = new THREE.WebGLRenderer({ antialias: true, alpha: false });
         this.renderer.setSize(window.innerWidth, window.innerHeight);
         this.renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
         this.renderer.toneMapping = THREE.ACESFilmicToneMapping;
         this.renderer.toneMappingExposure = 1;
-        this.container.appendChild(this.renderer.domElement);
+        
+        // Store canvas reference
+        this.canvas = this.renderer.domElement;
+        this.canvas.id = 'intro-canvas';
+        this.container.appendChild(this.canvas);
 
         // Create environment
         this.createGround();
@@ -67,8 +93,16 @@ class IntroExperience {
         // Events
         window.addEventListener('resize', () => this.onResize());
         
+        // Prevent default touch behaviors on the container
+        this.container.addEventListener('touchmove', (e) => {
+            if (this.isLocked) e.preventDefault();
+        }, { passive: false });
+        
         // Start animation
         this.animate();
+        
+        // Debug info
+        console.log('Intro initialized. Mobile:', this.isMobile);
     }
 
     createGround() {
@@ -295,37 +329,34 @@ class IntroExperience {
         const blocker = document.getElementById('intro-blocker');
         const instructions = document.getElementById('intro-instructions');
 
-        // Start function for both mobile and desktop
-        const startExperience = (e) => {
-            e.preventDefault();
-            e.stopPropagation();
-            
-            if (this.isMobile) {
-                blocker.style.display = 'none';
-                this.isLocked = true;
-                this.setupMobileControls();
-            } else {
-                this.container.requestPointerLock();
-            }
-        };
+        if (!blocker || !instructions) {
+            console.error('Blocker or instructions not found');
+            return;
+        }
 
-        if (this.isMobile) {
-            // Mobile: Tap to start - use both touch and click for compatibility
-            instructions.addEventListener('touchend', startExperience, { passive: false });
-            instructions.addEventListener('click', startExperience);
-        } else {
-            // Desktop: Pointer lock
+        // Desktop pointer lock
+        if (!this.isMobile) {
             instructions.addEventListener('click', () => {
-                this.container.requestPointerLock();
+                // Request pointer lock on the canvas element
+                if (this.canvas.requestPointerLock) {
+                    this.canvas.requestPointerLock();
+                } else if (this.canvas.mozRequestPointerLock) {
+                    this.canvas.mozRequestPointerLock();
+                } else if (this.canvas.webkitRequestPointerLock) {
+                    this.canvas.webkitRequestPointerLock();
+                }
             });
 
-            document.addEventListener('pointerlockchange', () => {
-                if (document.pointerLockElement === this.container) {
+            // Pointer lock change handler
+            const onPointerLockChange = () => {
+                const isLocked = document.pointerLockElement === this.canvas || 
+                                 document.mozPointerLockElement === this.canvas ||
+                                 document.webkitPointerLockElement === this.canvas;
+                
+                if (isLocked) {
                     this.isLocked = true;
                     blocker.style.display = 'none';
-                    // Update instructions text
-                    const clickText = instructions.querySelector('.click-text');
-                    if (clickText) clickText.textContent = 'Tap to Enter';
+                    console.log('Pointer locked');
                 } else {
                     this.isLocked = false;
                     if (!this.hasEntered) {
@@ -341,11 +372,19 @@ class IntroExperience {
                         this.moveRight = false;
                         this.velocity.set(0, 0, 0);
                     }
+                    console.log('Pointer unlocked');
                 }
-            });
+            };
+
+            document.addEventListener('pointerlockchange', onPointerLockChange);
+            document.addEventListener('mozpointerlockchange', onPointerLockChange);
+            document.addEventListener('webkitpointerlockchange', onPointerLockChange);
 
             // Mouse look
             document.addEventListener('mousemove', (event) => this.onMouseMove(event));
+        } else {
+            // Mobile: Setup touch controls immediately
+            this.setupMobileStartButton(blocker, instructions);
         }
 
         // Keyboard controls (works on both)
@@ -361,29 +400,94 @@ class IntroExperience {
                 this.enterLight();
             };
             skipLink.addEventListener('click', skipHandler);
+            skipLink.addEventListener('touchstart', skipHandler, { passive: false });
+        }
+    }
+
+    setupMobileStartButton(blocker, instructions) {
+        // Find the button element specifically
+        const startButton = instructions.querySelector('.click-text');
+        
+        // Single touch handler for start button
+        const startHandler = (e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            
+            console.log('Mobile start triggered');
+            blocker.style.display = 'none';
+            this.isLocked = true;
+            
+            if (!this.controlsSetup) {
+                this.setupMobileControls();
+                this.controlsSetup = true;
+            }
+        };
+        
+        if (startButton) {
+            // Use touchend for better mobile reliability
+            startButton.addEventListener('touchend', startHandler, { passive: false });
+            // Backup click handler for hybrid devices
+            startButton.addEventListener('click', startHandler);
+        }
+        
+        // Also allow tapping anywhere on instructions as fallback
+        instructions.addEventListener('touchend', (e) => {
+            // Only if not clicking skip link
+            if (e.target.closest('#skip-intro') || e.target.closest('.skip-intro-link')) {
+                return;
+            }
+            startHandler(e);
+        }, { passive: false });
+        
+        instructions.addEventListener('click', (e) => {
+            if (e.target.closest('#skip-intro') || e.target.closest('.skip-intro-link')) {
+                return;
+            }
+            startHandler(e);
+        });
+        
+        // Skip intro handler
+        const skipLink = instructions.querySelector('#skip-intro');
+        if (skipLink) {
+            const skipHandler = (e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                this.enterLight();
+            };
             skipLink.addEventListener('touchend', skipHandler, { passive: false });
+            skipLink.addEventListener('click', skipHandler);
         }
     }
 
     setupMobileControls() {
+        console.log('Setting up mobile controls');
+        
         // Create mobile UI
         this.createMobileUI();
 
-        // Touch look controls (right side of screen)
-        this.container.addEventListener('touchstart', (e) => this.onTouchStart(e), { passive: false });
-        this.container.addEventListener('touchmove', (e) => this.onTouchMove(e), { passive: false });
-        this.container.addEventListener('touchend', (e) => this.onTouchEnd(e), { passive: false });
+        // Touch look controls - attach to canvas for better control
+        this.canvas.addEventListener('touchstart', (e) => this.onTouchStart(e), { passive: false });
+        this.canvas.addEventListener('touchmove', (e) => this.onTouchMove(e), { passive: false });
+        this.canvas.addEventListener('touchend', (e) => this.onTouchEnd(e), { passive: false });
+        this.canvas.addEventListener('touchcancel', (e) => this.onTouchEnd(e), { passive: false });
     }
 
     createMobileUI() {
+        // Check if already created
+        if (document.getElementById('mobile-joystick')) {
+            document.getElementById('mobile-joystick').style.display = 'block';
+            return;
+        }
+        
         // Create joystick container
         const joystickContainer = document.createElement('div');
         joystickContainer.id = 'mobile-joystick';
         joystickContainer.innerHTML = `
-            <div class="joystick-base">
-                <div class="joystick-stick"></div>
+            <div class="joystick-base" id="joystick-base">
+                <div class="joystick-stick" id="joystick-stick"></div>
             </div>
         `;
+        joystickContainer.style.display = 'block'; // Force display
         this.container.appendChild(joystickContainer);
 
         // Create enter button (shown when near light)
@@ -391,49 +495,83 @@ class IntroExperience {
         enterBtn.id = 'mobile-enter-btn';
         enterBtn.innerHTML = '<span>TAP TO ENTER</span>';
         enterBtn.style.display = 'none';
-        enterBtn.addEventListener('touchend', (e) => {
+        
+        const enterHandler = (e) => {
             e.preventDefault();
             e.stopPropagation();
             this.enterLight();
-        }, { passive: false });
-        enterBtn.addEventListener('click', (e) => {
-            e.preventDefault();
-            this.enterLight();
-        });
+        };
+        
+        enterBtn.addEventListener('touchend', enterHandler, { passive: false });
+        enterBtn.addEventListener('click', enterHandler);
         this.container.appendChild(enterBtn);
 
         // Joystick controls
-        const joystickBase = joystickContainer.querySelector('.joystick-base');
-        const joystickStick = joystickContainer.querySelector('.joystick-stick');
+        const joystickBase = document.getElementById('joystick-base');
+        const joystickStick = document.getElementById('joystick-stick');
         
+        if (!joystickBase || !joystickStick) {
+            console.error('Joystick elements not found');
+            return;
+        }
+
         joystickBase.addEventListener('touchstart', (e) => {
+            e.preventDefault();
             e.stopPropagation();
             this.joystickActive = true;
-            this.updateJoystick(e, joystickBase, joystickStick);
+            this.joystickTouchId = e.touches[0].identifier;
+            this.updateJoystick(e.touches[0], joystickBase, joystickStick);
         }, { passive: false });
 
         joystickBase.addEventListener('touchmove', (e) => {
+            e.preventDefault();
             e.stopPropagation();
             if (this.joystickActive) {
-                this.updateJoystick(e, joystickBase, joystickStick);
+                // Find the correct touch
+                for (let i = 0; i < e.touches.length; i++) {
+                    if (e.touches[i].identifier === this.joystickTouchId) {
+                        this.updateJoystick(e.touches[i], joystickBase, joystickStick);
+                        break;
+                    }
+                }
             }
         }, { passive: false });
 
-        joystickBase.addEventListener('touchend', (e) => {
+        const joystickEndHandler = (e) => {
+            e.preventDefault();
             e.stopPropagation();
-            this.joystickActive = false;
-            this.joystickX = 0;
-            this.joystickY = 0;
-            joystickStick.style.transform = 'translate(-50%, -50%)';
-        }, { passive: false });
+            
+            // Check if our joystick touch ended
+            let joystickTouchEnded = true;
+            if (e.touches) {
+                for (let i = 0; i < e.touches.length; i++) {
+                    if (e.touches[i].identifier === this.joystickTouchId) {
+                        joystickTouchEnded = false;
+                        break;
+                    }
+                }
+            }
+            
+            if (joystickTouchEnded) {
+                this.joystickActive = false;
+                this.joystickTouchId = null;
+                this.joystickX = 0;
+                this.joystickY = 0;
+                joystickStick.style.transform = 'translate(-50%, -50%)';
+            }
+        };
+
+        joystickBase.addEventListener('touchend', joystickEndHandler, { passive: false });
+        joystickBase.addEventListener('touchcancel', joystickEndHandler, { passive: false });
+        
+        console.log('Mobile UI created');
     }
 
-    updateJoystick(e, base, stick) {
+    updateJoystick(touch, base, stick) {
         const rect = base.getBoundingClientRect();
         const centerX = rect.left + rect.width / 2;
         const centerY = rect.top + rect.height / 2;
         
-        const touch = e.touches[0];
         let dx = touch.clientX - centerX;
         let dy = touch.clientY - centerY;
         
@@ -453,39 +591,75 @@ class IntroExperience {
     }
 
     onTouchStart(e) {
-        if (e.target.closest('#mobile-joystick')) return;
+        // Ignore if touching joystick or enter button
+        if (e.target.closest('#mobile-joystick') || e.target.closest('#mobile-enter-btn')) {
+            return;
+        }
         
+        if (!this.isLocked) return;
+        
+        // Use the first available touch for looking
         const touch = e.touches[0];
-        this.touchStartX = touch.clientX;
-        this.touchStartY = touch.clientY;
+        
+        // Only use touches on the right side of screen for looking
+        if (touch.clientX > window.innerWidth / 2) {
+            this.lookTouchId = touch.identifier;
+            this.lastTouchX = touch.clientX;
+            this.lastTouchY = touch.clientY;
+        }
     }
 
     onTouchMove(e) {
-        if (e.target.closest('#mobile-joystick')) return;
         if (!this.isLocked) return;
         
-        e.preventDefault();
-        
-        const touch = e.touches[0];
-        const dx = touch.clientX - this.touchStartX;
-        const dy = touch.clientY - this.touchStartY;
-        
-        // Rotate camera
-        this.camera.rotation.y -= dx * 0.003;
-        this.camera.rotation.x -= dy * 0.003;
-        
-        // Clamp vertical rotation
-        this.camera.rotation.x = Math.max(-Math.PI / 2, Math.min(Math.PI / 2, this.camera.rotation.x));
-        
-        this.touchStartX = touch.clientX;
-        this.touchStartY = touch.clientY;
+        // Find our look touch
+        if (this.lookTouchId !== null) {
+            for (let i = 0; i < e.touches.length; i++) {
+                const touch = e.touches[i];
+                if (touch.identifier === this.lookTouchId) {
+                    e.preventDefault();
+                    
+                    const dx = touch.clientX - this.lastTouchX;
+                    const dy = touch.clientY - this.lastTouchY;
+                    
+                    // Rotate camera with sensitivity
+                    const sensitivity = 0.004;
+                    this.camera.rotation.y -= dx * sensitivity;
+                    this.camera.rotation.x -= dy * sensitivity;
+                    
+                    // Clamp vertical rotation
+                    this.camera.rotation.x = Math.max(-Math.PI / 2, Math.min(Math.PI / 2, this.camera.rotation.x));
+                    
+                    this.lastTouchX = touch.clientX;
+                    this.lastTouchY = touch.clientY;
+                    break;
+                }
+            }
+        }
     }
 
     onTouchEnd(e) {
-        // Nothing needed here
+        // Check if our look touch ended
+        if (this.lookTouchId !== null) {
+            let lookTouchEnded = true;
+            if (e.touches) {
+                for (let i = 0; i < e.touches.length; i++) {
+                    if (e.touches[i].identifier === this.lookTouchId) {
+                        lookTouchEnded = false;
+                        break;
+                    }
+                }
+            }
+            
+            if (lookTouchEnded) {
+                this.lookTouchId = null;
+            }
+        }
     }
 
     onKeyDown(event) {
+        if (!this.isLocked && !this.isMobile) return;
+        
         switch (event.code) {
             case 'KeyW':
             case 'ArrowUp':
@@ -530,8 +704,8 @@ class IntroExperience {
     onMouseMove(event) {
         if (!this.isLocked) return;
 
-        const movementX = event.movementX || 0;
-        const movementY = event.movementY || 0;
+        const movementX = event.movementX || event.mozMovementX || event.webkitMovementX || 0;
+        const movementY = event.movementY || event.mozMovementY || event.webkitMovementY || 0;
 
         // Rotate camera
         this.camera.rotation.y -= movementX * 0.002;
@@ -545,14 +719,20 @@ class IntroExperience {
         this.camera.aspect = window.innerWidth / window.innerHeight;
         this.camera.updateProjectionMatrix();
         this.renderer.setSize(window.innerWidth, window.innerHeight);
+        
+        // Re-check mobile status on resize
+        const wasMobile = this.isMobile;
+        this.isMobile = this.detectMobile();
+        
+        if (wasMobile !== this.isMobile) {
+            console.log('Device type changed. Mobile:', this.isMobile);
+        }
     }
 
     checkProximityToLight() {
-        const distance = this.camera.position.distanceTo(this.lightOrb.position);
+        if (!this.lightOrb) return;
         
-        // Update UI hint (old)
-        const hint = document.getElementById('intro-hint');
-        if (hint) hint.style.display = 'none';
+        const distance = this.camera.position.distanceTo(this.lightOrb.position);
         
         // Update "Enter the Light" text
         const enterLightText = document.getElementById('enter-light-text');
@@ -587,12 +767,28 @@ class IntroExperience {
     }
 
     enterLight() {
+        if (this.hasEntered) return; // Prevent double triggering
+        
         this.hasEntered = true;
-        document.exitPointerLock();
+        console.log('Entering light - transitioning to portfolio');
+        
+        // Exit pointer lock if active
+        if (document.exitPointerLock) {
+            document.exitPointerLock();
+        } else if (document.mozExitPointerLock) {
+            document.mozExitPointerLock();
+        } else if (document.webkitExitPointerLock) {
+            document.webkitExitPointerLock();
+        }
         
         // Fade out intro
         const introContainer = document.getElementById('intro-container');
         const mainContent = document.getElementById('main-content');
+        
+        if (!introContainer || !mainContent) {
+            console.error('Container elements not found for transition');
+            return;
+        }
         
         introContainer.style.transition = 'opacity 1.5s ease-out';
         introContainer.style.opacity = '0';
@@ -617,10 +813,10 @@ class IntroExperience {
         requestAnimationFrame(() => this.animate());
 
         const time = performance.now();
-        const delta = (time - this.prevTime) / 1000;
+        const delta = Math.min((time - this.prevTime) / 1000, 0.1); // Cap delta to prevent jumps
 
         // Movement
-        if (this.isLocked) {
+        if (this.isLocked || this.isMobile) {
             this.velocity.x -= this.velocity.x * 10.0 * delta;
             this.velocity.z -= this.velocity.z * 10.0 * delta;
 
@@ -707,5 +903,8 @@ class IntroExperience {
 
 // Initialize when DOM is ready
 document.addEventListener('DOMContentLoaded', () => {
-    new IntroExperience();
+    // Small delay to ensure all elements are ready
+    setTimeout(() => {
+        new IntroExperience();
+    }, 100);
 });

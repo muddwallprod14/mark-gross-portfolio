@@ -8,6 +8,7 @@
     height: 100%;
     z-index: 10000;
     background: #000;
+    overflow: hidden;
 }
 
 /* Prevent scrolling/interaction with main content while intro is active */
@@ -42,6 +43,8 @@ body:has(#intro-container:not([style*="display: none"])) #main-content {
     touch-action: manipulation;
     user-select: none;
     -webkit-user-select: none;
+    /* Ensure it's fully interactive */
+    pointer-events: auto;
 }
 
 #intro-instructions h1 {
@@ -83,9 +86,19 @@ body:has(#intro-container:not([style*="display: none"])) #main-content {
     -webkit-tap-highlight-color: transparent;
     touch-action: manipulation;
     cursor: pointer;
+    /* Ensure minimum touch target size */
+    min-height: 48px;
+    min-width: 200px;
+    /* Reset button styles */
+    outline: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    border-radius: 0;
 }
 
-.click-text:hover {
+.click-text:hover,
+.click-text:active {
     background: rgba(0, 255, 255, 0.2);
     box-shadow: 0 0 30px rgba(0, 255, 255, 0.4);
 }
@@ -115,7 +128,7 @@ body:has(#intro-container:not([style*="display: none"])) #main-content {
     display: none;
 }
 
-@media (max-width: 768px) {
+@media (max-width: 768px), (hover: none) and (pointer: coarse) {
     .desktop-only {
         display: none !important;
     }
@@ -134,17 +147,20 @@ body:has(#intro-container:not([style*="display: none"])) #main-content {
 .skip-intro-link {
     display: inline-block;
     margin-top: 2rem;
-    font-size: 0.8rem;
+    font-size: 0.9rem;
     color: rgba(255, 255, 255, 0.4);
     text-decoration: none;
     text-transform: uppercase;
     letter-spacing: 0.1em;
-    padding: 0.5rem 1rem;
+    padding: 0.75rem 1.5rem;
     border: 1px solid rgba(255, 255, 255, 0.2);
     border-radius: 4px;
     transition: all 0.3s ease;
     -webkit-tap-highlight-color: transparent;
     touch-action: manipulation;
+    /* Ensure minimum touch target size */
+    min-height: 44px;
+    min-width: 120px;
 }
 
 .skip-intro-link:hover,
@@ -205,29 +221,36 @@ body:has(#intro-container:not([style*="display: none"])) #main-content {
     }
 }
 
-/* Crosshair when locked */
-#intro-container canvas {
-    cursor: none;
+/* Canvas styles */
+#intro-container canvas,
+#intro-canvas {
+    display: block;
+    width: 100%;
+    height: 100%;
+    touch-action: none;
 }
 
-#intro-container::after {
-    content: '';
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    width: 20px;
-    height: 20px;
-    transform: translate(-50%, -50%);
-    border: 2px solid rgba(0, 255, 255, 0.5);
-    border-radius: 50%;
-    pointer-events: none;
-    z-index: 10003;
-    opacity: 0;
-    transition: opacity 0.3s ease;
-}
+/* Crosshair when locked (desktop only) */
+@media (hover: hover) and (pointer: fine) {
+    #intro-container::after {
+        content: '';
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        width: 20px;
+        height: 20px;
+        transform: translate(-50%, -50%);
+        border: 2px solid rgba(0, 255, 255, 0.5);
+        border-radius: 50%;
+        pointer-events: none;
+        z-index: 10003;
+        opacity: 0;
+        transition: opacity 0.3s ease;
+    }
 
-#intro-container:not(:has(#intro-blocker[style*="display: flex"]))::after {
-    opacity: 1;
+    #intro-container:not(:has(#intro-blocker[style*="display: flex"]))::after {
+        opacity: 1;
+    }
 }
 
 /* Game UI Overlay */
@@ -293,6 +316,7 @@ body:has(#intro-container:not([style*="display: none"])) #main-content {
     opacity: 0;
     transition: opacity 0.5s ease;
     text-align: center;
+    pointer-events: none;
 }
 
 .enter-light-text.visible {
@@ -328,16 +352,18 @@ body:has(#intro-container:not([style*="display: none"])) #main-content {
     z-index: 10005;
     touch-action: none;
     display: none;
+    -webkit-tap-highlight-color: transparent;
 }
 
 .joystick-base {
-    width: 120px;
-    height: 120px;
+    width: 130px;
+    height: 130px;
     border-radius: 50%;
-    background: rgba(0, 255, 255, 0.1);
-    border: 2px solid rgba(0, 255, 255, 0.4);
+    background: rgba(0, 255, 255, 0.15);
+    border: 3px solid rgba(0, 255, 255, 0.5);
     position: relative;
     touch-action: none;
+    -webkit-tap-highlight-color: transparent;
 }
 
 .joystick-stick {
@@ -345,13 +371,15 @@ body:has(#intro-container:not([style*="display: none"])) #main-content {
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    width: 50px;
-    height: 50px;
+    width: 55px;
+    height: 55px;
     border-radius: 50%;
-    background: rgba(0, 255, 255, 0.6);
-    border: 2px solid #00ffff;
-    box-shadow: 0 0 20px rgba(0, 255, 255, 0.5);
+    background: rgba(0, 255, 255, 0.7);
+    border: 3px solid #00ffff;
+    box-shadow: 0 0 25px rgba(0, 255, 255, 0.6);
     touch-action: none;
+    -webkit-tap-highlight-color: transparent;
+    pointer-events: none;
 }
 
 #mobile-enter-btn {
@@ -362,22 +390,25 @@ body:has(#intro-container:not([style*="display: none"])) #main-content {
     display: none;
     align-items: center;
     justify-content: center;
-    width: 120px;
-    height: 120px;
+    width: 130px;
+    height: 130px;
     border-radius: 50%;
-    background: rgba(0, 255, 255, 0.2);
+    background: rgba(0, 255, 255, 0.25);
     border: 3px solid #00ffff;
     animation: enterPulse 1.5s ease-in-out infinite;
     cursor: pointer;
+    -webkit-tap-highlight-color: transparent;
+    touch-action: manipulation;
 }
 
 #mobile-enter-btn span {
     font-family: 'Eurostile', sans-serif;
-    font-size: 0.7rem;
+    font-size: 0.75rem;
     color: #00ffff;
     text-align: center;
     text-transform: uppercase;
     letter-spacing: 0.1em;
+    font-weight: bold;
 }
 
 @keyframes enterPulse {
@@ -391,8 +422,8 @@ body:has(#intro-container:not([style*="display: none"])) #main-content {
     }
 }
 
-/* Mobile styles */
-@media (max-width: 768px) {
+/* Mobile-specific styles */
+@media (max-width: 768px), (hover: none) and (pointer: coarse) {
     .keys-hint.desktop-only {
         display: none !important;
     }
@@ -402,7 +433,7 @@ body:has(#intro-container:not([style*="display: none"])) #main-content {
     }
     
     .intro-prompt::after {
-        content: 'Swipe to look around';
+        content: 'Swipe right side to look around';
         display: block;
         margin-top: 1rem;
         font-size: 0.8rem;
@@ -418,7 +449,7 @@ body:has(#intro-container:not([style*="display: none"])) #main-content {
     }
     
     #mobile-joystick {
-        display: block;
+        display: block !important;
     }
     
     .direction-indicator {
@@ -437,10 +468,26 @@ body:has(#intro-container:not([style*="display: none"])) #main-content {
     .instruction-text {
         top: 10%;
     }
+    
+    /* Make tap targets larger on mobile */
+    .click-text {
+        padding: 1.25rem 3rem;
+        font-size: 1rem;
+    }
+    
+    .skip-intro-link {
+        padding: 1rem 2rem;
+        font-size: 0.85rem;
+    }
+    
+    /* Hide crosshair on mobile */
+    #intro-container::after {
+        display: none !important;
+    }
 }
 
-/* Desktop styles */
-@media (min-width: 769px) {
+/* Desktop styles - override mobile joystick */
+@media (min-width: 769px) and (hover: hover) and (pointer: fine) {
     #mobile-joystick {
         display: none !important;
     }
@@ -478,4 +525,87 @@ body:has(#intro-container:not([style*="display: none"])) #main-content {
     pointer-events: none;
     z-index: 10004;
     opacity: 0.3;
+}
+
+/* Landscape mobile adjustments */
+@media (max-height: 500px) and (orientation: landscape) {
+    #intro-instructions {
+        padding: 20px;
+    }
+    
+    #intro-instructions h1 {
+        font-size: 1.5rem;
+        margin-bottom: 0.25rem;
+    }
+    
+    #intro-instructions > p {
+        font-size: 0.8rem;
+        margin-bottom: 1rem;
+    }
+    
+    .intro-prompt {
+        margin-bottom: 0.5rem;
+    }
+    
+    .click-text {
+        padding: 0.75rem 1.5rem;
+        font-size: 0.9rem;
+    }
+    
+    .intro-subtext {
+        font-size: 0.75rem !important;
+        margin-bottom: 0.5rem;
+    }
+    
+    .skip-intro-link {
+        margin-top: 0.5rem;
+        padding: 0.5rem 1rem;
+        font-size: 0.75rem;
+    }
+    
+    #mobile-joystick {
+        bottom: 15px;
+        left: 15px;
+    }
+    
+    .joystick-base {
+        width: 100px;
+        height: 100px;
+    }
+    
+    .joystick-stick {
+        width: 45px;
+        height: 45px;
+    }
+    
+    #mobile-enter-btn {
+        bottom: 15px;
+        right: 15px;
+        width: 100px;
+        height: 100px;
+    }
+    
+    .enter-light-text {
+        font-size: 1.5rem;
+    }
+    
+    .key-prompt {
+        font-size: 1.2rem;
+    }
+    
+    .instruction-text {
+        top: 5%;
+    }
+}
+
+/* iOS Safari specific fixes */
+@supports (-webkit-touch-callout: none) {
+    #intro-container {
+        /* Fix for iOS viewport height */
+        height: -webkit-fill-available;
+    }
+    
+    #intro-blocker {
+        height: -webkit-fill-available;
+    }
 }
