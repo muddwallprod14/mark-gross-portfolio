@@ -4348,24 +4348,6 @@ code {
     line-height: 1.5;
 }
 
-.reel-tags {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.5rem;
-    margin-top: 0.75rem;
-}
-
-.reel-tags span {
-    font-size: 0.65rem;
-    padding: 0.25rem 0.6rem;
-    background: rgba(0, 255, 255, 0.1);
-    border: 1px solid rgba(0, 255, 255, 0.3);
-    color: #00ffff;
-    border-radius: 4px;
-    font-weight: 500;
-    letter-spacing: 0.02em;
-}
-
 /* Reel Responsive */
 @media (max-width: 1024px) {
     .reel-grid {
