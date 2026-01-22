@@ -57,6 +57,9 @@ class IntroExperience {
         this.createParticles();
         this.createAmbientLights();
         this.createGridLines();
+        this.createDirectionalArrows();
+        this.create3DSign();
+        this.createUIOverlay();
 
         // Controls
         this.setupControls();
@@ -198,6 +201,96 @@ class IntroExperience {
         this.scene.add(directional);
     }
 
+    createDirectionalArrows() {
+        // Create arrow path leading to the light
+        this.arrows = [];
+        const arrowCount = 5;
+        
+        for (let i = 0; i < arrowCount; i++) {
+            const arrowGroup = new THREE.Group();
+            
+            // Arrow shape
+            const arrowShape = new THREE.Shape();
+            arrowShape.moveTo(0, 0.5);
+            arrowShape.lineTo(0.3, 0);
+            arrowShape.lineTo(0.1, 0);
+            arrowShape.lineTo(0.1, -0.5);
+            arrowShape.lineTo(-0.1, -0.5);
+            arrowShape.lineTo(-0.1, 0);
+            arrowShape.lineTo(-0.3, 0);
+            arrowShape.lineTo(0, 0.5);
+            
+            const arrowGeometry = new THREE.ShapeGeometry(arrowShape);
+            const arrowMaterial = new THREE.MeshBasicMaterial({
+                color: 0x00ffff,
+                transparent: true,
+                opacity: 0.6,
+                side: THREE.DoubleSide
+            });
+            
+            const arrow = new THREE.Mesh(arrowGeometry, arrowMaterial);
+            arrow.rotation.x = -Math.PI / 2;
+            arrow.rotation.z = Math.PI;
+            arrowGroup.add(arrow);
+            
+            // Position arrows along the path
+            const t = i / arrowCount;
+            arrowGroup.position.set(0, 0.1, 10 - (t * 22));
+            arrowGroup.scale.setScalar(0.8);
+            
+            this.scene.add(arrowGroup);
+            this.arrows.push({ mesh: arrowGroup, baseOpacity: 0.6, offset: i * 0.5 });
+        }
+    }
+
+    create3DSign() {
+        // Create floating sign with instruction text
+        const signGroup = new THREE.Group();
+        
+        // Sign background
+        const signGeometry = new THREE.PlaneGeometry(6, 1.5);
+        const signMaterial = new THREE.MeshBasicMaterial({
+            color: 0x000000,
+            transparent: true,
+            opacity: 0.7,
+            side: THREE.DoubleSide
+        });
+        const signBg = new THREE.Mesh(signGeometry, signMaterial);
+        signGroup.add(signBg);
+        
+        // Sign border
+        const borderGeometry = new THREE.EdgesGeometry(signGeometry);
+        const borderMaterial = new THREE.LineBasicMaterial({ color: 0x00ffff, transparent: true, opacity: 0.8 });
+        const border = new THREE.LineSegments(borderGeometry, borderMaterial);
+        signGroup.add(border);
+        
+        // Position sign
+        signGroup.position.set(0, 2.5, 8);
+        this.instructionSign = signGroup;
+        this.scene.add(signGroup);
+    }
+
+    createUIOverlay() {
+        // Create HTML overlay for instructions
+        const overlay = document.createElement('div');
+        overlay.id = 'game-ui-overlay';
+        overlay.innerHTML = `
+            <div class="instruction-text" id="instruction-text">
+                <span class="key-prompt">${this.isMobile ? 'PUSH FORWARD' : 'PRESS W'}</span>
+                <span class="instruction-label">to move forward</span>
+            </div>
+            <div class="enter-light-text" id="enter-light-text">
+                ENTER THE LIGHT
+            </div>
+            <div class="direction-indicator" id="direction-indicator">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M12 19V5M5 12l7-7 7 7"/>
+                </svg>
+            </div>
+        `;
+        this.container.appendChild(overlay);
+    }
+
     setupControls() {
         const blocker = document.getElementById('intro-blocker');
         const instructions = document.getElementById('intro-instructions');
@@ -270,15 +363,16 @@ class IntroExperience {
     }
 
     createMobileUI() {
-        // Create joystick container
-        const joystickContainer = document.createElement('div');
-        joystickContainer.id = 'mobile-joystick';
-        joystickContainer.innerHTML = `
-            <div class="joystick-base">
-                <div class="joystick-stick"></div>
-            </div>
+        // Create forward button (simpler than joystick since only forward is allowed)
+        const forwardBtn = document.createElement('div');
+        forwardBtn.id = 'mobile-forward-btn';
+        forwardBtn.innerHTML = `
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M12 19V5M5 12l7-7 7 7"/>
+            </svg>
+            <span>HOLD TO WALK</span>
         `;
-        this.container.appendChild(joystickContainer);
+        this.container.appendChild(forwardBtn);
 
         // Create enter button (shown when near light)
         const enterBtn = document.createElement('div');
@@ -296,29 +390,27 @@ class IntroExperience {
         });
         this.container.appendChild(enterBtn);
 
-        // Joystick controls
-        const joystickBase = joystickContainer.querySelector('.joystick-base');
-        const joystickStick = joystickContainer.querySelector('.joystick-stick');
-        
-        joystickBase.addEventListener('touchstart', (e) => {
+        // Forward button controls
+        forwardBtn.addEventListener('touchstart', (e) => {
+            e.preventDefault();
             e.stopPropagation();
             this.joystickActive = true;
-            this.updateJoystick(e, joystickBase, joystickStick);
+            this.joystickY = -1; // Forward
+            forwardBtn.classList.add('active');
         }, { passive: false });
 
-        joystickBase.addEventListener('touchmove', (e) => {
-            e.stopPropagation();
-            if (this.joystickActive) {
-                this.updateJoystick(e, joystickBase, joystickStick);
-            }
-        }, { passive: false });
-
-        joystickBase.addEventListener('touchend', (e) => {
+        forwardBtn.addEventListener('touchend', (e) => {
+            e.preventDefault();
             e.stopPropagation();
             this.joystickActive = false;
-            this.joystickX = 0;
             this.joystickY = 0;
-            joystickStick.style.transform = 'translate(-50%, -50%)';
+            forwardBtn.classList.remove('active');
+        }, { passive: false });
+
+        forwardBtn.addEventListener('touchcancel', (e) => {
+            this.joystickActive = false;
+            this.joystickY = 0;
+            forwardBtn.classList.remove('active');
         }, { passive: false });
     }
 
@@ -385,18 +477,6 @@ class IntroExperience {
             case 'ArrowUp':
                 this.moveForward = true;
                 break;
-            case 'KeyA':
-            case 'ArrowLeft':
-                this.moveLeft = true;
-                break;
-            case 'KeyS':
-            case 'ArrowDown':
-                this.moveBackward = true;
-                break;
-            case 'KeyD':
-            case 'ArrowRight':
-                this.moveRight = true;
-                break;
         }
     }
 
@@ -405,18 +485,6 @@ class IntroExperience {
             case 'KeyW':
             case 'ArrowUp':
                 this.moveForward = false;
-                break;
-            case 'KeyA':
-            case 'ArrowLeft':
-                this.moveLeft = false;
-                break;
-            case 'KeyS':
-            case 'ArrowDown':
-                this.moveBackward = false;
-                break;
-            case 'KeyD':
-            case 'ArrowRight':
-                this.moveRight = false;
                 break;
         }
     }
@@ -444,12 +512,22 @@ class IntroExperience {
     checkProximityToLight() {
         const distance = this.camera.position.distanceTo(this.lightOrb.position);
         
-        // Update UI hint
+        // Update UI hint (old)
         const hint = document.getElementById('intro-hint');
-        if (distance < 20) {
-            hint.style.opacity = 1 - (distance - 5) / 15;
-        } else {
-            hint.style.opacity = 0;
+        if (hint) hint.style.display = 'none';
+        
+        // Update "Enter the Light" text
+        const enterLightText = document.getElementById('enter-light-text');
+        const instructionText = document.getElementById('instruction-text');
+        
+        if (enterLightText) {
+            if (distance < 10) {
+                enterLightText.classList.add('visible');
+                if (instructionText) instructionText.classList.add('fade-out');
+            } else {
+                enterLightText.classList.remove('visible');
+                if (instructionText) instructionText.classList.remove('fade-out');
+            }
         }
 
         // Mobile enter button
@@ -464,8 +542,8 @@ class IntroExperience {
             }
         }
 
-        // Auto-enter on desktop when very close
-        if (distance < 4 && !this.hasEntered && !this.isMobile) {
+        // Auto-enter when very close
+        if (distance < 4 && !this.hasEntered) {
             this.enterLight();
         }
     }
@@ -508,13 +586,14 @@ class IntroExperience {
             this.velocity.x -= this.velocity.x * 10.0 * delta;
             this.velocity.z -= this.velocity.z * 10.0 * delta;
 
-            // Keyboard or joystick input
+            // Only forward movement allowed
             if (this.isMobile && this.joystickActive) {
-                this.direction.z = -this.joystickY;
-                this.direction.x = this.joystickX;
+                // On mobile, only use forward component (negative Y on joystick)
+                this.direction.z = Math.max(0, -this.joystickY);
+                this.direction.x = 0;
             } else {
-                this.direction.z = Number(this.moveForward) - Number(this.moveBackward);
-                this.direction.x = Number(this.moveRight) - Number(this.moveLeft);
+                this.direction.z = Number(this.moveForward);
+                this.direction.x = 0;
             }
             
             if (this.direction.length() > 0) {
@@ -524,9 +603,6 @@ class IntroExperience {
             const speed = 3;
             if (Math.abs(this.direction.z) > 0.1) {
                 this.velocity.z -= this.direction.z * speed * delta * 50;
-            }
-            if (Math.abs(this.direction.x) > 0.1) {
-                this.velocity.x -= this.direction.x * speed * delta * 50;
             }
 
             // Apply movement in camera direction
@@ -565,6 +641,20 @@ class IntroExperience {
                 positions[i + 1] += Math.sin(time * 0.001 + positions[i]) * 0.002;
             }
             this.particles.geometry.attributes.position.needsUpdate = true;
+        }
+
+        // Animate directional arrows (pulsing wave effect)
+        if (this.arrows) {
+            this.arrows.forEach((arrow, index) => {
+                const wave = Math.sin(time * 0.003 - arrow.offset) * 0.5 + 0.5;
+                arrow.mesh.children[0].material.opacity = arrow.baseOpacity * wave;
+                arrow.mesh.position.y = 0.1 + wave * 0.1;
+            });
+        }
+
+        // Make instruction sign face camera
+        if (this.instructionSign) {
+            this.instructionSign.lookAt(this.camera.position);
         }
 
         // Check if near the light
