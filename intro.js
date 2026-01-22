@@ -1,124 +1,106 @@
-// Three.js Intro - PS2 Style Walk to the Light
+// Three.js Intro - PS2 Style Walk to the Light (Cyan Theme)
 import * as THREE from 'https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js';
-import { EffectComposer } from 'https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/postprocessing/EffectComposer.js';
-import { RenderPass } from 'https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/postprocessing/RenderPass.js';
-import { ShaderPass } from 'https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/postprocessing/ShaderPass.js';
 
-// PS2 Style Post-Processing Shader
-const PS2Shader = {
-    uniforms: {
-        'tDiffuse': { value: null },
-        'time': { value: 0 },
-        'resolution': { value: new THREE.Vector2(320, 240) }, // PS2-like resolution
-        'sepiaAmount': { value: 0.7 },
-        'noiseAmount': { value: 0.08 },
-        'scanlineAmount': { value: 0.15 },
-        'vignetteAmount': { value: 0.4 },
-        'ditherAmount': { value: 0.03 }
-    },
-    vertexShader: `
-        varying vec2 vUv;
-        void main() {
-            vUv = uv;
-            gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
-        }
-    `,
-    fragmentShader: `
-        uniform sampler2D tDiffuse;
-        uniform float time;
-        uniform vec2 resolution;
-        uniform float sepiaAmount;
-        uniform float noiseAmount;
-        uniform float scanlineAmount;
-        uniform float vignetteAmount;
-        uniform float ditherAmount;
-        varying vec2 vUv;
+// PS2 Style Post-Processing - implemented manually without EffectComposer for better compatibility
+class PS2PostProcessor {
+    constructor(renderer, scene, camera) {
+        this.renderer = renderer;
+        this.scene = scene;
+        this.camera = camera;
         
-        // Pseudo-random noise
-        float rand(vec2 co) {
-            return fract(sin(dot(co.xy, vec2(12.9898, 78.233))) * 43758.5453);
-        }
+        // Create render target
+        this.renderTarget = new THREE.WebGLRenderTarget(
+            window.innerWidth,
+            window.innerHeight
+        );
         
-        // Dithering pattern (PS2 style)
-        float dither4x4(vec2 position, float brightness) {
-            int x = int(mod(position.x, 4.0));
-            int y = int(mod(position.y, 4.0));
-            int index = x + y * 4;
-            float limit = 0.0;
-            
-            if (index == 0) limit = 0.0625;
-            else if (index == 1) limit = 0.5625;
-            else if (index == 2) limit = 0.1875;
-            else if (index == 3) limit = 0.6875;
-            else if (index == 4) limit = 0.8125;
-            else if (index == 5) limit = 0.3125;
-            else if (index == 6) limit = 0.9375;
-            else if (index == 7) limit = 0.4375;
-            else if (index == 8) limit = 0.25;
-            else if (index == 9) limit = 0.75;
-            else if (index == 10) limit = 0.125;
-            else if (index == 11) limit = 0.625;
-            else if (index == 12) limit = 1.0;
-            else if (index == 13) limit = 0.5;
-            else if (index == 14) limit = 0.875;
-            else limit = 0.375;
-            
-            return brightness < limit ? 0.0 : 1.0;
-        }
+        // Create post-processing scene
+        this.postScene = new THREE.Scene();
+        this.postCamera = new THREE.OrthographicCamera(-1, 1, 1, -1, 0, 1);
         
-        void main() {
-            // Pixelate UV coordinates (low resolution effect)
-            vec2 pixelatedUV = floor(vUv * resolution) / resolution;
-            
-            // Sample texture with slight chromatic aberration
-            float aberration = 0.002;
-            vec4 color;
-            color.r = texture2D(tDiffuse, pixelatedUV + vec2(aberration, 0.0)).r;
-            color.g = texture2D(tDiffuse, pixelatedUV).g;
-            color.b = texture2D(tDiffuse, pixelatedUV - vec2(aberration, 0.0)).b;
-            color.a = 1.0;
-            
-            // Sepia tone (warm PS2 browns)
-            vec3 sepia;
-            sepia.r = dot(color.rgb, vec3(0.393, 0.769, 0.189));
-            sepia.g = dot(color.rgb, vec3(0.349, 0.686, 0.168));
-            sepia.b = dot(color.rgb, vec3(0.272, 0.534, 0.131));
-            color.rgb = mix(color.rgb, sepia, sepiaAmount);
-            
-            // Warm color push (more orange/brown)
-            color.rgb *= vec3(1.1, 0.95, 0.8);
-            
-            // Add film grain noise
-            float noise = rand(pixelatedUV + time * 0.01) * noiseAmount;
-            color.rgb += noise - noiseAmount * 0.5;
-            
-            // Scanlines
-            float scanline = sin(vUv.y * resolution.y * 3.14159) * 0.5 + 0.5;
-            color.rgb -= scanline * scanlineAmount;
-            
-            // Vignette
-            vec2 center = vUv - 0.5;
-            float vignette = 1.0 - dot(center, center) * vignetteAmount * 2.0;
-            color.rgb *= vignette;
-            
-            // Dithering (optional subtle effect)
-            vec2 ditherCoord = vUv * resolution;
-            float dither = (rand(ditherCoord + time) - 0.5) * ditherAmount;
-            color.rgb += dither;
-            
-            // Color quantization (limited color palette like PS2)
-            color.rgb = floor(color.rgb * 32.0) / 32.0;
-            
-            // Slight color bleeding/bloom on bright areas
-            float brightness = dot(color.rgb, vec3(0.299, 0.587, 0.114));
-            if (brightness > 0.7) {
-                color.rgb += vec3(0.05, 0.03, 0.01);
-            }
-            
-            gl_FragColor = color;
-        }
-    `
-};
+        // Create shader material
+        this.postMaterial = new THREE.ShaderMaterial({
+            uniforms: {
+                tDiffuse: { value: null },
+                time: { value: 0 },
+                resolution: { value: new THREE.Vector2(window.innerWidth / 2, window.innerHeight / 2) }
+            },
+            vertexShader: `
+                varying vec2 vUv;
+                void main() {
+                    vUv = uv;
+                    gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
+                }
+            `,
+            fragmentShader: `
+                uniform sampler2D tDiffuse;
+                uniform float time;
+                uniform vec2 resolution;
+                varying vec2 vUv;
+                
+                float rand(vec2 co) {
+                    return fract(sin(dot(co.xy, vec2(12.9898, 78.233))) * 43758.5453);
+                }
+                
+                void main() {
+                    // Pixelate
+                    vec2 pixelatedUV = floor(vUv * resolution) / resolution;
+                    
+                    // Sample with slight chromatic aberration
+                    float aberration = 0.001;
+                    vec4 color;
+                    color.r = texture2D(tDiffuse, pixelatedUV + vec2(aberration, 0.0)).r;
+                    color.g = texture2D(tDiffuse, pixelatedUV).g;
+                    color.b = texture2D(tDiffuse, pixelatedUV - vec2(aberration, 0.0)).b;
+                    color.a = 1.0;
+                    
+                    // Add noise
+                    float noise = rand(pixelatedUV + time * 0.01) * 0.05;
+                    color.rgb += noise - 0.025;
+                    
+                    // Scanlines
+                    float scanline = sin(vUv.y * resolution.y * 3.14159) * 0.5 + 0.5;
+                    color.rgb -= scanline * 0.1;
+                    
+                    // Vignette
+                    vec2 center = vUv - 0.5;
+                    float vignette = 1.0 - dot(center, center) * 0.5;
+                    color.rgb *= vignette;
+                    
+                    // Color quantization (PS2 style limited palette)
+                    color.rgb = floor(color.rgb * 24.0) / 24.0;
+                    
+                    gl_FragColor = color;
+                }
+            `
+        });
+        
+        // Create full-screen quad
+        const geometry = new THREE.PlaneGeometry(2, 2);
+        this.quad = new THREE.Mesh(geometry, this.postMaterial);
+        this.postScene.add(this.quad);
+    }
+    
+    render() {
+        // Render scene to texture
+        this.renderer.setRenderTarget(this.renderTarget);
+        this.renderer.render(this.scene, this.camera);
+        
+        // Apply post-processing
+        this.postMaterial.uniforms.tDiffuse.value = this.renderTarget.texture;
+        this.renderer.setRenderTarget(null);
+        this.renderer.render(this.postScene, this.postCamera);
+    }
+    
+    setSize(width, height) {
+        this.renderTarget.setSize(width, height);
+        this.postMaterial.uniforms.resolution.value.set(width / 2, height / 2);
+    }
+    
+    update(time) {
+        this.postMaterial.uniforms.time.value = time;
+    }
+}
 
 class IntroExperience {
     constructor() {
@@ -126,9 +108,7 @@ class IntroExperience {
         this.camera = null;
         this.renderer = null;
         this.canvas = null;
-        this.composer = null;
-        this.ps2Pass = null;
-        this.light = null;
+        this.postProcessor = null;
         this.lightOrb = null;
         this.particles = null;
         this.towers = [];
@@ -143,10 +123,8 @@ class IntroExperience {
         this.hasEntered = false;
         this.controlsSetup = false;
         
-        // Improved mobile detection
         this.isMobile = this.detectMobile();
         
-        // Mobile touch controls
         this.touchStartX = 0;
         this.touchStartY = 0;
         this.lastTouchX = 0;
@@ -157,7 +135,6 @@ class IntroExperience {
         this.lookTouchId = null;
         this.joystickTouchId = null;
         
-        // PS2 vertex wobble
         this.wobbleTime = 0;
         
         this.init();
@@ -181,30 +158,30 @@ class IntroExperience {
         
         // Scene with dark void
         this.scene = new THREE.Scene();
-        this.scene.background = new THREE.Color(0x0a0805); // Dark sepia
-        this.scene.fog = new THREE.FogExp2(0x0a0805, 0.04);
+        this.scene.background = new THREE.Color(0x000508);
+        this.scene.fog = new THREE.FogExp2(0x000508, 0.035);
 
         // Camera
         this.camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 0.1, 1000);
         this.camera.position.set(0, 1.6, 15);
 
-        // Renderer with lower resolution for PS2 feel
+        // Renderer
         this.renderer = new THREE.WebGLRenderer({ 
-            antialias: false, // No antialiasing for that crispy PS2 look
+            antialias: false,
             alpha: false,
             powerPreference: 'high-performance'
         });
         this.renderer.setSize(window.innerWidth, window.innerHeight);
-        this.renderer.setPixelRatio(1); // Force pixel ratio of 1 for pixelated look
+        this.renderer.setPixelRatio(1);
         
         this.canvas = this.renderer.domElement;
         this.canvas.id = 'intro-canvas';
         this.container.appendChild(this.canvas);
 
         // Setup post-processing
-        this.setupPostProcessing();
+        this.postProcessor = new PS2PostProcessor(this.renderer, this.scene, this.camera);
 
-        // Create PS2-style environment
+        // Create environment
         this.createPS2Ground();
         this.createPS2Towers();
         this.createLightPortal();
@@ -212,7 +189,7 @@ class IntroExperience {
         this.createAmbientLights();
         this.createUIOverlay();
 
-        // Controls
+        // Setup controls AFTER everything is created
         this.setupControls();
 
         // Events
@@ -222,50 +199,35 @@ class IntroExperience {
             if (this.isLocked) e.preventDefault();
         }, { passive: false });
         
+        // Start animation
         this.animate();
         
         console.log('PS2 Intro initialized. Mobile:', this.isMobile);
     }
 
-    setupPostProcessing() {
-        this.composer = new EffectComposer(this.renderer);
-        
-        const renderPass = new RenderPass(this.scene, this.camera);
-        this.composer.addPass(renderPass);
-        
-        this.ps2Pass = new ShaderPass(PS2Shader);
-        this.ps2Pass.uniforms.resolution.value.set(
-            Math.floor(window.innerWidth / 3),
-            Math.floor(window.innerHeight / 3)
-        );
-        this.composer.addPass(this.ps2Pass);
-    }
-
     createPS2Ground() {
-        // Low-poly ground plane
         const groundGeometry = new THREE.PlaneGeometry(200, 200, 20, 20);
         
-        // Add vertex displacement for uneven ground
         const positions = groundGeometry.attributes.position.array;
         for (let i = 0; i < positions.length; i += 3) {
-            positions[i + 2] += (Math.random() - 0.5) * 0.3; // Subtle height variation
+            positions[i + 2] += (Math.random() - 0.5) * 0.3;
         }
         groundGeometry.computeVertexNormals();
         
         const groundMaterial = new THREE.MeshLambertMaterial({
-            color: 0x1a1510,
-            flatShading: true // Low-poly look
+            color: 0x050a10,
+            flatShading: true
         });
         const ground = new THREE.Mesh(groundGeometry, groundMaterial);
         ground.rotation.x = -Math.PI / 2;
         ground.position.y = 0;
         this.scene.add(ground);
 
-        // Simple grid lines (PS2 boot screen style)
+        // Cyan grid lines
         const gridMaterial = new THREE.LineBasicMaterial({ 
-            color: 0x3a3020,
+            color: 0x00ffff,
             transparent: true,
-            opacity: 0.4
+            opacity: 0.2
         });
         
         for (let i = -50; i <= 50; i += 5) {
@@ -286,36 +248,31 @@ class IntroExperience {
     }
 
     createPS2Towers() {
-        // Iconic PS2 memory card towers
         const towerCount = 40;
         const towerMaterial = new THREE.MeshLambertMaterial({
-            color: 0x4a4030,
+            color: 0x102030,
             flatShading: true
         });
         
         const glowMaterial = new THREE.MeshBasicMaterial({
-            color: 0xd4a056,
+            color: 0x00ffff,
             transparent: true,
             opacity: 0.6
         });
 
         for (let i = 0; i < towerCount; i++) {
-            // Random position around the scene, but create a path to the light
             const angle = (i / towerCount) * Math.PI * 2;
             const radius = 8 + Math.random() * 25;
             const x = Math.cos(angle) * radius;
             const z = Math.sin(angle) * radius - 5;
             
-            // Varying heights like PS2 boot screen
             const height = 1 + Math.random() * 8;
             const width = 0.3 + Math.random() * 0.4;
             
-            // Low-poly box tower
             const towerGeometry = new THREE.BoxGeometry(width, height, width, 1, 1, 1);
             const tower = new THREE.Mesh(towerGeometry, towerMaterial.clone());
             tower.position.set(x, height / 2, z);
             
-            // Store for animation
             tower.userData = {
                 baseY: height / 2,
                 phase: Math.random() * Math.PI * 2,
@@ -325,7 +282,6 @@ class IntroExperience {
             this.scene.add(tower);
             this.towers.push(tower);
             
-            // Small glowing top (like PS2 tower tips)
             if (Math.random() > 0.5) {
                 const tipGeometry = new THREE.BoxGeometry(width * 0.6, 0.2, width * 0.6);
                 const tip = new THREE.Mesh(tipGeometry, glowMaterial.clone());
@@ -336,13 +292,12 @@ class IntroExperience {
     }
 
     createLightPortal() {
-        // The target light portal (warm sepia glow)
         const orbGroup = new THREE.Group();
         
-        // Core - low poly icosahedron for that PS2 vibe
+        // Core - cyan glow
         const coreGeometry = new THREE.IcosahedronGeometry(1.2, 1);
         const coreMaterial = new THREE.MeshBasicMaterial({
-            color: 0xf5d496, // Warm golden
+            color: 0x00ffff,
             transparent: true,
             opacity: 0.9
         });
@@ -352,7 +307,7 @@ class IntroExperience {
         // Outer glow
         const glowGeometry = new THREE.IcosahedronGeometry(2, 1);
         const glowMaterial = new THREE.MeshBasicMaterial({
-            color: 0xd4a056, // Sepia gold
+            color: 0x00ffff,
             transparent: true,
             opacity: 0.3,
             side: THREE.BackSide
@@ -360,10 +315,10 @@ class IntroExperience {
         const glow = new THREE.Mesh(glowGeometry, glowMaterial);
         orbGroup.add(glow);
 
-        // Rotating rings (low poly)
+        // Rotating rings
         const ringGeometry = new THREE.TorusGeometry(2.5, 0.08, 6, 12);
         const ringMaterial = new THREE.MeshBasicMaterial({ 
-            color: 0xd4a056,
+            color: 0x00ffff,
             transparent: true,
             opacity: 0.7
         });
@@ -375,8 +330,8 @@ class IntroExperience {
         ring2.rotation.y = Math.PI / 2;
         orbGroup.add(ring2);
 
-        // Point light (warm color)
-        const pointLight = new THREE.PointLight(0xd4a056, 80, 40);
+        // Point light - cyan
+        const pointLight = new THREE.PointLight(0x00ffff, 80, 40);
         orbGroup.add(pointLight);
 
         orbGroup.position.set(0, 2.5, -20);
@@ -389,7 +344,6 @@ class IntroExperience {
     }
 
     createPS2Particles() {
-        // Floating dust particles (PS2 boot screen style)
         const particleCount = 500;
         const geometry = new THREE.BufferGeometry();
         const positions = new Float32Array(particleCount * 3);
@@ -402,9 +356,8 @@ class IntroExperience {
 
         geometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
 
-        // Simple square particles
         const material = new THREE.PointsMaterial({
-            color: 0xd4a056,
+            color: 0x00ffff,
             size: 0.15,
             transparent: true,
             opacity: 0.6,
@@ -416,17 +369,14 @@ class IntroExperience {
     }
 
     createAmbientLights() {
-        // Warm ambient (sepia tones)
-        const ambient = new THREE.AmbientLight(0x2a2015, 0.6);
+        const ambient = new THREE.AmbientLight(0x101520, 0.6);
         this.scene.add(ambient);
 
-        // Directional with warm color
-        const directional = new THREE.DirectionalLight(0xd4a056, 0.4);
+        const directional = new THREE.DirectionalLight(0x00aaff, 0.4);
         directional.position.set(5, 10, 5);
         this.scene.add(directional);
         
-        // Back light for depth
-        const backLight = new THREE.DirectionalLight(0x3a3020, 0.2);
+        const backLight = new THREE.DirectionalLight(0x001030, 0.2);
         backLight.position.set(-5, 5, -10);
         this.scene.add(backLight);
     }
@@ -460,25 +410,29 @@ class IntroExperience {
             return;
         }
 
-        if (!this.isMobile) {
-            instructions.addEventListener('click', () => {
+        console.log('Setting up controls. isMobile:', this.isMobile);
+
+        if (this.isMobile) {
+            // Mobile setup
+            this.setupMobileStartButton(blocker, instructions);
+        } else {
+            // Desktop pointer lock
+            const clickHandler = () => {
+                console.log('Desktop click - requesting pointer lock');
                 if (this.canvas.requestPointerLock) {
                     this.canvas.requestPointerLock();
-                } else if (this.canvas.mozRequestPointerLock) {
-                    this.canvas.mozRequestPointerLock();
-                } else if (this.canvas.webkitRequestPointerLock) {
-                    this.canvas.webkitRequestPointerLock();
                 }
-            });
+            };
+            
+            instructions.addEventListener('click', clickHandler);
 
             const onPointerLockChange = () => {
-                const isLocked = document.pointerLockElement === this.canvas || 
-                                 document.mozPointerLockElement === this.canvas ||
-                                 document.webkitPointerLockElement === this.canvas;
+                const isLocked = document.pointerLockElement === this.canvas;
                 
                 if (isLocked) {
                     this.isLocked = true;
                     blocker.style.display = 'none';
+                    console.log('Pointer locked');
                 } else {
                     this.isLocked = false;
                     if (!this.hasEntered) {
@@ -491,38 +445,45 @@ class IntroExperience {
                         this.moveRight = false;
                         this.velocity.set(0, 0, 0);
                     }
+                    console.log('Pointer unlocked');
                 }
             };
 
             document.addEventListener('pointerlockchange', onPointerLockChange);
-            document.addEventListener('mozpointerlockchange', onPointerLockChange);
-            document.addEventListener('webkitpointerlockchange', onPointerLockChange);
             document.addEventListener('mousemove', (event) => this.onMouseMove(event));
-        } else {
-            this.setupMobileStartButton(blocker, instructions);
         }
 
+        // Keyboard controls
         document.addEventListener('keydown', (event) => this.onKeyDown(event));
         document.addEventListener('keyup', (event) => this.onKeyUp(event));
 
+        // Skip intro
         const skipLink = document.getElementById('skip-intro');
         if (skipLink) {
-            const skipHandler = (e) => {
+            skipLink.addEventListener('click', (e) => {
                 e.preventDefault();
                 e.stopPropagation();
                 this.enterLight();
-            };
-            skipLink.addEventListener('click', skipHandler);
-            skipLink.addEventListener('touchstart', skipHandler, { passive: false });
+            });
+            skipLink.addEventListener('touchend', (e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                this.enterLight();
+            }, { passive: false });
         }
     }
 
     setupMobileStartButton(blocker, instructions) {
-        const startButton = instructions.querySelector('.click-text');
+        console.log('Setting up mobile start button');
         
         const startHandler = (e) => {
             e.preventDefault();
             e.stopPropagation();
+            
+            // Don't trigger if clicking skip link
+            if (e.target.closest('#skip-intro') || e.target.closest('.skip-intro-link')) {
+                return;
+            }
             
             console.log('Mobile start triggered');
             blocker.style.display = 'none';
@@ -534,34 +495,17 @@ class IntroExperience {
             }
         };
         
+        // Add listeners to the entire instructions div
+        instructions.addEventListener('touchstart', startHandler, { passive: false });
+        instructions.addEventListener('touchend', startHandler, { passive: false });
+        instructions.addEventListener('click', startHandler);
+        
+        // Also specifically target the button
+        const startButton = instructions.querySelector('.click-text');
         if (startButton) {
+            startButton.addEventListener('touchstart', startHandler, { passive: false });
             startButton.addEventListener('touchend', startHandler, { passive: false });
             startButton.addEventListener('click', startHandler);
-        }
-        
-        instructions.addEventListener('touchend', (e) => {
-            if (e.target.closest('#skip-intro') || e.target.closest('.skip-intro-link')) {
-                return;
-            }
-            startHandler(e);
-        }, { passive: false });
-        
-        instructions.addEventListener('click', (e) => {
-            if (e.target.closest('#skip-intro') || e.target.closest('.skip-intro-link')) {
-                return;
-            }
-            startHandler(e);
-        });
-        
-        const skipLink = instructions.querySelector('#skip-intro');
-        if (skipLink) {
-            const skipHandler = (e) => {
-                e.preventDefault();
-                e.stopPropagation();
-                this.enterLight();
-            };
-            skipLink.addEventListener('touchend', skipHandler, { passive: false });
-            skipLink.addEventListener('click', skipHandler);
         }
     }
 
@@ -596,70 +540,69 @@ class IntroExperience {
         enterBtn.innerHTML = '<span>TAP TO ENTER</span>';
         enterBtn.style.display = 'none';
         
-        const enterHandler = (e) => {
+        enterBtn.addEventListener('touchend', (e) => {
             e.preventDefault();
             e.stopPropagation();
             this.enterLight();
-        };
-        
-        enterBtn.addEventListener('touchend', enterHandler, { passive: false });
-        enterBtn.addEventListener('click', enterHandler);
+        }, { passive: false });
+        enterBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            this.enterLight();
+        });
         this.container.appendChild(enterBtn);
 
+        // Setup joystick
         const joystickBase = document.getElementById('joystick-base');
         const joystickStick = document.getElementById('joystick-stick');
         
-        if (!joystickBase || !joystickStick) {
-            console.error('Joystick elements not found');
-            return;
+        if (joystickBase && joystickStick) {
+            joystickBase.addEventListener('touchstart', (e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                this.joystickActive = true;
+                this.joystickTouchId = e.touches[0].identifier;
+                this.updateJoystick(e.touches[0], joystickBase, joystickStick);
+            }, { passive: false });
+
+            joystickBase.addEventListener('touchmove', (e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                if (this.joystickActive) {
+                    for (let i = 0; i < e.touches.length; i++) {
+                        if (e.touches[i].identifier === this.joystickTouchId) {
+                            this.updateJoystick(e.touches[i], joystickBase, joystickStick);
+                            break;
+                        }
+                    }
+                }
+            }, { passive: false });
+
+            const joystickEndHandler = (e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                
+                let joystickTouchEnded = true;
+                if (e.touches) {
+                    for (let i = 0; i < e.touches.length; i++) {
+                        if (e.touches[i].identifier === this.joystickTouchId) {
+                            joystickTouchEnded = false;
+                            break;
+                        }
+                    }
+                }
+                
+                if (joystickTouchEnded) {
+                    this.joystickActive = false;
+                    this.joystickTouchId = null;
+                    this.joystickX = 0;
+                    this.joystickY = 0;
+                    joystickStick.style.transform = 'translate(-50%, -50%)';
+                }
+            };
+
+            joystickBase.addEventListener('touchend', joystickEndHandler, { passive: false });
+            joystickBase.addEventListener('touchcancel', joystickEndHandler, { passive: false });
         }
-
-        joystickBase.addEventListener('touchstart', (e) => {
-            e.preventDefault();
-            e.stopPropagation();
-            this.joystickActive = true;
-            this.joystickTouchId = e.touches[0].identifier;
-            this.updateJoystick(e.touches[0], joystickBase, joystickStick);
-        }, { passive: false });
-
-        joystickBase.addEventListener('touchmove', (e) => {
-            e.preventDefault();
-            e.stopPropagation();
-            if (this.joystickActive) {
-                for (let i = 0; i < e.touches.length; i++) {
-                    if (e.touches[i].identifier === this.joystickTouchId) {
-                        this.updateJoystick(e.touches[i], joystickBase, joystickStick);
-                        break;
-                    }
-                }
-            }
-        }, { passive: false });
-
-        const joystickEndHandler = (e) => {
-            e.preventDefault();
-            e.stopPropagation();
-            
-            let joystickTouchEnded = true;
-            if (e.touches) {
-                for (let i = 0; i < e.touches.length; i++) {
-                    if (e.touches[i].identifier === this.joystickTouchId) {
-                        joystickTouchEnded = false;
-                        break;
-                    }
-                }
-            }
-            
-            if (joystickTouchEnded) {
-                this.joystickActive = false;
-                this.joystickTouchId = null;
-                this.joystickX = 0;
-                this.joystickY = 0;
-                joystickStick.style.transform = 'translate(-50%, -50%)';
-            }
-        };
-
-        joystickBase.addEventListener('touchend', joystickEndHandler, { passive: false });
-        joystickBase.addEventListener('touchcancel', joystickEndHandler, { passive: false });
         
         console.log('Mobile UI created');
     }
@@ -792,8 +735,8 @@ class IntroExperience {
     onMouseMove(event) {
         if (!this.isLocked) return;
 
-        const movementX = event.movementX || event.mozMovementX || event.webkitMovementX || 0;
-        const movementY = event.movementY || event.mozMovementY || event.webkitMovementY || 0;
+        const movementX = event.movementX || 0;
+        const movementY = event.movementY || 0;
 
         this.camera.rotation.y -= movementX * 0.002;
         this.camera.rotation.x -= movementY * 0.002;
@@ -805,14 +748,9 @@ class IntroExperience {
         this.camera.aspect = window.innerWidth / window.innerHeight;
         this.camera.updateProjectionMatrix();
         this.renderer.setSize(window.innerWidth, window.innerHeight);
-        this.composer.setSize(window.innerWidth, window.innerHeight);
         
-        // Update PS2 shader resolution
-        if (this.ps2Pass) {
-            this.ps2Pass.uniforms.resolution.value.set(
-                Math.floor(window.innerWidth / 3),
-                Math.floor(window.innerHeight / 3)
-            );
+        if (this.postProcessor) {
+            this.postProcessor.setSize(window.innerWidth, window.innerHeight);
         }
         
         const wasMobile = this.isMobile;
@@ -900,13 +838,13 @@ class IntroExperience {
         
         this.wobbleTime += delta;
 
-        // Update PS2 shader time
-        if (this.ps2Pass) {
-            this.ps2Pass.uniforms.time.value = time * 0.001;
+        // Update post-processor time
+        if (this.postProcessor) {
+            this.postProcessor.update(time * 0.001);
         }
 
         // Movement
-        if (this.isLocked || this.isMobile) {
+        if (this.isLocked || (this.isMobile && this.controlsSetup)) {
             this.velocity.x -= this.velocity.x * 10.0 * delta;
             this.velocity.z -= this.velocity.z * 10.0 * delta;
 
@@ -955,8 +893,8 @@ class IntroExperience {
             this.orbGlow.scale.setScalar(pulse * 1.3);
         }
 
-        // Animate towers (subtle PS2-style vertex wobble)
-        this.towers.forEach((tower, index) => {
+        // Animate towers
+        this.towers.forEach((tower) => {
             const wobble = Math.sin(this.wobbleTime * tower.userData.speed + tower.userData.phase) * 0.05;
             tower.position.y = tower.userData.baseY + wobble;
         });
@@ -975,8 +913,12 @@ class IntroExperience {
 
         this.prevTime = time;
         
-        // Use composer for PS2 post-processing
-        this.composer.render();
+        // Render with post-processing
+        if (this.postProcessor) {
+            this.postProcessor.render();
+        } else {
+            this.renderer.render(this.scene, this.camera);
+        }
     }
 }
 
