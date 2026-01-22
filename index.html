@@ -187,34 +187,34 @@
                 </div>
             </div>
 
-            <!-- Project 2: Meshy 3D Generator -->
+            <!-- Project 2: Automated QC Pipeline -->
             <div class="project-card">
                 <div class="project-card-visual pattern-dots">
                     <svg class="project-icon" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M32 8L8 20v24l24 12 24-12V20L32 8z" stroke="#00ffff" stroke-width="2" fill="none"/>
-                        <path d="M8 20l24 12 24-12" stroke="#00ffff" stroke-width="2"/>
-                        <path d="M32 32v24" stroke="#00ffff" stroke-width="2"/>
-                        <circle cx="32" cy="24" r="6" fill="#00ffff" fill-opacity="0.3" stroke="#00ffff"/>
+                        <rect x="8" y="8" width="48" height="48" rx="4" stroke="#00ffff" stroke-width="2"/>
+                        <path d="M20 32l8 8 16-16" stroke="#27ca40" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+                        <circle cx="50" cy="14" r="6" fill="#ff5f56"/>
+                        <text x="50" y="17" font-size="8" fill="white" text-anchor="middle">3</text>
                     </svg>
                 </div>
                 <div class="project-card-content">
                     <div class="project-card-number">02</div>
-                    <h3 class="project-card-title">Meshy 3D Generator</h3>
-                    <p class="project-card-desc">AI-powered tool that transforms 2D images into production-ready 3D models with PBR textures.</p>
+                    <h3 class="project-card-title">Automated QC Pipeline</h3>
+                    <p class="project-card-desc">Scans rendered frames for technical issues — black frames, aspect ratio errors, and codec compliance.</p>
                     <div class="project-card-tags">
-                        <span class="project-tag">PyQt5</span>
-                        <span class="project-tag">Meshy AI</span>
-                        <span class="project-tag">REST API</span>
+                        <span class="project-tag">Python</span>
+                        <span class="project-tag">FFmpeg</span>
+                        <span class="project-tag">OpenCV</span>
                     </div>
                 </div>
                 <div class="project-card-overlay">
-                    <h4 class="project-overlay-title">Meshy 3D Generator</h4>
-                    <p class="project-overlay-desc">Desktop application integrating Meshy AI for rapid 3D asset generation from concept art.</p>
+                    <h4 class="project-overlay-title">Automated QC Pipeline</h4>
+                    <p class="project-overlay-desc">Batch validation system that catches render errors before they reach review or delivery.</p>
                     <ul class="project-overlay-features">
-                        <li>Drag-and-drop image input</li>
-                        <li>PBR texture generation</li>
-                        <li>GLB/FBX/OBJ export</li>
-                        <li>Threaded processing</li>
+                        <li>Black frame detection</li>
+                        <li>Frame drop analysis</li>
+                        <li>Color space verification</li>
+                        <li>Spec compliance reports</li>
                     </ul>
                 </div>
             </div>
@@ -250,35 +250,38 @@
                 </div>
             </div>
 
-            <!-- Project 4: Ableton Project Generator -->
+            <!-- Project 4: Editorial Conform Tool -->
             <div class="project-card">
                 <div class="project-card-visual pattern-circuit">
                     <svg class="project-icon" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <rect x="8" y="20" width="8" height="24" rx="1" fill="#00ffff" fill-opacity="0.8"/>
-                        <rect x="20" y="16" width="8" height="32" rx="1" fill="#00ffff" fill-opacity="0.6"/>
-                        <rect x="32" y="24" width="8" height="20" rx="1" fill="#00ffff" fill-opacity="0.7"/>
-                        <rect x="44" y="12" width="8" height="40" rx="1" fill="#00ffff" fill-opacity="0.5"/>
-                        <path d="M4 52h56" stroke="#00ffff" stroke-width="2"/>
+                        <rect x="4" y="18" width="56" height="28" rx="2" stroke="#00ffff" stroke-width="2"/>
+                        <rect x="8" y="24" width="12" height="16" fill="#00ffff" fill-opacity="0.3"/>
+                        <rect x="22" y="24" width="8" height="16" fill="#00ffff" fill-opacity="0.5"/>
+                        <rect x="32" y="24" width="16" height="16" fill="#00ffff" fill-opacity="0.4"/>
+                        <rect x="50" y="24" width="6" height="16" fill="#00ffff" fill-opacity="0.6"/>
+                        <path d="M4 14h56M32 10v4" stroke="#00ffff" stroke-width="2"/>
+                        <circle cx="14" cy="14" r="2" fill="#ff9500"/>
+                        <circle cx="50" cy="14" r="2" fill="#27ca40"/>
                     </svg>
                 </div>
                 <div class="project-card-content">
                     <div class="project-card-number">04</div>
-                    <h3 class="project-card-title">Ableton Project Generator</h3>
-                    <p class="project-card-desc">Automated Ableton Live session scaffolding with template tracks, plugins, and routing.</p>
+                    <h3 class="project-card-title">Editorial Conform Tool</h3>
+                    <p class="project-card-desc">Parses Premiere/Resolve EDLs to auto-generate VFX plates with proper naming and handles.</p>
                     <div class="project-card-tags">
                         <span class="project-tag">Python</span>
-                        <span class="project-tag">XML</span>
-                        <span class="project-tag">Ableton</span>
+                        <span class="project-tag">EDL/XML</span>
+                        <span class="project-tag">Premiere</span>
                     </div>
                 </div>
                 <div class="project-card-overlay">
-                    <h4 class="project-overlay-title">Ableton Project Generator</h4>
-                    <p class="project-overlay-desc">Generate ready-to-use Ableton projects with pre-configured tracks and plugin chains.</p>
+                    <h4 class="project-overlay-title">Editorial Conform Tool</h4>
+                    <p class="project-overlay-desc">Bridges editorial and VFX by automating plate extraction and shot setup from edit timelines.</p>
                     <ul class="project-overlay-features">
-                        <li>Template-based generation</li>
-                        <li>Track routing setup</li>
-                        <li>Plugin preset loading</li>
-                        <li>Batch project creation</li>
+                        <li>EDL/XML/AAF parsing</li>
+                        <li>Auto plate extraction</li>
+                        <li>Handle frame calculation</li>
+                        <li>ShotGrid shot creation</li>
                     </ul>
                 </div>
             </div>
@@ -319,36 +322,35 @@
                 </div>
             </div>
 
-            <!-- Project 6: Flex Job Viewer -->
+            <!-- Project 6: Delivery Validator -->
             <div class="project-card">
                 <div class="project-card-visual pattern-dots">
                     <svg class="project-icon" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <rect x="8" y="14" width="48" height="36" rx="4" stroke="#00ffff" stroke-width="2"/>
-                        <path d="M8 24h48" stroke="#00ffff" stroke-width="2"/>
-                        <rect x="14" y="30" width="36" height="4" rx="1" fill="#00ffff" fill-opacity="0.3"/>
-                        <rect x="14" y="38" width="28" height="4" rx="1" fill="#00ffff" fill-opacity="0.5"/>
-                        <circle cx="48" cy="40" r="4" stroke="#27ca40" stroke-width="2"/>
-                        <path d="M46 40l1.5 1.5 3-3" stroke="#27ca40" stroke-width="2"/>
+                        <rect x="8" y="8" width="36" height="48" rx="2" stroke="#00ffff" stroke-width="2"/>
+                        <path d="M16 20h20M16 28h16M16 36h20M16 44h12" stroke="#00ffff" stroke-width="2" stroke-opacity="0.5"/>
+                        <circle cx="48" cy="44" r="12" fill="#0a1520" stroke="#27ca40" stroke-width="2"/>
+                        <path d="M43 44l4 4 8-8" stroke="#27ca40" stroke-width="2" stroke-linecap="round"/>
+                        <rect x="12" y="12" width="8" height="4" fill="#00ffff" fill-opacity="0.3"/>
                     </svg>
                 </div>
                 <div class="project-card-content">
                     <div class="project-card-number">06</div>
-                    <h3 class="project-card-title">Flex Job Viewer</h3>
-                    <p class="project-card-desc">Cross-platform job queue viewer with SSH integration for remote render farm monitoring.</p>
+                    <h3 class="project-card-title">Delivery Validator</h3>
+                    <p class="project-card-desc">Final deliverable checker ensuring files meet client specs for resolution, codec, and audio.</p>
                     <div class="project-card-tags">
                         <span class="project-tag">Python</span>
-                        <span class="project-tag">PyQt5</span>
-                        <span class="project-tag">SSH</span>
+                        <span class="project-tag">MediaInfo</span>
+                        <span class="project-tag">FFprobe</span>
                     </div>
                 </div>
                 <div class="project-card-overlay">
-                    <h4 class="project-overlay-title">Flex Job Viewer</h4>
-                    <p class="project-overlay-desc">Desktop app for monitoring render jobs across multiple servers via SSH.</p>
+                    <h4 class="project-overlay-title">Delivery Validator</h4>
+                    <p class="project-overlay-desc">Automated verification against delivery specs before files leave the building.</p>
                     <ul class="project-overlay-features">
-                        <li>Multi-server monitoring</li>
-                        <li>SSH-based connectivity</li>
-                        <li>Job filtering & search</li>
-                        <li>Status notifications</li>
+                        <li>Resolution & aspect ratio</li>
+                        <li>Codec & bitrate check</li>
+                        <li>Audio channel verification</li>
+                        <li>Naming convention check</li>
                     </ul>
                 </div>
             </div>
