@@ -18,6 +18,14 @@ class IntroExperience {
         this.prevTime = performance.now();
         this.isLocked = false;
         this.hasEntered = false;
+        this.isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+        
+        // Mobile touch controls
+        this.touchStartX = 0;
+        this.touchStartY = 0;
+        this.joystickActive = false;
+        this.joystickX = 0;
+        this.joystickY = 0;
         
         this.init();
     }
@@ -194,29 +202,150 @@ class IntroExperience {
         const blocker = document.getElementById('intro-blocker');
         const instructions = document.getElementById('intro-instructions');
 
-        // Click to start
-        instructions.addEventListener('click', () => {
-            this.container.requestPointerLock();
-        });
-
-        document.addEventListener('pointerlockchange', () => {
-            if (document.pointerLockElement === this.container) {
-                this.isLocked = true;
+        if (this.isMobile) {
+            // Mobile: Tap to start
+            instructions.addEventListener('click', () => {
                 blocker.style.display = 'none';
-            } else {
-                this.isLocked = false;
-                if (!this.hasEntered) {
-                    blocker.style.display = 'flex';
-                }
-            }
-        });
+                this.isLocked = true;
+                this.setupMobileControls();
+            });
+        } else {
+            // Desktop: Pointer lock
+            instructions.addEventListener('click', () => {
+                this.container.requestPointerLock();
+            });
 
-        // Keyboard controls
+            document.addEventListener('pointerlockchange', () => {
+                if (document.pointerLockElement === this.container) {
+                    this.isLocked = true;
+                    blocker.style.display = 'none';
+                } else {
+                    this.isLocked = false;
+                    if (!this.hasEntered) {
+                        blocker.style.display = 'flex';
+                    }
+                }
+            });
+
+            // Mouse look
+            document.addEventListener('mousemove', (event) => this.onMouseMove(event));
+        }
+
+        // Keyboard controls (works on both)
         document.addEventListener('keydown', (event) => this.onKeyDown(event));
         document.addEventListener('keyup', (event) => this.onKeyUp(event));
+    }
 
-        // Mouse look
-        document.addEventListener('mousemove', (event) => this.onMouseMove(event));
+    setupMobileControls() {
+        // Create mobile UI
+        this.createMobileUI();
+
+        // Touch look controls (right side of screen)
+        this.container.addEventListener('touchstart', (e) => this.onTouchStart(e), { passive: false });
+        this.container.addEventListener('touchmove', (e) => this.onTouchMove(e), { passive: false });
+        this.container.addEventListener('touchend', (e) => this.onTouchEnd(e), { passive: false });
+    }
+
+    createMobileUI() {
+        // Create joystick container
+        const joystickContainer = document.createElement('div');
+        joystickContainer.id = 'mobile-joystick';
+        joystickContainer.innerHTML = `
+            <div class="joystick-base">
+                <div class="joystick-stick"></div>
+            </div>
+        `;
+        this.container.appendChild(joystickContainer);
+
+        // Create enter button (shown when near light)
+        const enterBtn = document.createElement('div');
+        enterBtn.id = 'mobile-enter-btn';
+        enterBtn.innerHTML = '<span>TAP TO ENTER</span>';
+        enterBtn.style.display = 'none';
+        enterBtn.addEventListener('click', () => this.enterLight());
+        this.container.appendChild(enterBtn);
+
+        // Joystick controls
+        const joystickBase = joystickContainer.querySelector('.joystick-base');
+        const joystickStick = joystickContainer.querySelector('.joystick-stick');
+        
+        joystickBase.addEventListener('touchstart', (e) => {
+            e.stopPropagation();
+            this.joystickActive = true;
+            this.updateJoystick(e, joystickBase, joystickStick);
+        }, { passive: false });
+
+        joystickBase.addEventListener('touchmove', (e) => {
+            e.stopPropagation();
+            if (this.joystickActive) {
+                this.updateJoystick(e, joystickBase, joystickStick);
+            }
+        }, { passive: false });
+
+        joystickBase.addEventListener('touchend', (e) => {
+            e.stopPropagation();
+            this.joystickActive = false;
+            this.joystickX = 0;
+            this.joystickY = 0;
+            joystickStick.style.transform = 'translate(-50%, -50%)';
+        }, { passive: false });
+    }
+
+    updateJoystick(e, base, stick) {
+        const rect = base.getBoundingClientRect();
+        const centerX = rect.left + rect.width / 2;
+        const centerY = rect.top + rect.height / 2;
+        
+        const touch = e.touches[0];
+        let dx = touch.clientX - centerX;
+        let dy = touch.clientY - centerY;
+        
+        // Limit to circle
+        const maxDist = rect.width / 2 - 20;
+        const dist = Math.sqrt(dx * dx + dy * dy);
+        if (dist > maxDist) {
+            dx = (dx / dist) * maxDist;
+            dy = (dy / dist) * maxDist;
+        }
+        
+        stick.style.transform = `translate(calc(-50% + ${dx}px), calc(-50% + ${dy}px))`;
+        
+        // Normalize to -1 to 1
+        this.joystickX = dx / maxDist;
+        this.joystickY = dy / maxDist;
+    }
+
+    onTouchStart(e) {
+        if (e.target.closest('#mobile-joystick')) return;
+        
+        const touch = e.touches[0];
+        this.touchStartX = touch.clientX;
+        this.touchStartY = touch.clientY;
+    }
+
+    onTouchMove(e) {
+        if (e.target.closest('#mobile-joystick')) return;
+        if (!this.isLocked) return;
+        
+        e.preventDefault();
+        
+        const touch = e.touches[0];
+        const dx = touch.clientX - this.touchStartX;
+        const dy = touch.clientY - this.touchStartY;
+        
+        // Rotate camera
+        this.camera.rotation.y -= dx * 0.003;
+        this.camera.rotation.x -= dy * 0.003;
+        
+        // Clamp vertical rotation
+        this.camera.rotation.x = Math.max(-Math.PI / 2, Math.min(Math.PI / 2, this.camera.rotation.x));
+        
+        this.touchStartX = touch.clientX;
+        this.touchStartY = touch.clientY;
+    }
+
+    onTouchEnd(e) {
+        // Nothing needed here
     }
 
     onKeyDown(event) {
@@ -292,8 +421,20 @@ class IntroExperience {
             hint.style.opacity = 0;
         }
 
-        // Enter the light
-        if (distance < 4 && !this.hasEntered) {
+        // Mobile enter button
+        if (this.isMobile) {
+            const enterBtn = document.getElementById('mobile-enter-btn');
+            if (enterBtn) {
+                if (distance < 8) {
+                    enterBtn.style.display = 'flex';
+                } else {
+                    enterBtn.style.display = 'none';
+                }
+            }
+        }
+
+        // Auto-enter on desktop when very close
+        if (distance < 4 && !this.hasEntered && !this.isMobile) {
             this.enterLight();
         }
     }
@@ -336,15 +477,24 @@ class IntroExperience {
             this.velocity.x -= this.velocity.x * 10.0 * delta;
             this.velocity.z -= this.velocity.z * 10.0 * delta;
 
-            this.direction.z = Number(this.moveForward) - Number(this.moveBackward);
-            this.direction.x = Number(this.moveRight) - Number(this.moveLeft);
-            this.direction.normalize();
+            // Keyboard or joystick input
+            if (this.isMobile && this.joystickActive) {
+                this.direction.z = -this.joystickY;
+                this.direction.x = this.joystickX;
+            } else {
+                this.direction.z = Number(this.moveForward) - Number(this.moveBackward);
+                this.direction.x = Number(this.moveRight) - Number(this.moveLeft);
+            }
+            
+            if (this.direction.length() > 0) {
+                this.direction.normalize();
+            }
 
             const speed = 8;
-            if (this.moveForward || this.moveBackward) {
+            if (Math.abs(this.direction.z) > 0.1) {
                 this.velocity.z -= this.direction.z * speed * delta * 50;
             }
-            if (this.moveLeft || this.moveRight) {
+            if (Math.abs(this.direction.x) > 0.1) {
                 this.velocity.x -= this.direction.x * speed * delta * 50;
             }
 
@@ -396,14 +546,5 @@ class IntroExperience {
 
 // Initialize when DOM is ready
 document.addEventListener('DOMContentLoaded', () => {
-    // Check if intro should be shown (not on mobile for performance)
-    const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
-    
-    if (isMobile) {
-        // Skip intro on mobile
-        document.getElementById('intro-container').style.display = 'none';
-        document.getElementById('main-content').style.display = 'block';
-    } else {
-        new IntroExperience();
-    }
+    new IntroExperience();
 });
