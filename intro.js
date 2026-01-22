@@ -323,10 +323,23 @@ class IntroExperience {
                 if (document.pointerLockElement === this.container) {
                     this.isLocked = true;
                     blocker.style.display = 'none';
+                    // Update instructions text
+                    const clickText = instructions.querySelector('.click-text');
+                    if (clickText) clickText.textContent = 'Tap to Enter';
                 } else {
                     this.isLocked = false;
                     if (!this.hasEntered) {
+                        // Show blocker again - must click to re-enter
                         blocker.style.display = 'flex';
+                        // Update instructions to show they need to click again
+                        const clickText = instructions.querySelector('.click-text');
+                        if (clickText) clickText.textContent = 'Click to Continue';
+                        // Stop all movement
+                        this.moveForward = false;
+                        this.moveBackward = false;
+                        this.moveLeft = false;
+                        this.moveRight = false;
+                        this.velocity.set(0, 0, 0);
                     }
                 }
             });

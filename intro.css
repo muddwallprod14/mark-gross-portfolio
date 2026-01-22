@@ -10,6 +10,16 @@
     background: #000;
 }
 
+/* Prevent scrolling/interaction with main content while intro is active */
+body:has(#intro-container:not([style*="display: none"])) {
+    overflow: hidden;
+}
+
+body:has(#intro-container:not([style*="display: none"])) #main-content {
+    pointer-events: none;
+    visibility: hidden;
+}
+
 #intro-blocker {
     position: absolute;
     top: 0;
