@@ -41,7 +41,7 @@ class IntroExperience {
 
         // Camera
         this.camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
-        this.camera.position.set(0, 1.6, 20);
+        this.camera.position.set(0, 1.6, 12);
 
         // Renderer
         this.renderer = new THREE.WebGLRenderer({ antialias: true });
@@ -521,7 +521,7 @@ class IntroExperience {
                 this.direction.normalize();
             }
 
-            const speed = 8;
+            const speed = 3;
             if (Math.abs(this.direction.z) > 0.1) {
                 this.velocity.z -= this.direction.z * speed * delta * 50;
             }
