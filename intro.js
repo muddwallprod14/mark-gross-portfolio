@@ -202,13 +202,24 @@ class IntroExperience {
         const blocker = document.getElementById('intro-blocker');
         const instructions = document.getElementById('intro-instructions');
 
-        if (this.isMobile) {
-            // Mobile: Tap to start
-            instructions.addEventListener('click', () => {
+        // Start function for both mobile and desktop
+        const startExperience = (e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            
+            if (this.isMobile) {
                 blocker.style.display = 'none';
                 this.isLocked = true;
                 this.setupMobileControls();
-            });
+            } else {
+                this.container.requestPointerLock();
+            }
+        };
+
+        if (this.isMobile) {
+            // Mobile: Tap to start - use both touch and click for compatibility
+            instructions.addEventListener('touchend', startExperience, { passive: false });
+            instructions.addEventListener('click', startExperience);
         } else {
             // Desktop: Pointer lock
             instructions.addEventListener('click', () => {
@@ -234,6 +245,18 @@ class IntroExperience {
         // Keyboard controls (works on both)
         document.addEventListener('keydown', (event) => this.onKeyDown(event));
         document.addEventListener('keyup', (event) => this.onKeyUp(event));
+
+        // Skip intro link
+        const skipLink = document.getElementById('skip-intro');
+        if (skipLink) {
+            const skipHandler = (e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                this.enterLight();
+            };
+            skipLink.addEventListener('click', skipHandler);
+            skipLink.addEventListener('touchend', skipHandler, { passive: false });
+        }
     }
 
     setupMobileControls() {
@@ -262,7 +285,15 @@ class IntroExperience {
         enterBtn.id = 'mobile-enter-btn';
         enterBtn.innerHTML = '<span>TAP TO ENTER</span>';
         enterBtn.style.display = 'none';
-        enterBtn.addEventListener('click', () => this.enterLight());
+        enterBtn.addEventListener('touchend', (e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            this.enterLight();
+        }, { passive: false });
+        enterBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            this.enterLight();
+        });
         this.container.appendChild(enterBtn);
 
         // Joystick controls
