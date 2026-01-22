@@ -276,8 +276,8 @@ class IntroExperience {
         overlay.id = 'game-ui-overlay';
         overlay.innerHTML = `
             <div class="instruction-text" id="instruction-text">
-                <span class="key-prompt">${this.isMobile ? 'PUSH FORWARD' : 'PRESS W'}</span>
-                <span class="instruction-label">to move forward</span>
+                <span class="key-prompt">${this.isMobile ? 'USE JOYSTICK' : 'WASD'}</span>
+                <span class="instruction-label">to move</span>
             </div>
             <div class="enter-light-text" id="enter-light-text">
                 ENTER THE LIGHT
@@ -363,16 +363,15 @@ class IntroExperience {
     }
 
     createMobileUI() {
-        // Create forward button (simpler than joystick since only forward is allowed)
-        const forwardBtn = document.createElement('div');
-        forwardBtn.id = 'mobile-forward-btn';
-        forwardBtn.innerHTML = `
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                <path d="M12 19V5M5 12l7-7 7 7"/>
-            </svg>
-            <span>HOLD TO WALK</span>
+        // Create joystick container
+        const joystickContainer = document.createElement('div');
+        joystickContainer.id = 'mobile-joystick';
+        joystickContainer.innerHTML = `
+            <div class="joystick-base">
+                <div class="joystick-stick"></div>
+            </div>
         `;
-        this.container.appendChild(forwardBtn);
+        this.container.appendChild(joystickContainer);
 
         // Create enter button (shown when near light)
         const enterBtn = document.createElement('div');
@@ -390,27 +389,29 @@ class IntroExperience {
         });
         this.container.appendChild(enterBtn);
 
-        // Forward button controls
-        forwardBtn.addEventListener('touchstart', (e) => {
-            e.preventDefault();
+        // Joystick controls
+        const joystickBase = joystickContainer.querySelector('.joystick-base');
+        const joystickStick = joystickContainer.querySelector('.joystick-stick');
+        
+        joystickBase.addEventListener('touchstart', (e) => {
             e.stopPropagation();
             this.joystickActive = true;
-            this.joystickY = -1; // Forward
-            forwardBtn.classList.add('active');
+            this.updateJoystick(e, joystickBase, joystickStick);
         }, { passive: false });
 
-        forwardBtn.addEventListener('touchend', (e) => {
-            e.preventDefault();
+        joystickBase.addEventListener('touchmove', (e) => {
+            e.stopPropagation();
+            if (this.joystickActive) {
+                this.updateJoystick(e, joystickBase, joystickStick);
+            }
+        }, { passive: false });
+
+        joystickBase.addEventListener('touchend', (e) => {
             e.stopPropagation();
             this.joystickActive = false;
+            this.joystickX = 0;
             this.joystickY = 0;
-            forwardBtn.classList.remove('active');
-        }, { passive: false });
-
-        forwardBtn.addEventListener('touchcancel', (e) => {
-            this.joystickActive = false;
-            this.joystickY = 0;
-            forwardBtn.classList.remove('active');
+            joystickStick.style.transform = 'translate(-50%, -50%)';
         }, { passive: false });
     }
 
@@ -477,6 +478,18 @@ class IntroExperience {
             case 'ArrowUp':
                 this.moveForward = true;
                 break;
+            case 'KeyA':
+            case 'ArrowLeft':
+                this.moveLeft = true;
+                break;
+            case 'KeyS':
+            case 'ArrowDown':
+                this.moveBackward = true;
+                break;
+            case 'KeyD':
+            case 'ArrowRight':
+                this.moveRight = true;
+                break;
         }
     }
 
@@ -485,6 +498,18 @@ class IntroExperience {
             case 'KeyW':
             case 'ArrowUp':
                 this.moveForward = false;
+                break;
+            case 'KeyA':
+            case 'ArrowLeft':
+                this.moveLeft = false;
+                break;
+            case 'KeyS':
+            case 'ArrowDown':
+                this.moveBackward = false;
+                break;
+            case 'KeyD':
+            case 'ArrowRight':
+                this.moveRight = false;
                 break;
         }
     }
@@ -586,14 +611,13 @@ class IntroExperience {
             this.velocity.x -= this.velocity.x * 10.0 * delta;
             this.velocity.z -= this.velocity.z * 10.0 * delta;
 
-            // Only forward movement allowed
+            // Keyboard or joystick input
             if (this.isMobile && this.joystickActive) {
-                // On mobile, only use forward component (negative Y on joystick)
-                this.direction.z = Math.max(0, -this.joystickY);
-                this.direction.x = 0;
+                this.direction.z = -this.joystickY;
+                this.direction.x = this.joystickX;
             } else {
-                this.direction.z = Number(this.moveForward);
-                this.direction.x = 0;
+                this.direction.z = Number(this.moveForward) - Number(this.moveBackward);
+                this.direction.x = Number(this.moveRight) - Number(this.moveLeft);
             }
             
             if (this.direction.length() > 0) {
@@ -603,6 +627,9 @@ class IntroExperience {
             const speed = 3;
             if (Math.abs(this.direction.z) > 0.1) {
                 this.velocity.z -= this.direction.z * speed * delta * 50;
+            }
+            if (Math.abs(this.direction.x) > 0.1) {
+                this.velocity.x -= this.direction.x * speed * delta * 50;
             }
 
             // Apply movement in camera direction
