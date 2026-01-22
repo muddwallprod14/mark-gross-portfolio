@@ -184,38 +184,91 @@
                         <li>ShotGrid & Deadline integration</li>
                         <li>Custom alert system</li>
                     </ul>
+                    <div class="project-role">
+                        <strong>Role:</strong> Lead developer — designed system architecture, built React dashboard, Python backend services, and WebSocket infrastructure.
+                    </div>
+                    <div class="project-code-section">
+                        <button class="code-tab-toggle" onclick="this.classList.toggle('active'); this.nextElementSibling.classList.toggle('active');">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+                            View Code Snippet
+                        </button>
+                        <div class="code-tab-content">
+                            <pre><span class="keyword">class</span> <span class="function">JobMonitorSocket</span>:
+    <span class="keyword">def</span> <span class="function">__init__</span>(self, farm_endpoints):
+        self.connections = {}
+        self.job_cache = {}
+        
+    <span class="keyword">async def</span> <span class="function">connect_all</span>(self):
+        <span class="keyword">for</span> endpoint <span class="keyword">in</span> self.farm_endpoints:
+            ws = <span class="keyword">await</span> websockets.connect(endpoint)
+            self.connections[endpoint] = ws
+            asyncio.create_task(self.<span class="function">listen</span>(ws))
+    
+    <span class="keyword">async def</span> <span class="function">broadcast_to_clients</span>(self, data):
+        <span class="keyword">await</span> self.<span class="function">update_job_status</span>(data)
+        <span class="keyword">await</span> self.ws_server.<span class="function">send_all</span>(data)</pre>
+                        </div>
+                    </div>
                 </div>
             </div>
 
-            <!-- Project 2: Automated QC Pipeline -->
+            <!-- Project 2: Meshy 3D Asset Pipeline -->
             <div class="project-card">
                 <div class="project-card-visual pattern-dots">
                     <svg class="project-icon" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <rect x="8" y="8" width="48" height="48" rx="4" stroke="#00ffff" stroke-width="2"/>
-                        <path d="M20 32l8 8 16-16" stroke="#27ca40" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
-                        <circle cx="50" cy="14" r="6" fill="#ff5f56"/>
-                        <text x="50" y="17" font-size="8" fill="white" text-anchor="middle">3</text>
+                        <path d="M32 8L8 20v24l24 12 24-12V20L32 8z" stroke="#00ffff" stroke-width="2" fill="none"/>
+                        <path d="M8 20l24 12 24-12" stroke="#00ffff" stroke-width="2"/>
+                        <path d="M32 32v24" stroke="#00ffff" stroke-width="2"/>
+                        <circle cx="32" cy="24" r="6" fill="#00ffff" fill-opacity="0.3" stroke="#00ffff"/>
+                        <path d="M48 8l8 4v8" stroke="#27ca40" stroke-width="2"/>
                     </svg>
                 </div>
                 <div class="project-card-content">
                     <div class="project-card-number">02</div>
-                    <h3 class="project-card-title">Automated QC Pipeline</h3>
-                    <p class="project-card-desc">Scans rendered frames for technical issues — black frames, aspect ratio errors, and codec compliance.</p>
+                    <h3 class="project-card-title">Meshy 3D Asset Pipeline</h3>
+                    <p class="project-card-desc">AI-powered concept-to-3D tool integrated into production pipelines for rapid asset generation and validation.</p>
                     <div class="project-card-tags">
-                        <span class="project-tag">Python</span>
-                        <span class="project-tag">FFmpeg</span>
-                        <span class="project-tag">OpenCV</span>
+                        <span class="project-tag">PyQt5</span>
+                        <span class="project-tag">Meshy AI</span>
+                        <span class="project-tag">USD</span>
                     </div>
                 </div>
                 <div class="project-card-overlay">
-                    <h4 class="project-overlay-title">Automated QC Pipeline</h4>
-                    <p class="project-overlay-desc">Batch validation system that catches render errors before they reach review or delivery.</p>
+                    <h4 class="project-overlay-title">Meshy 3D Asset Pipeline</h4>
+                    <p class="project-overlay-desc">Streamlines concept art to production-ready 3D with automated validation, USD export, and asset library integration.</p>
                     <ul class="project-overlay-features">
-                        <li>Black frame detection</li>
-                        <li>Frame drop analysis</li>
-                        <li>Color space verification</li>
-                        <li>Spec compliance reports</li>
+                        <li>Concept art to 3D conversion</li>
+                        <li>PBR texture generation</li>
+                        <li>USD/GLB/FBX export</li>
+                        <li>Asset library publishing</li>
                     </ul>
+                    <div class="project-role">
+                        <strong>Role:</strong> Sole developer — built PyQt5 interface, Meshy API integration, asset validation pipeline, and ShotGrid publishing hooks.
+                    </div>
+                    <div class="project-code-section">
+                        <button class="code-tab-toggle" onclick="this.classList.toggle('active'); this.nextElementSibling.classList.toggle('active');">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+                            View Code Snippet
+                        </button>
+                        <div class="code-tab-content">
+                            <pre><span class="keyword">class</span> <span class="function">MeshyPipeline</span>:
+    <span class="keyword">def</span> <span class="function">process_concept</span>(self, image_path):
+        <span class="comment"># Upload to Meshy AI</span>
+        task_id = self.meshy_api.<span class="function">create_task</span>(image_path)
+        
+        <span class="comment"># Poll for completion</span>
+        result = self.<span class="function">wait_for_result</span>(task_id)
+        
+        <span class="comment"># Validate and convert to USD</span>
+        usd_path = self.<span class="function">convert_to_usd</span>(result.glb_path)
+        
+        <span class="comment"># Publish to asset library</span>
+        self.shotgrid.<span class="function">publish_asset</span>(
+            usd_path, 
+            asset_type=<span class="string">"prop"</span>
+        )</pre>
+                        </div>
+                    </div>
                 </div>
             </div>
 
@@ -247,46 +300,35 @@
                         <li>Duration & comment support</li>
                         <li>Data-driven animation</li>
                     </ul>
-                </div>
-            </div>
-
-            <!-- Project 4: Editorial Conform Tool -->
-            <div class="project-card">
-                <div class="project-card-visual pattern-circuit">
-                    <svg class="project-icon" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <rect x="4" y="18" width="56" height="28" rx="2" stroke="#00ffff" stroke-width="2"/>
-                        <rect x="8" y="24" width="12" height="16" fill="#00ffff" fill-opacity="0.3"/>
-                        <rect x="22" y="24" width="8" height="16" fill="#00ffff" fill-opacity="0.5"/>
-                        <rect x="32" y="24" width="16" height="16" fill="#00ffff" fill-opacity="0.4"/>
-                        <rect x="50" y="24" width="6" height="16" fill="#00ffff" fill-opacity="0.6"/>
-                        <path d="M4 14h56M32 10v4" stroke="#00ffff" stroke-width="2"/>
-                        <circle cx="14" cy="14" r="2" fill="#ff9500"/>
-                        <circle cx="50" cy="14" r="2" fill="#27ca40"/>
-                    </svg>
-                </div>
-                <div class="project-card-content">
-                    <div class="project-card-number">04</div>
-                    <h3 class="project-card-title">Editorial Conform Tool</h3>
-                    <p class="project-card-desc">Parses Premiere/Resolve EDLs to auto-generate VFX plates with proper naming and handles.</p>
-                    <div class="project-card-tags">
-                        <span class="project-tag">Python</span>
-                        <span class="project-tag">EDL/XML</span>
-                        <span class="project-tag">Premiere</span>
+                    <div class="project-role">
+                        <strong>Role:</strong> Sole developer — wrote ExtendScript panel, JSON schema design, and integration with editorial workflows.
+                    </div>
+                    <div class="project-code-section">
+                        <button class="code-tab-toggle" onclick="this.classList.toggle('active'); this.nextElementSibling.classList.toggle('active');">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+                            View Code Snippet
+                        </button>
+                        <div class="code-tab-content">
+                            <pre><span class="keyword">function</span> <span class="function">exportMarkersToJSON</span>(comp) {
+    <span class="keyword">var</span> markers = [];
+    <span class="keyword">var</span> markerProp = comp.markerProperty;
+    
+    <span class="keyword">for</span> (<span class="keyword">var</span> i = 1; i <= markerProp.numKeys; i++) {
+        markers.push({
+            time: markerProp.keyTime(i),
+            comment: markerProp.keyValue(i).comment,
+            duration: markerProp.keyValue(i).duration
+        });
+    }
+    
+    <span class="keyword">return</span> JSON.stringify(markers, <span class="keyword">null</span>, 2);
+}</pre>
+                        </div>
                     </div>
                 </div>
-                <div class="project-card-overlay">
-                    <h4 class="project-overlay-title">Editorial Conform Tool</h4>
-                    <p class="project-overlay-desc">Bridges editorial and VFX by automating plate extraction and shot setup from edit timelines.</p>
-                    <ul class="project-overlay-features">
-                        <li>EDL/XML/AAF parsing</li>
-                        <li>Auto plate extraction</li>
-                        <li>Handle frame calculation</li>
-                        <li>ShotGrid shot creation</li>
-                    </ul>
-                </div>
             </div>
 
-            <!-- Project 5: ShotGrid Workload Dashboard -->
+            <!-- Project 4: ShotGrid Workload Dashboard -->
             <div class="project-card">
                 <div class="project-card-visual pattern-grid">
                     <svg class="project-icon" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -301,7 +343,7 @@
                     </svg>
                 </div>
                 <div class="project-card-content">
-                    <div class="project-card-number">05</div>
+                    <div class="project-card-number">04</div>
                     <h3 class="project-card-title">ShotGrid Workload Dashboard</h3>
                     <p class="project-card-desc">Artist capacity visualization widget pulling real-time task data from ShotGrid API.</p>
                     <div class="project-card-tags">
@@ -319,39 +361,28 @@
                         <li>Department filtering</li>
                         <li>Task status tracking</li>
                     </ul>
-                </div>
-            </div>
-
-            <!-- Project 6: Delivery Validator -->
-            <div class="project-card">
-                <div class="project-card-visual pattern-dots">
-                    <svg class="project-icon" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <rect x="8" y="8" width="36" height="48" rx="2" stroke="#00ffff" stroke-width="2"/>
-                        <path d="M16 20h20M16 28h16M16 36h20M16 44h12" stroke="#00ffff" stroke-width="2" stroke-opacity="0.5"/>
-                        <circle cx="48" cy="44" r="12" fill="#0a1520" stroke="#27ca40" stroke-width="2"/>
-                        <path d="M43 44l4 4 8-8" stroke="#27ca40" stroke-width="2" stroke-linecap="round"/>
-                        <rect x="12" y="12" width="8" height="4" fill="#00ffff" fill-opacity="0.3"/>
-                    </svg>
-                </div>
-                <div class="project-card-content">
-                    <div class="project-card-number">06</div>
-                    <h3 class="project-card-title">Delivery Validator</h3>
-                    <p class="project-card-desc">Final deliverable checker ensuring files meet client specs for resolution, codec, and audio.</p>
-                    <div class="project-card-tags">
-                        <span class="project-tag">Python</span>
-                        <span class="project-tag">MediaInfo</span>
-                        <span class="project-tag">FFprobe</span>
+                    <div class="project-role">
+                        <strong>Role:</strong> Sole developer — built PyQt5 widget, ShotGrid API integration, custom data visualization components.
                     </div>
-                </div>
-                <div class="project-card-overlay">
-                    <h4 class="project-overlay-title">Delivery Validator</h4>
-                    <p class="project-overlay-desc">Automated verification against delivery specs before files leave the building.</p>
-                    <ul class="project-overlay-features">
-                        <li>Resolution & aspect ratio</li>
-                        <li>Codec & bitrate check</li>
-                        <li>Audio channel verification</li>
-                        <li>Naming convention check</li>
-                    </ul>
+                    <div class="project-code-section">
+                        <button class="code-tab-toggle" onclick="this.classList.toggle('active'); this.nextElementSibling.classList.toggle('active');">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+                            View Code Snippet
+                        </button>
+                        <div class="code-tab-content">
+                            <pre><span class="keyword">def</span> <span class="function">get_artist_workload</span>(self, artist_id):
+    tasks = self.sg.<span class="function">find</span>(<span class="string">"Task"</span>, [
+        [<span class="string">"task_assignees"</span>, <span class="string">"is"</span>, {<span class="string">"type"</span>: <span class="string">"HumanUser"</span>, <span class="string">"id"</span>: artist_id}],
+        [<span class="string">"sg_status_list"</span>, <span class="string">"not_in"</span>, [<span class="string">"fin"</span>, <span class="string">"omt"</span>]]
+    ], [<span class="string">"content"</span>, <span class="string">"sg_status_list"</span>, <span class="string">"due_date"</span>])
+    
+    <span class="keyword">return</span> {
+        <span class="string">"total"</span>: len(tasks),
+        <span class="string">"in_progress"</span>: sum(1 <span class="keyword">for</span> t <span class="keyword">in</span> tasks <span class="keyword">if</span> t[<span class="string">"sg_status_list"</span>] == <span class="string">"ip"</span>),
+        <span class="string">"tasks"</span>: tasks
+    }</pre>
+                        </div>
+                    </div>
                 </div>
             </div>
 
