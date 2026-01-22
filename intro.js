@@ -158,8 +158,8 @@ class IntroExperience {
         
         // Scene with dark void
         this.scene = new THREE.Scene();
-        this.scene.background = new THREE.Color(0x000508);
-        this.scene.fog = new THREE.FogExp2(0x000508, 0.035);
+        this.scene.background = new THREE.Color(0x000205);
+        this.scene.fog = new THREE.FogExp2(0x000205, 0.025);
 
         // Camera
         this.camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 0.1, 1000);
@@ -182,6 +182,7 @@ class IntroExperience {
         this.postProcessor = new PS2PostProcessor(this.renderer, this.scene, this.camera);
 
         // Create environment
+        this.createGlitchySky();
         this.createPS2Ground();
         this.createPS2Towers();
         this.createLightPortal();
@@ -203,6 +204,109 @@ class IntroExperience {
         this.animate();
         
         console.log('PS2 Intro initialized. Mobile:', this.isMobile);
+    }
+
+    createGlitchySky() {
+        // Create a large sphere for the sky with glitchy stars
+        const skyGeometry = new THREE.SphereGeometry(100, 32, 32);
+        
+        // Custom shader for glitchy stars
+        const skyMaterial = new THREE.ShaderMaterial({
+            uniforms: {
+                time: { value: 0 },
+                starDensity: { value: 0.003 },
+                glitchIntensity: { value: 0.3 }
+            },
+            vertexShader: `
+                varying vec3 vPosition;
+                varying vec2 vUv;
+                void main() {
+                    vPosition = position;
+                    vUv = uv;
+                    gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
+                }
+            `,
+            fragmentShader: `
+                uniform float time;
+                uniform float starDensity;
+                uniform float glitchIntensity;
+                varying vec3 vPosition;
+                varying vec2 vUv;
+                
+                // Random function
+                float rand(vec2 co) {
+                    return fract(sin(dot(co.xy, vec2(12.9898, 78.233))) * 43758.5453);
+                }
+                
+                // Noise function
+                float noise(vec2 p) {
+                    vec2 i = floor(p);
+                    vec2 f = fract(p);
+                    f = f * f * (3.0 - 2.0 * f);
+                    float a = rand(i);
+                    float b = rand(i + vec2(1.0, 0.0));
+                    float c = rand(i + vec2(0.0, 1.0));
+                    float d = rand(i + vec2(1.0, 1.0));
+                    return mix(mix(a, b, f.x), mix(c, d, f.x), f.y);
+                }
+                
+                void main() {
+                    vec3 pos = normalize(vPosition);
+                    
+                    // Base dark sky color with slight gradient
+                    vec3 skyColor = mix(
+                        vec3(0.0, 0.01, 0.03),
+                        vec3(0.0, 0.02, 0.05),
+                        pos.y * 0.5 + 0.5
+                    );
+                    
+                    // Create stars
+                    vec2 starUV = pos.xz * 50.0 + pos.y * 30.0;
+                    float starVal = rand(floor(starUV));
+                    
+                    // Glitch effect - offset stars randomly over time
+                    float glitchOffset = step(0.98, rand(vec2(floor(time * 10.0), floor(starUV.y * 0.1)))) * glitchIntensity;
+                    starUV.x += glitchOffset * 10.0;
+                    starVal = rand(floor(starUV));
+                    
+                    // Star threshold with twinkling
+                    float twinkle = sin(time * 2.0 + starVal * 100.0) * 0.5 + 0.5;
+                    float starThreshold = starDensity + twinkle * 0.001;
+                    
+                    if (starVal > 1.0 - starThreshold) {
+                        // Star color - cyan tinted
+                        float brightness = (starVal - (1.0 - starThreshold)) / starThreshold;
+                        brightness = pow(brightness, 0.5) * twinkle;
+                        
+                        // Glitch color shift
+                        float colorGlitch = step(0.95, rand(vec2(time * 5.0, starVal))) * glitchIntensity;
+                        vec3 starColor = mix(
+                            vec3(0.7, 0.9, 1.0),  // Normal cyan-white
+                            vec3(1.0, 0.3, 0.5),  // Glitch magenta
+                            colorGlitch
+                        );
+                        
+                        skyColor += starColor * brightness * 0.8;
+                    }
+                    
+                    // Add horizontal glitch lines
+                    float lineGlitch = step(0.97, rand(vec2(floor(time * 15.0), floor(pos.y * 100.0))));
+                    if (lineGlitch > 0.5) {
+                        skyColor += vec3(0.0, 0.1, 0.15) * glitchIntensity;
+                    }
+                    
+                    // Scanline effect on sky
+                    float scanline = sin(vUv.y * 500.0) * 0.5 + 0.5;
+                    skyColor *= 0.95 + scanline * 0.05;
+                    
+                    gl_FragColor = vec4(skyColor, 1.0);
+                }
+            `,
+            side: THREE.BackSide
+        });
+        
+        this.skySphere = new THREE.Mesh(skyGeometry, skyMaterial);
+        this.scene.add(this.skySphere);
     }
 
     createPS2Ground() {
@@ -386,8 +490,8 @@ class IntroExperience {
         overlay.id = 'game-ui-overlay';
         overlay.innerHTML = `
             <div class="instruction-text" id="instruction-text">
-                <span class="key-prompt">${this.isMobile ? 'USE JOYSTICK' : 'WASD'}</span>
-                <span class="instruction-label">to move</span>
+                <span class="key-prompt">${this.isMobile ? 'SLIDE UP/DOWN' : 'W / S'}</span>
+                <span class="instruction-label">to move forward/back</span>
             </div>
             <div class="enter-light-text" id="enter-light-text">
                 ENTER THE LIGHT
@@ -708,22 +812,15 @@ class IntroExperience {
     onKeyDown(event) {
         if (!this.isLocked && !this.isMobile) return;
         
+        // Only forward/backward movement
         switch (event.code) {
             case 'KeyW':
             case 'ArrowUp':
                 this.moveForward = true;
                 break;
-            case 'KeyA':
-            case 'ArrowLeft':
-                this.moveLeft = true;
-                break;
             case 'KeyS':
             case 'ArrowDown':
                 this.moveBackward = true;
-                break;
-            case 'KeyD':
-            case 'ArrowRight':
-                this.moveRight = true;
                 break;
         }
     }
@@ -734,17 +831,9 @@ class IntroExperience {
             case 'ArrowUp':
                 this.moveForward = false;
                 break;
-            case 'KeyA':
-            case 'ArrowLeft':
-                this.moveLeft = false;
-                break;
             case 'KeyS':
             case 'ArrowDown':
                 this.moveBackward = false;
-                break;
-            case 'KeyD':
-            case 'ArrowRight':
-                this.moveRight = false;
                 break;
         }
     }
@@ -860,29 +949,25 @@ class IntroExperience {
             this.postProcessor.update(time * 0.001);
         }
 
-        // Movement
+        // Update glitchy sky
+        if (this.skySphere && this.skySphere.material.uniforms) {
+            this.skySphere.material.uniforms.time.value = time * 0.001;
+        }
+
+        // Movement - forward/backward only
         if (this.isLocked || (this.isMobile && this.controlsSetup)) {
-            this.velocity.x -= this.velocity.x * 10.0 * delta;
             this.velocity.z -= this.velocity.z * 10.0 * delta;
 
+            // Only use Y axis of joystick (forward/backward)
             if (this.isMobile && this.joystickActive) {
                 this.direction.z = -this.joystickY;
-                this.direction.x = this.joystickX;
             } else {
                 this.direction.z = Number(this.moveForward) - Number(this.moveBackward);
-                this.direction.x = Number(this.moveRight) - Number(this.moveLeft);
-            }
-            
-            if (this.direction.length() > 0) {
-                this.direction.normalize();
             }
 
             const speed = 3;
             if (Math.abs(this.direction.z) > 0.1) {
                 this.velocity.z -= this.direction.z * speed * delta * 50;
-            }
-            if (Math.abs(this.direction.x) > 0.1) {
-                this.velocity.x -= this.direction.x * speed * delta * 50;
             }
 
             const forward = new THREE.Vector3();
@@ -890,11 +975,7 @@ class IntroExperience {
             forward.y = 0;
             forward.normalize();
 
-            const right = new THREE.Vector3();
-            right.crossVectors(forward, new THREE.Vector3(0, 1, 0));
-
             this.camera.position.add(forward.multiplyScalar(-this.velocity.z * delta));
-            this.camera.position.add(right.multiplyScalar(-this.velocity.x * delta));
 
             this.camera.position.y = 1.6;
         }
