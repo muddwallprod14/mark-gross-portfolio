@@ -1,0 +1,206 @@
+/* Three.js Intro Styles */
+
+#intro-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 10000;
+    background: #000;
+}
+
+#intro-blocker {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: radial-gradient(ellipse at center, rgba(0, 30, 40, 0.9) 0%, rgba(0, 0, 0, 0.98) 100%);
+    z-index: 10001;
+}
+
+#intro-instructions {
+    text-align: center;
+    cursor: pointer;
+    padding: 40px;
+    max-width: 500px;
+}
+
+#intro-instructions h1 {
+    font-family: 'Eurostile', 'Outfit', sans-serif;
+    font-size: clamp(2.5rem, 8vw, 5rem);
+    font-weight: 700;
+    color: #fff;
+    letter-spacing: 0.2em;
+    margin-bottom: 0.5rem;
+    text-shadow: 0 0 30px rgba(0, 255, 255, 0.5);
+    animation: titleGlow 2s ease-in-out infinite alternate;
+}
+
+#intro-instructions > p {
+    font-family: 'Outfit', sans-serif;
+    font-size: 1rem;
+    color: rgba(255, 255, 255, 0.7);
+    letter-spacing: 0.15em;
+    margin-bottom: 3rem;
+    text-transform: uppercase;
+}
+
+.intro-prompt {
+    margin-bottom: 2rem;
+}
+
+.click-text {
+    display: inline-block;
+    font-family: 'Eurostile', sans-serif;
+    font-size: 1.2rem;
+    color: #00ffff;
+    text-transform: uppercase;
+    letter-spacing: 0.3em;
+    padding: 1rem 2.5rem;
+    border: 2px solid #00ffff;
+    background: rgba(0, 255, 255, 0.1);
+    transition: all 0.3s ease;
+    animation: pulse 2s ease-in-out infinite;
+}
+
+.click-text:hover {
+    background: rgba(0, 255, 255, 0.2);
+    box-shadow: 0 0 30px rgba(0, 255, 255, 0.4);
+}
+
+.keys-hint {
+    margin-top: 1.5rem;
+    font-family: 'Outfit', sans-serif;
+    font-size: 0.85rem;
+    color: rgba(255, 255, 255, 0.5);
+}
+
+.keys-hint span {
+    display: inline-block;
+    padding: 0.3rem 0.6rem;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 4px;
+    margin: 0 0.3rem;
+    font-family: monospace;
+    color: #00ffff;
+}
+
+.intro-subtext {
+    font-size: 0.9rem !important;
+    color: rgba(255, 255, 255, 0.4) !important;
+    font-style: italic;
+}
+
+#intro-hint {
+    position: fixed;
+    bottom: 15%;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 10002;
+    opacity: 0;
+    transition: opacity 0.5s ease;
+    pointer-events: none;
+}
+
+#intro-hint span {
+    font-family: 'Eurostile', sans-serif;
+    font-size: 1.5rem;
+    color: #00ffff;
+    text-transform: uppercase;
+    letter-spacing: 0.2em;
+    text-shadow: 0 0 20px rgba(0, 255, 255, 0.8);
+    animation: hintPulse 1.5s ease-in-out infinite;
+}
+
+/* Animations */
+@keyframes titleGlow {
+    from {
+        text-shadow: 0 0 30px rgba(0, 255, 255, 0.3), 0 0 60px rgba(0, 255, 255, 0.1);
+    }
+    to {
+        text-shadow: 0 0 40px rgba(0, 255, 255, 0.6), 0 0 80px rgba(0, 255, 255, 0.3);
+    }
+}
+
+@keyframes pulse {
+    0%, 100% {
+        box-shadow: 0 0 10px rgba(0, 255, 255, 0.3);
+    }
+    50% {
+        box-shadow: 0 0 25px rgba(0, 255, 255, 0.5);
+    }
+}
+
+@keyframes hintPulse {
+    0%, 100% {
+        opacity: 1;
+        transform: scale(1);
+    }
+    50% {
+        opacity: 0.7;
+        transform: scale(1.05);
+    }
+}
+
+/* Crosshair when locked */
+#intro-container canvas {
+    cursor: none;
+}
+
+#intro-container::after {
+    content: '';
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    width: 20px;
+    height: 20px;
+    transform: translate(-50%, -50%);
+    border: 2px solid rgba(0, 255, 255, 0.5);
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 10003;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+#intro-container:not(:has(#intro-blocker[style*="display: flex"]))::after {
+    opacity: 1;
+}
+
+/* Mobile fallback message */
+@media (max-width: 768px), (hover: none) {
+    #intro-container {
+        display: none !important;
+    }
+}
+
+/* Main content transition */
+#main-content {
+    opacity: 1;
+    transition: opacity 1s ease-in;
+}
+
+/* Scanline effect for intro */
+#intro-container::before {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: repeating-linear-gradient(
+        0deg,
+        rgba(0, 0, 0, 0.1) 0px,
+        rgba(0, 0, 0, 0.1) 1px,
+        transparent 1px,
+        transparent 2px
+    );
+    pointer-events: none;
+    z-index: 10004;
+    opacity: 0.3;
+}

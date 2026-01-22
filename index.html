@@ -34,8 +34,32 @@
     </style>
     <link href="https://fonts.cdnfonts.com/css/eurostile" rel="stylesheet">
     <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="intro.css">
 </head>
 <body>
+    <!-- Three.js Intro Experience -->
+    <div id="intro-container">
+        <div id="intro-blocker">
+            <div id="intro-instructions">
+                <h1>MARK GROSS</h1>
+                <p>QA Specialist • Editor • Technical Artist</p>
+                <div class="intro-prompt">
+                    <span class="click-text">Click to Enter</span>
+                    <div class="keys-hint">
+                        <span>WASD</span> to move
+                        <span>MOUSE</span> to look
+                    </div>
+                </div>
+                <p class="intro-subtext">Walk toward the light to enter the portfolio</p>
+            </div>
+        </div>
+        <div id="intro-hint">
+            <span>Enter the light</span>
+        </div>
+    </div>
+
+    <!-- Main Portfolio Content (hidden initially) -->
+    <div id="main-content" style="display: none;">
     <div class="hero-background">
         <img src="hero-cover.jpg" alt="" class="hero-cover-image">
         <video autoplay muted loop playsinline id="bg-video" class="hero-video">
@@ -1700,5 +1724,9 @@ TEMPLATE_STRUCTURE = [
     </div>
 
     <script src="script.js"></script>
+    </div><!-- End main-content -->
+
+    <!-- Three.js Intro Script -->
+    <script type="module" src="intro.js"></script>
 </body>
 </html>
