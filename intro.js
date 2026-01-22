@@ -404,6 +404,7 @@ class IntroExperience {
     setupControls() {
         const blocker = document.getElementById('intro-blocker');
         const instructions = document.getElementById('intro-instructions');
+        const startButton = instructions ? instructions.querySelector('.click-text') : null;
 
         if (!blocker || !instructions) {
             console.error('Blocker or instructions not found');
@@ -412,45 +413,97 @@ class IntroExperience {
 
         console.log('Setting up controls. isMobile:', this.isMobile);
 
-        if (this.isMobile) {
-            // Mobile setup
-            this.setupMobileStartButton(blocker, instructions);
-        } else {
-            // Desktop pointer lock
-            const clickHandler = () => {
-                console.log('Desktop click - requesting pointer lock');
-                if (this.canvas.requestPointerLock) {
-                    this.canvas.requestPointerLock();
-                }
-            };
+        // Universal start handler
+        const startExperience = (e) => {
+            e.preventDefault();
+            e.stopPropagation();
             
-            instructions.addEventListener('click', clickHandler);
+            // Don't trigger if clicking skip link
+            if (e.target.closest('#skip-intro') || e.target.closest('.skip-intro-link')) {
+                return;
+            }
+            
+            console.log('Start experience triggered. isMobile:', this.isMobile);
+            
+            if (this.isMobile) {
+                // Mobile: just hide blocker and start
+                blocker.style.display = 'none';
+                this.isLocked = true;
+                
+                if (!this.controlsSetup) {
+                    this.setupMobileControls();
+                    this.controlsSetup = true;
+                }
+            } else {
+                // Desktop: request pointer lock
+                console.log('Requesting pointer lock on canvas:', this.canvas);
+                if (this.canvas && this.canvas.requestPointerLock) {
+                    this.canvas.requestPointerLock();
+                } else {
+                    console.error('Canvas or requestPointerLock not available');
+                    // Fallback: just start without pointer lock
+                    blocker.style.display = 'none';
+                    this.isLocked = true;
+                }
+            }
+        };
 
+        // Add click handlers to multiple elements for reliability
+        if (startButton) {
+            startButton.addEventListener('click', startExperience);
+            startButton.addEventListener('mousedown', startExperience);
+            // Update button text for desktop
+            if (!this.isMobile) {
+                startButton.textContent = 'Click to Enter';
+            }
+        }
+        
+        instructions.addEventListener('click', startExperience);
+        blocker.addEventListener('click', (e) => {
+            // Only trigger if clicking on blocker background, not on skip link
+            if (e.target === blocker || e.target === instructions || e.target === startButton) {
+                startExperience(e);
+            }
+        });
+
+        // Pointer lock change handler (desktop)
+        if (!this.isMobile) {
             const onPointerLockChange = () => {
                 const isLocked = document.pointerLockElement === this.canvas;
+                
+                console.log('Pointer lock changed. isLocked:', isLocked);
                 
                 if (isLocked) {
                     this.isLocked = true;
                     blocker.style.display = 'none';
-                    console.log('Pointer locked');
                 } else {
                     this.isLocked = false;
                     if (!this.hasEntered) {
                         blocker.style.display = 'flex';
-                        const clickText = instructions.querySelector('.click-text');
-                        if (clickText) clickText.textContent = 'Click to Continue';
+                        if (startButton) startButton.textContent = 'Click to Continue';
                         this.moveForward = false;
                         this.moveBackward = false;
                         this.moveLeft = false;
                         this.moveRight = false;
                         this.velocity.set(0, 0, 0);
                     }
-                    console.log('Pointer unlocked');
                 }
             };
 
             document.addEventListener('pointerlockchange', onPointerLockChange);
+            document.addEventListener('mozpointerlockchange', onPointerLockChange);
+            document.addEventListener('webkitpointerlockchange', onPointerLockChange);
             document.addEventListener('mousemove', (event) => this.onMouseMove(event));
+        }
+
+        // Mobile touch handlers
+        if (this.isMobile) {
+            if (startButton) {
+                startButton.addEventListener('touchstart', startExperience, { passive: false });
+                startButton.addEventListener('touchend', startExperience, { passive: false });
+            }
+            instructions.addEventListener('touchstart', startExperience, { passive: false });
+            instructions.addEventListener('touchend', startExperience, { passive: false });
         }
 
         // Keyboard controls
@@ -470,42 +523,6 @@ class IntroExperience {
                 e.stopPropagation();
                 this.enterLight();
             }, { passive: false });
-        }
-    }
-
-    setupMobileStartButton(blocker, instructions) {
-        console.log('Setting up mobile start button');
-        
-        const startHandler = (e) => {
-            e.preventDefault();
-            e.stopPropagation();
-            
-            // Don't trigger if clicking skip link
-            if (e.target.closest('#skip-intro') || e.target.closest('.skip-intro-link')) {
-                return;
-            }
-            
-            console.log('Mobile start triggered');
-            blocker.style.display = 'none';
-            this.isLocked = true;
-            
-            if (!this.controlsSetup) {
-                this.setupMobileControls();
-                this.controlsSetup = true;
-            }
-        };
-        
-        // Add listeners to the entire instructions div
-        instructions.addEventListener('touchstart', startHandler, { passive: false });
-        instructions.addEventListener('touchend', startHandler, { passive: false });
-        instructions.addEventListener('click', startHandler);
-        
-        // Also specifically target the button
-        const startButton = instructions.querySelector('.click-text');
-        if (startButton) {
-            startButton.addEventListener('touchstart', startHandler, { passive: false });
-            startButton.addEventListener('touchend', startHandler, { passive: false });
-            startButton.addEventListener('click', startHandler);
         }
     }
 
