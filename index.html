@@ -143,1120 +143,218 @@
     </section>
 
     <section id="work" class="work-section">
-        <div class="section-header">
-            <span class="section-tag">Selected Projects</span>
-            <h2 class="glitch" data-text="Case Studies">Case Studies</h2>
+        <div class="work-section-header">
+            <span class="work-section-label">Selected Work</span>
+            <h2 class="work-section-title glitch" data-text="Projects">Projects</h2>
+            <p class="work-section-subtitle">Pipeline tools, production systems, and creative automation built for VFX and game studios.</p>
         </div>
         
-        <!-- Project Quick Nav -->
-        <div class="project-nav">
-            <a href="#job-monitor" class="project-nav-item">01 Job Monitor</a>
-            <a href="#meshy-3d" class="project-nav-item">02 Meshy 3D</a>
-            <a href="#ae-marker" class="project-nav-item">03 AE Marker</a>
-            <a href="#ableton-generator" class="project-nav-item">04 Ableton Gen</a>
-            <a href="#shotgrid-workload" class="project-nav-item">05 ShotGrid</a>
-            <a href="#flex-viewer" class="project-nav-item">06 Flex Viewer</a>
+        <div class="projects-grid">
+            
+            <!-- Project 1: Job Monitor Platform -->
+            <div class="project-card">
+                <div class="project-card-visual pattern-grid">
+                    <svg class="project-icon" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <rect x="8" y="12" width="48" height="40" rx="4" stroke="#00ffff" stroke-width="2"/>
+                        <path d="M8 22h48" stroke="#00ffff" stroke-width="2"/>
+                        <circle cx="14" cy="17" r="2" fill="#ff5f56"/>
+                        <circle cx="22" cy="17" r="2" fill="#ffbd2e"/>
+                        <circle cx="30" cy="17" r="2" fill="#27ca40"/>
+                        <rect x="14" y="28" width="12" height="18" rx="2" fill="#00ffff" fill-opacity="0.2" stroke="#00ffff"/>
+                        <rect x="30" y="28" width="20" height="8" rx="2" fill="#00ffff" fill-opacity="0.1" stroke="#00ffff"/>
+                        <rect x="30" y="40" width="20" height="6" rx="2" fill="#00ffff" fill-opacity="0.15" stroke="#00ffff"/>
+                    </svg>
+                </div>
+                <div class="project-card-content">
+                    <div class="project-card-number">01</div>
+                    <h3 class="project-card-title">Job Monitor Platform</h3>
+                    <p class="project-card-desc">Real-time production monitoring dashboard for tracking render jobs, artist availability, and pipeline health.</p>
+                    <div class="project-card-tags">
+                        <span class="project-tag">Python</span>
+                        <span class="project-tag">React</span>
+                        <span class="project-tag">WebSocket</span>
+                    </div>
+                </div>
+                <div class="project-card-overlay">
+                    <h4 class="project-overlay-title">Job Monitor Platform</h4>
+                    <p class="project-overlay-desc">Enterprise-grade monitoring system connecting multiple render farms with real-time status updates.</p>
+                    <ul class="project-overlay-features">
+                        <li>WebSocket-based live updates</li>
+                        <li>Multi-farm aggregation</li>
+                        <li>ShotGrid & Deadline integration</li>
+                        <li>Custom alert system</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Project 2: Meshy 3D Generator -->
+            <div class="project-card">
+                <div class="project-card-visual pattern-dots">
+                    <svg class="project-icon" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M32 8L8 20v24l24 12 24-12V20L32 8z" stroke="#00ffff" stroke-width="2" fill="none"/>
+                        <path d="M8 20l24 12 24-12" stroke="#00ffff" stroke-width="2"/>
+                        <path d="M32 32v24" stroke="#00ffff" stroke-width="2"/>
+                        <circle cx="32" cy="24" r="6" fill="#00ffff" fill-opacity="0.3" stroke="#00ffff"/>
+                    </svg>
+                </div>
+                <div class="project-card-content">
+                    <div class="project-card-number">02</div>
+                    <h3 class="project-card-title">Meshy 3D Generator</h3>
+                    <p class="project-card-desc">AI-powered tool that transforms 2D images into production-ready 3D models with PBR textures.</p>
+                    <div class="project-card-tags">
+                        <span class="project-tag">PyQt5</span>
+                        <span class="project-tag">Meshy AI</span>
+                        <span class="project-tag">REST API</span>
+                    </div>
+                </div>
+                <div class="project-card-overlay">
+                    <h4 class="project-overlay-title">Meshy 3D Generator</h4>
+                    <p class="project-overlay-desc">Desktop application integrating Meshy AI for rapid 3D asset generation from concept art.</p>
+                    <ul class="project-overlay-features">
+                        <li>Drag-and-drop image input</li>
+                        <li>PBR texture generation</li>
+                        <li>GLB/FBX/OBJ export</li>
+                        <li>Threaded processing</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Project 3: AE Marker Exporter -->
+            <div class="project-card">
+                <div class="project-card-visual pattern-lines">
+                    <svg class="project-icon" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <rect x="10" y="10" width="44" height="44" rx="4" stroke="#00ffff" stroke-width="2"/>
+                        <text x="32" y="38" font-family="Arial" font-weight="bold" font-size="18" fill="#00ffff" text-anchor="middle">Ae</text>
+                        <path d="M10 50h10l4-8 6 12 6-16 8 12h10" stroke="#ff9500" stroke-width="2" fill="none"/>
+                    </svg>
+                </div>
+                <div class="project-card-content">
+                    <div class="project-card-number">03</div>
+                    <h3 class="project-card-title">AE Marker Exporter</h3>
+                    <p class="project-card-desc">Bidirectional JSON sync for After Effects markers enabling data-driven motion graphics.</p>
+                    <div class="project-card-tags">
+                        <span class="project-tag">ExtendScript</span>
+                        <span class="project-tag">JSON</span>
+                        <span class="project-tag">After Effects</span>
+                    </div>
+                </div>
+                <div class="project-card-overlay">
+                    <h4 class="project-overlay-title">AE Marker Exporter</h4>
+                    <p class="project-overlay-desc">Export and import composition markers as JSON for automated timelines and external data integration.</p>
+                    <ul class="project-overlay-features">
+                        <li>Export markers to JSON</li>
+                        <li>Import JSON to markers</li>
+                        <li>Duration & comment support</li>
+                        <li>Data-driven animation</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Project 4: Ableton Project Generator -->
+            <div class="project-card">
+                <div class="project-card-visual pattern-circuit">
+                    <svg class="project-icon" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <rect x="8" y="20" width="8" height="24" rx="1" fill="#00ffff" fill-opacity="0.8"/>
+                        <rect x="20" y="16" width="8" height="32" rx="1" fill="#00ffff" fill-opacity="0.6"/>
+                        <rect x="32" y="24" width="8" height="20" rx="1" fill="#00ffff" fill-opacity="0.7"/>
+                        <rect x="44" y="12" width="8" height="40" rx="1" fill="#00ffff" fill-opacity="0.5"/>
+                        <path d="M4 52h56" stroke="#00ffff" stroke-width="2"/>
+                    </svg>
+                </div>
+                <div class="project-card-content">
+                    <div class="project-card-number">04</div>
+                    <h3 class="project-card-title">Ableton Project Generator</h3>
+                    <p class="project-card-desc">Automated Ableton Live session scaffolding with template tracks, plugins, and routing.</p>
+                    <div class="project-card-tags">
+                        <span class="project-tag">Python</span>
+                        <span class="project-tag">XML</span>
+                        <span class="project-tag">Ableton</span>
+                    </div>
+                </div>
+                <div class="project-card-overlay">
+                    <h4 class="project-overlay-title">Ableton Project Generator</h4>
+                    <p class="project-overlay-desc">Generate ready-to-use Ableton projects with pre-configured tracks and plugin chains.</p>
+                    <ul class="project-overlay-features">
+                        <li>Template-based generation</li>
+                        <li>Track routing setup</li>
+                        <li>Plugin preset loading</li>
+                        <li>Batch project creation</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Project 5: ShotGrid Workload Dashboard -->
+            <div class="project-card">
+                <div class="project-card-visual pattern-grid">
+                    <svg class="project-icon" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <rect x="8" y="8" width="20" height="20" rx="3" stroke="#00ffff" stroke-width="2"/>
+                        <rect x="36" y="8" width="20" height="20" rx="3" stroke="#00ffff" stroke-width="2"/>
+                        <rect x="8" y="36" width="20" height="20" rx="3" stroke="#00ffff" stroke-width="2"/>
+                        <rect x="36" y="36" width="20" height="20" rx="3" stroke="#00ffff" stroke-width="2"/>
+                        <circle cx="18" cy="18" r="4" fill="#00ffff"/>
+                        <circle cx="46" cy="18" r="4" fill="#00ffff" fill-opacity="0.6"/>
+                        <circle cx="18" cy="46" r="4" fill="#00ffff" fill-opacity="0.8"/>
+                        <rect x="42" y="42" width="8" height="8" fill="#00ffff" fill-opacity="0.4"/>
+                    </svg>
+                </div>
+                <div class="project-card-content">
+                    <div class="project-card-number">05</div>
+                    <h3 class="project-card-title">ShotGrid Workload Dashboard</h3>
+                    <p class="project-card-desc">Artist capacity visualization widget pulling real-time task data from ShotGrid API.</p>
+                    <div class="project-card-tags">
+                        <span class="project-tag">PyQt5</span>
+                        <span class="project-tag">ShotGrid API</span>
+                        <span class="project-tag">Data Viz</span>
+                    </div>
+                </div>
+                <div class="project-card-overlay">
+                    <h4 class="project-overlay-title">ShotGrid Workload Dashboard</h4>
+                    <p class="project-overlay-desc">Visual dashboard showing artist task allocation and project health metrics.</p>
+                    <ul class="project-overlay-features">
+                        <li>Real-time ShotGrid sync</li>
+                        <li>Artist workload bars</li>
+                        <li>Department filtering</li>
+                        <li>Task status tracking</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Project 6: Flex Job Viewer -->
+            <div class="project-card">
+                <div class="project-card-visual pattern-dots">
+                    <svg class="project-icon" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <rect x="8" y="14" width="48" height="36" rx="4" stroke="#00ffff" stroke-width="2"/>
+                        <path d="M8 24h48" stroke="#00ffff" stroke-width="2"/>
+                        <rect x="14" y="30" width="36" height="4" rx="1" fill="#00ffff" fill-opacity="0.3"/>
+                        <rect x="14" y="38" width="28" height="4" rx="1" fill="#00ffff" fill-opacity="0.5"/>
+                        <circle cx="48" cy="40" r="4" stroke="#27ca40" stroke-width="2"/>
+                        <path d="M46 40l1.5 1.5 3-3" stroke="#27ca40" stroke-width="2"/>
+                    </svg>
+                </div>
+                <div class="project-card-content">
+                    <div class="project-card-number">06</div>
+                    <h3 class="project-card-title">Flex Job Viewer</h3>
+                    <p class="project-card-desc">Cross-platform job queue viewer with SSH integration for remote render farm monitoring.</p>
+                    <div class="project-card-tags">
+                        <span class="project-tag">Python</span>
+                        <span class="project-tag">PyQt5</span>
+                        <span class="project-tag">SSH</span>
+                    </div>
+                </div>
+                <div class="project-card-overlay">
+                    <h4 class="project-overlay-title">Flex Job Viewer</h4>
+                    <p class="project-overlay-desc">Desktop app for monitoring render jobs across multiple servers via SSH.</p>
+                    <ul class="project-overlay-features">
+                        <li>Multi-server monitoring</li>
+                        <li>SSH-based connectivity</li>
+                        <li>Job filtering & search</li>
+                        <li>Status notifications</li>
+                    </ul>
+                </div>
+            </div>
+
         </div>
-
-        <!-- Case Study 1: Job Monitor Platform -->
-        <article class="case-study" id="job-monitor">
-            <div class="case-study-header">
-                <div class="case-number">01</div>
-                <div class="case-meta">
-                    <span class="case-category">Production Operations • Dashboard Development</span>
-                    <h3 class="glitch" data-text="Job Monitor Platform">Job Monitor Platform</h3>
-                    <p class="case-intro">A real-time monitoring dashboard for tracking job status, resource allocation, and production metrics across distributed creative teams.</p>
-                </div>
-            </div>
-
-            <div class="case-visual caviar-visual">
-                <div class="dashboard-mockup">
-                    <div class="mockup-header">
-                        <div class="window-dots">
-                            <span></span><span></span><span></span>
-                        </div>
-                        <span class="mockup-title">Job Monitor Platform</span>
-                    </div>
-                    <div class="mockup-content">
-                        <div class="dashboard-grid">
-                            <div class="stat-card">
-                                <div class="stat-value" data-count="247">0</div>
-                                <div class="stat-label">Active Jobs</div>
-                                <div class="stat-trend positive">+12%</div>
-                            </div>
-                            <div class="stat-card">
-                                <div class="stat-value" data-count="98">0</div>
-                                <div class="stat-label">Completion Rate</div>
-                                <div class="stat-trend positive">+3%</div>
-                            </div>
-                            <div class="stat-card">
-                                <div class="stat-value" data-count="42">0</div>
-                                <div class="stat-label">Artists Online</div>
-                                <div class="stat-trend neutral">—</div>
-                            </div>
-                            <div class="chart-area">
-                                <div class="chart-bars">
-                                    <div class="bar" style="height: 60%"></div>
-                                    <div class="bar" style="height: 80%"></div>
-                                    <div class="bar" style="height: 45%"></div>
-                                    <div class="bar" style="height: 90%"></div>
-                                    <div class="bar" style="height: 70%"></div>
-                                    <div class="bar" style="height: 85%"></div>
-                                    <div class="bar active" style="height: 95%"></div>
-                                </div>
-                            </div>
-                            <div class="job-list">
-                                <div class="job-item">
-                                    <span class="job-status running"></span>
-                                    <span class="job-name">PROJ-2847 • Final Comp</span>
-                                    <span class="job-progress">78%</span>
-                                </div>
-                                <div class="job-item">
-                                    <span class="job-status queued"></span>
-                                    <span class="job-name">PROJ-2849 • Color Grade</span>
-                                    <span class="job-progress">Queued</span>
-                                </div>
-                                <div class="job-item">
-                                    <span class="job-status complete"></span>
-                                    <span class="job-name">PROJ-2845 • Export H.264</span>
-                                    <span class="job-progress">Done</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Screenshot placeholder -->
-            <!-- Screenshot placeholder - mockup displayed in code section below -->
-
-            <div class="case-details">
-                <div class="detail-block">
-                    <h4>The Challenge</h4>
-                    <p>Production teams struggled with visibility into job queues spread across multiple render farms and workstations. Supervisors lacked real-time insight into bottlenecks, causing delays and miscommunication during crunch periods.</p>
-                </div>
-                <div class="detail-block">
-                    <h4>My Role</h4>
-                    <p>Lead technical artist responsible for system architecture, API design, front-end dashboard development, and integration with existing production tools including Deadline, Shotgrid, and custom pipeline scripts.</p>
-                </div>
-                <div class="detail-block full-width">
-                    <h4>Core Implementation</h4>
-                    <div class="code-block">
-                        <div class="code-label">WebSocket Connection Handler</div>
-                        <pre><span class="keyword">class</span> <span class="function">JobMonitorSocket</span>:
-    <span class="keyword">def</span> <span class="function">__init__</span>(self, farm_endpoints):
-        self.connections = {}
-        self.job_cache = {}
-        
-    <span class="keyword">async def</span> <span class="function">connect_all</span>(self):
-        <span class="keyword">for</span> endpoint <span class="keyword">in</span> self.farm_endpoints:
-            ws = <span class="keyword">await</span> websockets.connect(endpoint)
-            self.connections[endpoint] = ws
-            asyncio.create_task(self.<span class="function">listen</span>(ws, endpoint))
-    
-    <span class="keyword">async def</span> <span class="function">listen</span>(self, ws, endpoint):
-        <span class="keyword">async for</span> message <span class="keyword">in</span> ws:
-            data = json.loads(message)
-            <span class="keyword">await</span> self.<span class="function">update_job_status</span>(data)
-            <span class="keyword">await</span> self.<span class="function">broadcast_to_clients</span>(data)</pre>
-                    </div>
-                    <div class="code-block">
-                        <div class="code-label">React Dashboard Component</div>
-                        <pre><span class="keyword">const</span> <span class="function">JobStatusCard</span> = ({ job }) => {
-  <span class="keyword">const</span> [progress, setProgress] = <span class="function">useState</span>(job.progress);
-  
-  <span class="function">useEffect</span>(() => {
-    <span class="keyword">const</span> ws = <span class="keyword">new</span> WebSocket(<span class="string">'ws://monitor/jobs'</span>);
-    ws.onmessage = (e) => {
-      <span class="keyword">const</span> data = JSON.parse(e.data);
-      <span class="keyword">if</span> (data.jobId === job.id) {
-        setProgress(data.progress);
-      }
-    };
-    <span class="keyword">return</span> () => ws.close();
-  }, [job.id]);
-  
-  <span class="keyword">return</span> (
-    &lt;<span class="function">Card</span> status={job.status}&gt;
-      &lt;ProgressBar value={progress} /&gt;
-      &lt;JobMeta job={job} /&gt;
-    &lt;/<span class="function">Card</span>&gt;
-  );
-};</pre>
-                    </div>
-                </div>
-                <div class="detail-block">
-                    <h4>Tech Stack</h4>
-                    <div class="tech-tags">
-                        <span>React</span>
-                        <span>Node.js</span>
-                        <span>WebSocket</span>
-                        <span>D3.js</span>
-                        <span>Python</span>
-                        <span>REST API</span>
-                        <span>MongoDB</span>
-                    </div>
-                </div>
-            </div>
-        </article>
-
-        <!-- Case Study 2: Meshy 3D Generator -->
-        <article class="case-study" id="meshy-3d">
-            <div class="case-study-header">
-                <div class="case-number">02</div>
-                <div class="case-meta">
-                    <span class="case-category">AI Integration • PyQt5 • 3D Generation</span>
-                    <h3 class="glitch" data-text="Meshy 3D Generator">Meshy 3D Generator</h3>
-                    <p class="case-intro">A desktop application that leverages Meshy AI to transform 2D images into high-quality 3D models with PBR textures, featuring drag-and-drop input, real-time progress tracking, and multi-format export.</p>
-                </div>
-            </div>
-
-            <div class="case-visual">
-                <!-- PyQt5 GUI Mockup for Meshy 3D -->
-                <div class="app-mockup pyqt-mockup">
-                    <div class="titlebar">
-                        <div class="titlebar-buttons">
-                            <span class="titlebar-btn close"></span>
-                            <span class="titlebar-btn minimize"></span>
-                            <span class="titlebar-btn maximize"></span>
-                        </div>
-                        <span class="titlebar-title">Meshy 3D Generator</span>
-                    </div>
-                    <div class="main-area" style="grid-template-columns: 350px 1fr;">
-                        <div class="sidebar" style="padding: 20px;">
-                            <div class="sidebar-title" style="font-size: 16px; color: #fff; margin-bottom: 16px;">Image to 3D Model</div>
-                            <div style="border: 2px dashed #555; border-radius: 12px; padding: 40px 20px; text-align: center; margin-bottom: 16px; background: #1a1a1a;">
-                                <div style="font-size: 48px; margin-bottom: 8px;">🖼️</div>
-                                <div style="color: #888; font-size: 12px;">Drop image here<br>or click to browse</div>
-                            </div>
-                            <div class="sidebar-title" style="margin-top: 20px;">Settings</div>
-                            <div class="detail-row" style="padding: 8px 0;">
-                                <span class="label">AI Model:</span>
-                                <span class="value" style="color: #0078d4;">meshy-4</span>
-                            </div>
-                            <div class="detail-row" style="padding: 8px 0;">
-                                <span class="label">Topology:</span>
-                                <span class="value">quad</span>
-                            </div>
-                            <div class="detail-row" style="padding: 8px 0;">
-                                <span class="label">Target Polys:</span>
-                                <span class="value">30,000</span>
-                            </div>
-                            <div class="detail-row" style="padding: 8px 0;">
-                                <span class="label">PBR Textures:</span>
-                                <span class="value" style="color: #28c840;">Enabled</span>
-                            </div>
-                            <button class="toolbar-btn primary" style="width: 100%; margin-top: 20px; padding: 14px; font-size: 13px;">Generate 3D Model</button>
-                            <div class="progress-bar-mock" style="margin-top: 12px;">
-                                <div class="fill" style="width: 67%;"></div>
-                            </div>
-                            <div style="color: #888; font-size: 11px; margin-top: 8px; text-align: center;">Status: PROCESSING (67%)</div>
-                        </div>
-                        <div class="content-area" style="display: flex; flex-direction: column;">
-                            <div style="display: flex; gap: 8px; margin-bottom: 16px;">
-                                <span style="padding: 8px 16px; background: #0078d4; color: white; border-radius: 4px; font-size: 11px;">Console Log</span>
-                                <span style="padding: 8px 16px; background: #333; color: #888; border-radius: 4px; font-size: 11px; cursor: pointer;">Results</span>
-                                <span style="padding: 8px 16px; background: #333; color: #888; border-radius: 4px; font-size: 11px; cursor: pointer;">History</span>
-                            </div>
-                            <div class="log-area" style="flex: 1; max-height: none; font-size: 11px;">
-                                <div class="log-line"><span class="time">[14:22:05]</span> <span class="info">INFO:</span> Starting 3D generation for: product_hero.png</div>
-                                <div class="log-line"><span class="time">[14:22:06]</span> <span class="info">INFO:</span> Uploading image to Meshy AI...</div>
-                                <div class="log-line"><span class="time">[14:22:08]</span> <span class="success">SUCCESS:</span> Task created: task_abc123xyz</div>
-                                <div class="log-line"><span class="time">[14:22:10]</span> <span class="info">INFO:</span> Status: PENDING (0%)</div>
-                                <div class="log-line"><span class="time">[14:22:15]</span> <span class="info">INFO:</span> Status: IN_PROGRESS (12%)</div>
-                                <div class="log-line"><span class="time">[14:22:30]</span> <span class="info">INFO:</span> Status: IN_PROGRESS (34%)</div>
-                                <div class="log-line"><span class="time">[14:22:45]</span> <span class="info">INFO:</span> Status: PROCESSING (67%)</div>
-                                <div class="log-line"><span class="time">[14:22:46]</span> <span class="info">INFO:</span> Generating PBR textures...</div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="case-details">
-                <div class="detail-block">
-                    <h4>The Challenge</h4>
-                    <p>Creative teams needed a streamlined way to convert concept art and product images into 3D models for visualization, prototyping, and integration into motion graphics projects without extensive 3D modeling expertise.</p>
-                </div>
-                <div class="detail-block">
-                    <h4>My Role</h4>
-                    <p>Sole developer of the desktop application, including the PyQt5 GUI, Meshy API integration, async task handling with QThread, and multi-format export system supporting GLB, FBX, and OBJ.</p>
-                </div>
-                <div class="detail-block full-width">
-                    <h4>Core Implementation (from meshy_3d_generator.py)</h4>
-                    <div class="code-block">
-                        <div class="code-label">API Worker Thread with PyQt5 Signals</div>
-                        <pre><span class="keyword">class</span> <span class="function">MeshyAPIWorker</span>(QThread):
-    <span class="string">"""Background worker for Meshy API calls"""</span>
-    task_created = pyqtSignal(str)  <span class="comment"># task_id</span>
-    progress_updated = pyqtSignal(str, int, str)  <span class="comment"># task_id, progress, status</span>
-    task_completed = pyqtSignal(str, dict)  <span class="comment"># task_id, result</span>
-    task_failed = pyqtSignal(str, str)  <span class="comment"># task_id, error</span>
-    log_message = pyqtSignal(str, str)  <span class="comment"># level, message</span>
-    
-    <span class="keyword">def</span> <span class="function">__init__</span>(self, api_key: str, image_path: str, settings: Dict):
-        <span class="keyword">super</span>().__init__()
-        self.api_key = api_key
-        self.image_path = image_path
-        self.settings = settings
-        self.running = <span class="keyword">True</span></pre>
-                    </div>
-                    <div class="code-block">
-                        <div class="code-label">Image-to-3D API Call</div>
-                        <pre><span class="keyword">def</span> <span class="function">create_task</span>(self) -> Optional[str]:
-    <span class="string">"""Create an image-to-3D task via Meshy API"""</span>
-    url = <span class="string">"https://api.meshy.ai/v2/image-to-3d"</span>
-    headers = {<span class="string">"Authorization"</span>: <span class="string">f"Bearer {self.api_key}"</span>}
-    
-    <span class="comment"># Encode image as base64</span>
-    <span class="keyword">with</span> open(self.image_path, <span class="string">"rb"</span>) <span class="keyword">as</span> f:
-        image_data = base64.b64encode(f.read()).decode(<span class="string">'utf-8'</span>)
-    
-    payload = {
-        <span class="string">"image_url"</span>: <span class="string">f"data:{mime_type};base64,{image_data}"</span>,
-        <span class="string">"enable_pbr"</span>: self.settings.get(<span class="string">"enable_pbr"</span>, <span class="keyword">True</span>),
-        <span class="string">"ai_model"</span>: self.settings.get(<span class="string">"ai_model"</span>, <span class="string">"meshy-4"</span>),
-        <span class="string">"topology"</span>: self.settings.get(<span class="string">"topology"</span>, <span class="string">"quad"</span>),
-        <span class="string">"target_polycount"</span>: self.settings.get(<span class="string">"target_polycount"</span>, <span class="number">30000</span>)
-    }
-    
-    response = requests.post(url, headers=headers, json=payload)
-    <span class="keyword">return</span> response.json().get(<span class="string">"result"</span>)</pre>
-                    </div>
-                    <div class="code-block">
-                        <div class="code-label">Drag & Drop Image Input</div>
-                        <pre><span class="keyword">class</span> <span class="function">ImageDropLabel</span>(QLabel):
-    <span class="string">"""Custom label that accepts drag & drop images"""</span>
-    image_dropped = pyqtSignal(str)
-    
-    <span class="keyword">def</span> <span class="function">__init__</span>(self, parent=<span class="keyword">None</span>):
-        <span class="keyword">super</span>().__init__(parent)
-        self.setAcceptDrops(<span class="keyword">True</span>)
-        self.setAlignment(Qt.AlignCenter)
-        
-    <span class="keyword">def</span> <span class="function">dropEvent</span>(self, event: QDropEvent):
-        urls = event.mimeData().urls()
-        <span class="keyword">if</span> urls:
-            path = urls[<span class="number">0</span>].toLocalFile()
-            <span class="keyword">if</span> path.lower().endswith((<span class="string">'.png'</span>, <span class="string">'.jpg'</span>, <span class="string">'.jpeg'</span>, <span class="string">'.webp'</span>)):
-                self.set_image(path)
-                self.image_dropped.emit(path)</pre>
-                    </div>
-                </div>
-                <div class="detail-block">
-                    <h4>Key Features</h4>
-                    <ul class="feature-list">
-                        <li>Drag-and-drop image input with preview</li>
-                        <li>Real-time progress tracking with status updates</li>
-                        <li>PBR texture generation for realistic materials</li>
-                        <li>Multiple export formats: GLB, FBX, OBJ</li>
-                        <li>Task history and result management</li>
-                        <li>Configurable AI model and topology settings</li>
-                    </ul>
-                </div>
-                <div class="detail-block">
-                    <h4>Tech Stack</h4>
-                    <div class="tech-tags">
-                        <span>Python 3.11</span>
-                        <span>PyQt5</span>
-                        <span>Meshy AI API</span>
-                        <span>QThread</span>
-                        <span>Requests</span>
-                        <span>Base64</span>
-                    </div>
-                </div>
-            </div>
-        </article>
-
-        <!-- Case Study 3: AE Marker Exporter -->
-        <article class="case-study" id="ae-marker">
-            <div class="case-study-header">
-                <div class="case-number">03</div>
-                <div class="case-meta">
-                    <span class="case-category">After Effects • Pipeline Tools • Data-Driven Animation</span>
-                    <h3 class="glitch" data-text="AE Marker Exporter">AE Marker Exporter</h3>
-                    <p class="case-intro">A bidirectional ExtendScript toolkit enabling After Effects to export marker data to JSON and read external JSON files for data-driven animations.</p>
-                </div>
-            </div>
-
-            <div class="case-visual ae-visual">
-                <div class="code-window">
-                    <div class="window-header">
-                        <div class="window-dots">
-                            <span></span><span></span><span></span>
-                        </div>
-                        <span class="file-tabs">
-                            <span class="tab active">markers_export.json</span>
-                            <span class="tab">expression.jsx</span>
-                        </span>
-                    </div>
-                    <div class="code-content">
-                        <pre><code>{
-  <span class="key">"projectName"</span>: <span class="string">"Brand_Campaign_2026"</span>,
-  <span class="key">"composition"</span>: <span class="string">"Main_Comp_v3"</span>,
-  <span class="key">"frameRate"</span>: <span class="number">24</span>,
-  <span class="key">"markers"</span>: [
-    {
-      <span class="key">"time"</span>: <span class="number">1.25</span>,
-      <span class="key">"comment"</span>: <span class="string">"Scene_Start"</span>,
-      <span class="key">"chapter"</span>: <span class="string">"Introduction"</span>,
-      <span class="key">"cuePoint"</span>: <span class="boolean">true</span>,
-      <span class="key">"params"</span>: {
-        <span class="key">"transitionType"</span>: <span class="string">"fade"</span>,
-        <span class="key">"duration"</span>: <span class="number">0.5</span>
-      }
-    }
-  ]
-}</code></pre>
-                    </div>
-                </div>
-                <div class="flow-diagram">
-                    <div class="flow-node">
-                        <div class="node-icon">🎬</div>
-                        <span>After Effects</span>
-                    </div>
-                    <div class="flow-arrow">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <path d="M5 12h14M12 5l7 7-7 7"/>
-                        </svg>
-                    </div>
-                    <div class="flow-node center">
-                        <div class="node-icon">{ }</div>
-                        <span>JSON</span>
-                    </div>
-                    <div class="flow-arrow">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <path d="M5 12h14M12 5l7 7-7 7"/>
-                        </svg>
-                    </div>
-                    <div class="flow-node">
-                        <div class="node-icon">🔧</div>
-                        <span>External Tools</span>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Screenshot placeholder -->
-            <!-- Screenshot placeholder - mockup displayed in code section below -->
-
-            <div class="case-details">
-                <div class="detail-block">
-                    <h4>The Challenge</h4>
-                    <p>Motion designers needed to export chapter markers and cue points from After Effects for use in interactive players, subtitle systems, and audio editing tools.</p>
-                </div>
-                <div class="detail-block">
-                    <h4>My Role</h4>
-                    <p>Sole developer of the ExtendScript toolkit, including the export panel UI, JSON schema design, and expression templates for data-driven animations using AE's native <code>footage().sourceData</code> functionality.</p>
-                </div>
-                <div class="detail-block full-width">
-                    <h4>ExtendScript Implementation</h4>
-                    <div class="code-block">
-                        <div class="code-label">Marker Export Function</div>
-                        <pre><span class="keyword">function</span> <span class="function">exportMarkersToJSON</span>(comp) {
-    <span class="keyword">var</span> markers = comp.markerProperty;
-    <span class="keyword">var</span> markerData = [];
-    
-    <span class="keyword">for</span> (<span class="keyword">var</span> i = <span class="number">1</span>; i <= markers.numKeys; i++) {
-        <span class="keyword">var</span> marker = markers.keyValue(i);
-        markerData.push({
-            time: markers.keyTime(i),
-            comment: marker.comment,
-            chapter: marker.chapter,
-            cuePoint: marker.cuePointName !== <span class="string">""</span>,
-            duration: marker.duration,
-            params: <span class="function">parseMarkerParams</span>(marker.comment)
-        });
-    }
-    
-    <span class="keyword">return</span> {
-        projectName: app.project.file.name,
-        composition: comp.name,
-        frameRate: comp.frameRate,
-        duration: comp.duration,
-        markers: markerData
-    };
-}</pre>
-                    </div>
-                    <div class="code-block">
-                        <div class="code-label">Data-Driven Expression Template</div>
-                        <pre><span class="comment">// Apply to any property for JSON-driven animation</span>
-<span class="keyword">var</span> jsonData = footage(<span class="string">"data.json"</span>).sourceData;
-<span class="keyword">var</span> markers = jsonData.markers;
-
-<span class="comment">// Find current marker based on time</span>
-<span class="keyword">var</span> currentMarker = <span class="keyword">null</span>;
-<span class="keyword">for</span> (<span class="keyword">var</span> i = <span class="number">0</span>; i < markers.length; i++) {
-    <span class="keyword">if</span> (time >= markers[i].time) {
-        currentMarker = markers[i];
-    }
-}
-
-<span class="comment">// Return value based on marker data</span>
-<span class="keyword">if</span> (currentMarker && currentMarker.params.scale) {
-    currentMarker.params.scale;
-} <span class="keyword">else</span> {
-    value;
-}</pre>
-                    </div>
-                    <div class="code-block">
-                        <div class="code-label">ScriptUI Panel</div>
-                        <pre><span class="keyword">var</span> panel = <span class="keyword">new</span> Window(<span class="string">"palette"</span>, <span class="string">"Marker Exporter"</span>);
-
-panel.add(<span class="string">"statictext"</span>, <span class="keyword">undefined</span>, <span class="string">"Select Composition:"</span>);
-<span class="keyword">var</span> compDropdown = panel.add(<span class="string">"dropdownlist"</span>);
-
-<span class="comment">// Populate with project compositions</span>
-<span class="keyword">for</span> (<span class="keyword">var</span> i = <span class="number">1</span>; i <= app.project.numItems; i++) {
-    <span class="keyword">if</span> (app.project.item(i) <span class="keyword">instanceof</span> CompItem) {
-        compDropdown.add(<span class="string">"item"</span>, app.project.item(i).name);
-    }
-}
-
-<span class="keyword">var</span> exportBtn = panel.add(<span class="string">"button"</span>, <span class="keyword">undefined</span>, <span class="string">"Export JSON"</span>);
-exportBtn.onClick = <span class="keyword">function</span>() {
-    <span class="keyword">var</span> comp = <span class="function">getCompByName</span>(compDropdown.selection.text);
-    <span class="keyword">var</span> data = <span class="function">exportMarkersToJSON</span>(comp);
-    <span class="function">saveJSON</span>(data);
-};</pre>
-                    </div>
-                </div>
-                <div class="detail-block">
-                    <h4>Tech Stack</h4>
-                    <div class="tech-tags">
-                        <span>ExtendScript</span>
-                        <span>After Effects API</span>
-                        <span>JSON</span>
-                        <span>ScriptUI</span>
-                        <span>Expressions</span>
-                    </div>
-                </div>
-            </div>
-        </article>
-
-        <!-- Case Study 4: Ableton Project Generator -->
-        <article class="case-study" id="ableton-generator">
-            <div class="case-study-header">
-                <div class="case-number">04</div>
-                <div class="case-meta">
-                    <span class="case-category">Audio Production • Python • Automation</span>
-                    <h3 class="glitch" data-text="Ableton Project Generator">Ableton Project Generator</h3>
-                    <p class="case-intro">An automated tool that generates Ableton Live project files from templates, pre-configuring tracks, plugins, and routing based on project specifications.</p>
-                </div>
-            </div>
-
-            <div class="case-visual">
-                <div class="dashboard-mockup dark-theme">
-                    <div class="mockup-header">
-                        <div class="window-dots">
-                            <span></span><span></span><span></span>
-                        </div>
-                        <span class="mockup-title">Ableton Project Generator</span>
-                    </div>
-                    <div class="mockup-content">
-                        <div class="generator-ui">
-                            <div class="gen-field">
-                                <label>Project Name</label>
-                                <div class="gen-input">Brand_Campaign_Audio_v1</div>
-                            </div>
-                            <div class="gen-field">
-                                <label>Template</label>
-                                <div class="gen-select">
-                                    <span class="selected">🎬 Trailer Mix Template</span>
-                                    <span class="dropdown-arrow">▼</span>
-                                </div>
-                            </div>
-                            <div class="gen-field">
-                                <label>Duration</label>
-                                <div class="gen-input">2:30</div>
-                            </div>
-                            <div class="gen-tracks">
-                                <div class="track-preview">
-                                    <span class="track-color" style="background: #ff6b6b"></span>
-                                    <span>Dialog</span>
-                                </div>
-                                <div class="track-preview">
-                                    <span class="track-color" style="background: #4ecdc4"></span>
-                                    <span>Music</span>
-                                </div>
-                                <div class="track-preview">
-                                    <span class="track-color" style="background: #ffe66d"></span>
-                                    <span>SFX</span>
-                                </div>
-                                <div class="track-preview">
-                                    <span class="track-color" style="background: #a855f7"></span>
-                                    <span>Mix Bus</span>
-                                </div>
-                            </div>
-                            <div class="gen-button">Generate Project →</div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Screenshot placeholder -->
-            <!-- Screenshot placeholder - mockup displayed in code section below -->
-
-            <div class="case-details">
-                <div class="detail-block">
-                    <h4>The Challenge</h4>
-                    <p>Audio engineers spent significant time setting up new Ableton projects with consistent track layouts, plugin chains, and routing configurations. Each project type (trailer, TV spot, social) required different setups.</p>
-                </div>
-                <div class="detail-block">
-                    <h4>My Role</h4>
-                    <p>Developed the project generation engine using the Ableton Live API, manipulates project structure programmatically, and generates ready-to-use sessions with markers and placeholder clips.</p>
-                </div>
-                <div class="detail-block full-width">
-                    <h4>Core Implementation (from Ableton.py)</h4>
-                    <div class="code-block">
-                        <div class="code-label">Template Structure Definition</div>
-                        <pre><span class="keyword">import</span> Live
-<span class="keyword">import</span> os
-
-TEMPLATE_STRUCTURE = [
-    (<span class="string">"Intro"</span>, <span class="number">8</span>),     <span class="comment"># 8 bars intro</span>
-    (<span class="string">"Verse 1"</span>, <span class="number">16</span>),
-    (<span class="string">"Chorus 1"</span>, <span class="number">8</span>),
-    (<span class="string">"Verse 2"</span>, <span class="number">16</span>),
-    (<span class="string">"Chorus 2"</span>, <span class="number">8</span>),
-    (<span class="string">"Bridge"</span>, <span class="number">8</span>),
-    (<span class="string">"Chorus 3"</span>, <span class="number">8</span>),
-    (<span class="string">"Outro"</span>, <span class="number">8</span>)
-]</pre>
-                    </div>
-                    <div class="code-block">
-                        <div class="code-label">Song Template Generator</div>
-                        <pre><span class="keyword">def</span> <span class="function">create_song_template</span>(song, audio_file_path):
-    <span class="string">"""Arrange Locators/Markers and place audio clips in arrangement."""</span>
-    tempo = song.tempo
-    signature_numerator = song.signature_numerator
-    
-    <span class="comment"># Find or create template audio track</span>
-    audio_track = <span class="keyword">None</span>
-    <span class="keyword">for</span> track <span class="keyword">in</span> song.tracks:
-        <span class="keyword">if</span> track.has_audio_input <span class="keyword">and</span> track.name == <span class="string">"TEMPLATE AUDIO"</span>:
-            audio_track = track
-            <span class="keyword">break</span>
-    <span class="keyword">if</span> audio_track <span class="keyword">is</span> <span class="keyword">None</span>:
-        audio_track = song.create_audio_track(<span class="number">-1</span>)
-        audio_track.name = <span class="string">"TEMPLATE AUDIO"</span>
-
-    <span class="comment"># Place Markers at each section</span>
-    abs_beat = <span class="number">0.0</span>
-    <span class="keyword">for</span> section_name, bars <span class="keyword">in</span> TEMPLATE_STRUCTURE:
-        time_sec = abs_beat * <span class="number">60.0</span> / tempo
-        song.add_arrangement_locator(time_sec, section_name)
-        abs_beat += bars * signature_numerator</pre>
-                    </div>
-                    <div class="code-block">
-                        <div class="code-label">MIDI Remote Script Integration</div>
-                        <pre><span class="keyword">class</span> <span class="function">PlaceTemplateScript</span>(object):
-    <span class="keyword">def</span> <span class="function">__init__</span>(self, c_instance):
-        self.c_instance = c_instance
-        self.song = Live.Application.get_application().get_document()
-
-    <span class="keyword">def</span> <span class="function">handle_file_dragged</span>(self, file_path):
-        <span class="string">"""Called when a file is dropped in the plugin UI"""</span>
-        <span class="keyword">if</span> file_path.endswith((<span class="string">".wav"</span>, <span class="string">".mp3"</span>, <span class="string">".aiff"</span>, <span class="string">".flac"</span>)):
-            <span class="function">create_song_template</span>(self.song, file_path)</pre>
-                    </div>
-                </div>
-                <div class="detail-block">
-                    <h4>Tech Stack</h4>
-                    <div class="tech-tags">
-                        <span>Python</span>
-                        <span>XML Parsing</span>
-                        <span>Ableton ALS Format</span>
-                        <span>gzip</span>
-                        <span>Tkinter GUI</span>
-                    </div>
-                </div>
-            </div>
-        </article>
-
-        <!-- Case Study 5: ShotGrid Workload Dashboard -->
-        <article class="case-study" id="shotgrid-workload">
-            <div class="case-study-header">
-                <div class="case-number">05</div>
-                <div class="case-meta">
-                    <span class="case-category">ShotGrid Integration • Production Management • Data Visualization</span>
-                    <h3 class="glitch" data-text="ShotGrid Workload Dashboard">ShotGrid Workload Dashboard</h3>
-                    <p class="case-intro">A desktop application for visualizing artist task assignments, workload distribution, and deadline tracking by integrating directly with ShotGrid's API.</p>
-                </div>
-            </div>
-
-            <div class="case-visual">
-                <!-- PyQt5 Workload Dashboard Mockup -->
-                <div class="app-mockup pyqt-mockup">
-                    <div class="titlebar">
-                        <div class="titlebar-buttons">
-                            <span class="titlebar-btn close"></span>
-                            <span class="titlebar-btn minimize"></span>
-                            <span class="titlebar-btn maximize"></span>
-                        </div>
-                        <span class="titlebar-title">ShotGrid Artist Workload Dashboard</span>
-                    </div>
-                    <div class="toolbar" style="justify-content: space-between;">
-                        <div style="display: flex; gap: 12px; align-items: center;">
-                            <span style="color: #888; font-size: 11px;">Department:</span>
-                            <span style="background: #333; padding: 4px 12px; border-radius: 4px; color: #ccc; font-size: 11px;">All Departments</span>
-                            <span style="color: #888; font-size: 11px;">Status:</span>
-                            <span style="background: #333; padding: 4px 12px; border-radius: 4px; color: #ccc; font-size: 11px;">All Statuses</span>
-                        </div>
-                        <div style="display: flex; gap: 8px;">
-                            <button class="toolbar-btn">Load Demo</button>
-                            <button class="toolbar-btn primary">Connect to ShotGrid</button>
-                        </div>
-                    </div>
-                    <div class="main-area" style="grid-template-columns: 320px 1fr;">
-                        <div class="sidebar" style="padding: 16px;">
-                            <div style="display: flex; justify-content: space-between; margin-bottom: 12px;">
-                                <span style="font-size: 12px; font-weight: bold; color: #fff;">Artists</span>
-                                <span style="font-size: 10px; color: #888;">12 artists</span>
-                            </div>
-                            <input type="text" placeholder="Search artists..." style="width: 100%; background: #333; border: 1px solid #444; border-radius: 4px; padding: 8px; color: #fff; font-size: 11px; margin-bottom: 12px;">
-                            
-                            <!-- Artist Card 1 -->
-                            <div style="background: #1e3a5f; border: 2px solid #0078d4; border-radius: 8px; padding: 12px; margin-bottom: 8px;">
-                                <div style="display: flex; justify-content: space-between; margin-bottom: 6px;">
-                                    <span style="font-weight: bold; color: #fff; font-size: 12px;">Sarah Mitchell</span>
-                                    <span style="background: #333; padding: 2px 8px; border-radius: 4px; font-size: 9px; color: #888;">Animation</span>
-                                </div>
-                                <div style="font-size: 10px; color: #888; margin-bottom: 8px;">6 tasks assigned</div>
-                                <div style="height: 6px; background: #2a2a2a; border-radius: 3px; overflow: hidden; display: flex;">
-                                    <div style="width: 50%; background: #3b82f6;"></div>
-                                    <div style="width: 33%; background: #f59e0b;"></div>
-                                    <div style="width: 17%; background: #10b981;"></div>
-                                </div>
-                                <div style="display: flex; gap: 8px; margin-top: 6px; font-size: 9px;">
-                                    <span style="color: #3b82f6;">● 3 IP</span>
-                                    <span style="color: #f59e0b;">● 2 Review</span>
-                                    <span style="color: #10b981;">● 1 Done</span>
-                                </div>
-                            </div>
-                            
-                            <!-- Artist Card 2 -->
-                            <div style="background: #252525; border: 1px solid #333; border-radius: 8px; padding: 12px; margin-bottom: 8px;">
-                                <div style="display: flex; justify-content: space-between; margin-bottom: 6px;">
-                                    <span style="font-weight: bold; color: #fff; font-size: 12px;">James Chen</span>
-                                    <span style="background: #333; padding: 2px 8px; border-radius: 4px; font-size: 9px; color: #888;">Lighting</span>
-                                </div>
-                                <div style="font-size: 10px; color: #888; margin-bottom: 8px;">4 tasks assigned</div>
-                                <div style="height: 6px; background: #2a2a2a; border-radius: 3px; overflow: hidden; display: flex;">
-                                    <div style="width: 25%; background: #6b7280;"></div>
-                                    <div style="width: 50%; background: #3b82f6;"></div>
-                                    <div style="width: 25%; background: #f59e0b;"></div>
-                                </div>
-                            </div>
-                            
-                            <!-- Artist Card 3 -->
-                            <div style="background: #252525; border: 1px solid #333; border-radius: 8px; padding: 12px;">
-                                <div style="display: flex; justify-content: space-between; margin-bottom: 6px;">
-                                    <span style="font-weight: bold; color: #fff; font-size: 12px;">Maria Garcia</span>
-                                    <span style="background: #333; padding: 2px 8px; border-radius: 4px; font-size: 9px; color: #888;">Comp</span>
-                                </div>
-                                <div style="font-size: 10px; color: #888; margin-bottom: 8px;">5 tasks assigned</div>
-                                <div style="height: 6px; background: #2a2a2a; border-radius: 3px; overflow: hidden; display: flex;">
-                                    <div style="width: 40%; background: #3b82f6;"></div>
-                                    <div style="width: 40%; background: #10b981;"></div>
-                                    <div style="width: 20%; background: #ef4444;"></div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="content-area">
-                            <div style="font-size: 13px; font-weight: bold; color: #fff; margin-bottom: 16px;">Sarah Mitchell's Tasks</div>
-                            <div style="display: flex; gap: 12px; margin-bottom: 16px;">
-                                <div style="background: #252525; border-radius: 8px; padding: 12px 16px; flex: 1;">
-                                    <div style="font-size: 20px; font-weight: bold; color: #fff;">6</div>
-                                    <div style="font-size: 10px; color: #888;">Total</div>
-                                </div>
-                                <div style="background: #252525; border-radius: 8px; padding: 12px 16px; flex: 1;">
-                                    <div style="font-size: 20px; font-weight: bold; color: #3b82f6;">3</div>
-                                    <div style="font-size: 10px; color: #888;">In Progress</div>
-                                </div>
-                                <div style="background: #252525; border-radius: 8px; padding: 12px 16px; flex: 1;">
-                                    <div style="font-size: 20px; font-weight: bold; color: #f59e0b;">2</div>
-                                    <div style="font-size: 10px; color: #888;">Review</div>
-                                </div>
-                                <div style="background: #252525; border-radius: 8px; padding: 12px 16px; flex: 1;">
-                                    <div style="font-size: 20px; font-weight: bold; color: #ef4444;">1</div>
-                                    <div style="font-size: 10px; color: #888;">Due Soon</div>
-                                </div>
-                            </div>
-                            <table class="table-mock">
-                                <thead>
-                                    <tr>
-                                        <th>Task</th>
-                                        <th>Entity</th>
-                                        <th>Status</th>
-                                        <th>Due Date</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr>
-                                        <td>Anim_primary</td>
-                                        <td>Shot: shot_020</td>
-                                        <td><span class="status-badge running">IN PROGRESS</span></td>
-                                        <td style="color: #ef4444;">Jan 22 (1d)</td>
-                                    </tr>
-                                    <tr>
-                                        <td>Anim_secondary</td>
-                                        <td>Shot: shot_030</td>
-                                        <td><span class="status-badge queued">REVIEW</span></td>
-                                        <td>Jan 25</td>
-                                    </tr>
-                                    <tr>
-                                        <td>Anim_final</td>
-                                        <td>Asset: char_hero</td>
-                                        <td><span class="status-badge running">IN PROGRESS</span></td>
-                                        <td>Jan 28</td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="case-details">
-                <div class="detail-block">
-                    <h4>The Challenge</h4>
-                    <p>Production supervisors needed real-time visibility into artist workloads to balance task distribution, identify bottlenecks, and ensure deadlines are met without overwhelming individual team members.</p>
-                </div>
-                <div class="detail-block">
-                    <h4>My Role</h4>
-                    <p>Sole developer of the desktop application, including ShotGrid API integration, custom workload visualization widgets, filtering system, and task detail views with deadline tracking.</p>
-                </div>
-                <div class="detail-block full-width">
-                    <h4>Core Implementation (from shotgrid_workload_dashboard.py)</h4>
-                    <div class="code-block">
-                        <div class="code-label">Artist Data Model with Workload Calculation</div>
-                        <pre><span class="keyword">@dataclass</span>
-<span class="keyword">class</span> <span class="function">Artist</span>:
-    id: int
-    name: str
-    department: str
-    tasks: List[Task] = field(default_factory=list)
-    capacity_hours: float = <span class="number">40.0</span>  <span class="comment"># weekly capacity</span>
-    
-    <span class="keyword">@property</span>
-    <span class="keyword">def</span> <span class="function">tasks_by_status</span>(self) -> Dict[str, int]:
-        counts = defaultdict(int)
-        <span class="keyword">for</span> task <span class="keyword">in</span> self.tasks:
-            counts[task.status] += <span class="number">1</span>
-        <span class="keyword">return</span> dict(counts)
-    
-    <span class="keyword">@property</span>
-    <span class="keyword">def</span> <span class="function">workload_percentage</span>(self) -> float:
-        active = sum(<span class="number">1</span> <span class="keyword">for</span> t <span class="keyword">in</span> self.tasks <span class="keyword">if</span> t.status <span class="keyword">in</span> [<span class="string">"ip"</span>, <span class="string">"rev"</span>])
-        <span class="keyword">return</span> min((active / <span class="number">5</span>) * <span class="number">100</span>, <span class="number">100</span>)</pre>
-                    </div>
-                    <div class="code-block">
-                        <div class="code-label">ShotGrid API Worker Thread</div>
-                        <pre><span class="keyword">class</span> <span class="function">ShotGridWorker</span>(QThread):
-    data_loaded = pyqtSignal(dict)
-    error_occurred = pyqtSignal(str)
-    
-    <span class="keyword">def</span> <span class="function">load_real_data</span>(self):
-        <span class="comment"># Get all active users</span>
-        users = self.sg.find(<span class="string">"HumanUser"</span>, 
-            [[<span class="string">"sg_status_list"</span>, <span class="string">"is"</span>, <span class="string">"act"</span>]],
-            [<span class="string">"id"</span>, <span class="string">"name"</span>, <span class="string">"department"</span>]
-        )
-        
-        <span class="comment"># Get all tasks with assignees</span>
-        tasks = self.sg.find(<span class="string">"Task"</span>,
-            [[<span class="string">"task_assignees"</span>, <span class="string">"is_not"</span>, <span class="keyword">None</span>]],
-            [<span class="string">"content"</span>, <span class="string">"sg_status_list"</span>, <span class="string">"task_assignees"</span>, 
-             <span class="string">"entity"</span>, <span class="string">"due_date"</span>, <span class="string">"time_logs_sum"</span>]
-        )</pre>
-                    </div>
-                    <div class="code-block">
-                        <div class="code-label">Custom Workload Visualization Widget</div>
-                        <pre><span class="keyword">class</span> <span class="function">WorkloadBar</span>(QWidget):
-    <span class="string">"""Horizontal bar showing task status distribution"""</span>
-    
-    <span class="keyword">def</span> <span class="function">paintEvent</span>(self, event):
-        painter = QPainter(self)
-        total = sum(self.tasks_by_status.values())
-        
-        x = <span class="number">0</span>
-        <span class="keyword">for</span> status, count <span class="keyword">in</span> self.tasks_by_status.items():
-            segment_width = (count / total) * self.width()
-            color = QColor(STATUS_COLORS[status])
-            painter.fillRect(int(x), <span class="number">0</span>, int(segment_width), self.height(), color)
-            x += segment_width</pre>
-                    </div>
-                </div>
-                <div class="detail-block">
-                    <h4>Key Features</h4>
-                    <ul class="feature-list">
-                        <li>Real-time ShotGrid API integration</li>
-                        <li>Visual workload bars showing task status distribution</li>
-                        <li>Filter by department, status, and search</li>
-                        <li>Deadline tracking with overdue indicators</li>
-                        <li>Demo mode for testing without ShotGrid access</li>
-                        <li>Click-to-select artist cards with task details</li>
-                    </ul>
-                </div>
-                <div class="detail-block">
-                    <h4>Tech Stack</h4>
-                    <div class="tech-tags">
-                        <span>Python 3.11</span>
-                        <span>PyQt5</span>
-                        <span>ShotGrid API</span>
-                        <span>QThread</span>
-                        <span>QPainter</span>
-                        <span>Dataclasses</span>
-                    </div>
-                </div>
-            </div>
-        </article>
-
-        <!-- Case Study 6: Flex Job Viewer -->
-        <article class="case-study" id="flex-viewer">
-            <div class="case-study-header">
-                <div class="case-number">06</div>
-                <div class="case-meta">
-                    <span class="case-category">Production Tracking • Web Application • Real-time Updates</span>
-                    <h3 class="glitch" data-text="Flex Job Viewer">Flex Job Viewer</h3>
-                    <p class="case-intro">A web-based job viewing application providing artists and coordinators with real-time visibility into project status, assignments, and deliverable timelines.</p>
-                </div>
-            </div>
-
-            <div class="case-visual">
-                <!-- PyQt5 GUI Mockup -->
-                <div class="app-mockup pyqt-mockup">
-                    <div class="titlebar">
-                        <div class="titlebar-buttons">
-                            <span class="titlebar-btn close"></span>
-                            <span class="titlebar-btn minimize"></span>
-                            <span class="titlebar-btn maximize"></span>
-                        </div>
-                        <span class="titlebar-title">Flex Job Monitor — ppc@flex-server</span>
-                    </div>
-                    <div class="menubar">
-                        <span class="menu-item">File</span>
-                        <span class="menu-item">Edit</span>
-                        <span class="menu-item">View</span>
-                        <span class="menu-item">Jobs</span>
-                        <span class="menu-item">Help</span>
-                    </div>
-                    <div class="toolbar">
-                        <button class="toolbar-btn primary">Connect</button>
-                        <button class="toolbar-btn">Refresh</button>
-                        <button class="toolbar-btn">Add Job</button>
-                        <button class="toolbar-btn">Kill Selected</button>
-                    </div>
-                    <div class="main-area">
-                        <div class="sidebar">
-                            <div class="sidebar-title">Active Jobs</div>
-                            <div class="sidebar-item active">
-                                <span class="status-dot running"></span>
-                                JOB-2847 Final Comp
-                            </div>
-                            <div class="sidebar-item">
-                                <span class="status-dot running"></span>
-                                JOB-2849 Render v3
-                            </div>
-                            <div class="sidebar-item">
-                                <span class="status-dot queued"></span>
-                                JOB-2851 Export
-                            </div>
-                            <div class="sidebar-title" style="margin-top: 16px;">Completed</div>
-                            <div class="sidebar-item">
-                                <span class="status-dot" style="background: #0078d4;"></span>
-                                JOB-2845 Preview
-                            </div>
-                            <div class="sidebar-item">
-                                <span class="status-dot failed"></span>
-                                JOB-2843 Failed
-                            </div>
-                        </div>
-                        <div class="content-area">
-                            <table class="table-mock">
-                                <thead>
-                                    <tr>
-                                        <th>Job ID</th>
-                                        <th>Name</th>
-                                        <th>Machine</th>
-                                        <th>Status</th>
-                                        <th>Progress</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr>
-                                        <td>JOB-2847</td>
-                                        <td>Final_Comp_v3.aep</td>
-                                        <td>RENDER-01</td>
-                                        <td><span class="status-badge running">RUNNING</span></td>
-                                        <td>78%</td>
-                                    </tr>
-                                    <tr>
-                                        <td>JOB-2849</td>
-                                        <td>Social_Cutdowns.prproj</td>
-                                        <td>RENDER-02</td>
-                                        <td><span class="status-badge running">RUNNING</span></td>
-                                        <td>45%</td>
-                                    </tr>
-                                    <tr>
-                                        <td>JOB-2851</td>
-                                        <td>Hero_Export_4K.aep</td>
-                                        <td>—</td>
-                                        <td><span class="status-badge queued">QUEUED</span></td>
-                                        <td>0%</td>
-                                    </tr>
-                                    <tr>
-                                        <td>JOB-2845</td>
-                                        <td>Preview_Render.aep</td>
-                                        <td>RENDER-03</td>
-                                        <td><span class="status-badge completed">COMPLETED</span></td>
-                                        <td>100%</td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
-                        <div class="details-panel">
-                            <div class="details-title">JOB-2847 Details</div>
-                            <div class="detail-row">
-                                <span class="label">Status</span>
-                                <span class="value" style="color: #28c840;">RUNNING</span>
-                            </div>
-                            <div class="detail-row">
-                                <span class="label">Machine</span>
-                                <span class="value">RENDER-01</span>
-                            </div>
-                            <div class="detail-row">
-                                <span class="label">CPU</span>
-                                <span class="value">87%</span>
-                            </div>
-                            <div class="detail-row">
-                                <span class="label">Memory</span>
-                                <span class="value">24.6 GB</span>
-                            </div>
-                            <div class="detail-row">
-                                <span class="label">Started</span>
-                                <span class="value">14:32:18</span>
-                            </div>
-                            <div class="detail-row">
-                                <span class="label">ETA</span>
-                                <span class="value">~12 min</span>
-                            </div>
-                            <div class="progress-bar-mock">
-                                <div class="fill" style="width: 78%;"></div>
-                            </div>
-                            <div class="log-area">
-                                <div class="log-line"><span class="time">[14:32:18]</span> <span class="info">INFO:</span> Job started</div>
-                                <div class="log-line"><span class="time">[14:32:19]</span> <span class="info">INFO:</span> Loading project...</div>
-                                <div class="log-line"><span class="time">[14:33:45]</span> <span class="success">OK:</span> Comp loaded</div>
-                                <div class="log-line"><span class="time">[14:45:22]</span> <span class="info">INFO:</span> Rendering frame 1872/2400</div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Screenshot placeholder -->
-            <!-- Screenshot placeholder - mockup displayed in code section below -->
-
-            <div class="case-details">
-                <div class="detail-block">
-                    <h4>The Challenge</h4>
-                    <p>Artists and production coordinators needed a lightweight, fast way to view job assignments and status without navigating complex project management systems or waiting for slow database queries.</p>
-                </div>
-                <div class="detail-block">
-                    <h4>My Role</h4>
-                    <p>Full-stack development of the viewer application, including the real-time sync engine, responsive UI, and integration with the existing Flex production tracking database.</p>
-                </div>
-                <div class="detail-block full-width">
-                    <h4>Core Implementation (from flex_job_monitor_gui.py)</h4>
-                    <div class="code-block">
-                        <div class="code-label">Job Status Enum & Data Classes</div>
-                        <pre><span class="keyword">class</span> <span class="function">JobStatus</span>(Enum):
-    PENDING = <span class="string">"PENDING"</span>
-    QUEUED = <span class="string">"QUEUED"</span>
-    RESERVED = <span class="string">"RESERVED"</span>
-    RUNNING = <span class="string">"RUNNING"</span>
-    PROCESSING = <span class="string">"PROCESSING"</span>
-    COMPLETED = <span class="string">"COMPLETED"</span>
-    FAILED = <span class="string">"FAILED"</span>
-    CANCELLED = <span class="string">"CANCELLED"</span>
-    UNKNOWN = <span class="string">"UNKNOWN"</span>
-
-<span class="keyword">@dataclass</span>
-<span class="keyword">class</span> <span class="function">JobInfo</span>:
-    job_id: str
-    name: str = <span class="string">""</span>
-    status: JobStatus = JobStatus.UNKNOWN
-    machine: str = <span class="string">""</span>
-    started_at: Optional[datetime] = <span class="keyword">None</span>
-    completed_at: Optional[datetime] = <span class="keyword">None</span>
-    progress: int = <span class="number">0</span>
-    current_step: str = <span class="string">""</span>
-    logs: List[LogEntry] = field(default_factory=list)</pre>
-                    </div>
-                    <div class="code-block">
-                        <div class="code-label">SSH Connection Worker Thread</div>
-                        <pre><span class="keyword">class</span> <span class="function">FlexConnectionWorker</span>(QThread):
-    <span class="string">"""Background worker for SSH connection and job monitoring"""</span>
-    connected = pyqtSignal(bool, str)
-    job_updated = pyqtSignal(dict)
-    log_received = pyqtSignal(dict)
-    machine_status = pyqtSignal(dict)
-    error_occurred = pyqtSignal(str)
-    
-    <span class="keyword">def</span> <span class="function">__init__</span>(self, host: str, username: str, password: str):
-        <span class="keyword">super</span>().__init__()
-        self.host = host
-        self.username = username
-        self.password = password
-        self.ssh_client = <span class="keyword">None</span>
-        self.running = <span class="keyword">False</span>
-        self.monitored_jobs: Dict[str, JobInfo] = {}
-        
-    <span class="keyword">def</span> <span class="function">connect_ssh</span>(self) -> bool:
-        self.ssh_client = paramiko.SSHClient()
-        self.ssh_client.set_missing_host_key_policy(paramiko.AutoAddPolicy())
-        self.ssh_client.connect(
-            hostname=self.host,
-            username=self.username,
-            password=self.password
-        )</pre>
-                    </div>
-                    <div class="code-block">
-                        <div class="code-label">Machine Reservation Tracking</div>
-                        <pre><span class="keyword">@dataclass</span>
-<span class="keyword">class</span> <span class="function">MachineReservation</span>:
-    machine_name: str
-    job_id: str
-    reserved_at: datetime
-    status: str = <span class="string">"RESERVED"</span>
-    cpu_usage: float = <span class="number">0.0</span>
-    memory_usage: float = <span class="number">0.0</span>
-
-<span class="keyword">@dataclass</span>
-<span class="keyword">class</span> <span class="function">LogEntry</span>:
-    timestamp: datetime
-    level: str  <span class="comment"># INFO, WARNING, ERROR, DEBUG</span>
-    message: str
-    source: str = <span class="string">""</span>
-    job_id: str = <span class="string">""</span></pre>
-                    </div>
-                </div>
-                <div class="detail-block">
-                    <h4>Tech Stack</h4>
-                    <div class="tech-tags">
-                        <span>Python</span>
-                        <span>PyQt5</span>
-                        <span>Paramiko SSH</span>
-                        <span>Threading</span>
-                        <span>Dataclasses</span>
-                    </div>
-                </div>
-            </div>
-        </article>
-
     </section>
-
     <!-- Project Planning Section -->
     <section id="planning" class="planning-section">
         <div class="section-header">

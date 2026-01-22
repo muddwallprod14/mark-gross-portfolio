@@ -2630,3 +2630,285 @@ code {
         grid-template-columns: repeat(2, 1fr);
     }
 }
+
+/* ============================================
+   STUDIO-STYLE PROJECT GRID (Epic/Blur/TTF)
+   ============================================ */
+
+.projects-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(380px, 1fr));
+    gap: 2rem;
+    max-width: 1400px;
+    margin: 0 auto;
+}
+
+.project-card {
+    position: relative;
+    background: rgba(10, 10, 15, 0.95);
+    border-radius: 12px;
+    overflow: hidden;
+    transition: all 0.4s var(--ease-out-expo);
+    cursor: pointer;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.project-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 20px 60px rgba(0, 255, 255, 0.15);
+    border-color: rgba(0, 255, 255, 0.3);
+}
+
+.project-card-visual {
+    position: relative;
+    height: 220px;
+    background: linear-gradient(135deg, #0a1520 0%, #1a2530 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+}
+
+.project-card-visual::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(180deg, transparent 50%, rgba(10, 10, 15, 0.9) 100%);
+    z-index: 1;
+}
+
+.project-icon {
+    font-size: 4rem;
+    opacity: 0.9;
+    z-index: 0;
+    transition: transform 0.4s var(--ease-out-expo);
+}
+
+.project-card:hover .project-icon {
+    transform: scale(1.1);
+}
+
+/* Animated background patterns for each card */
+.project-card-visual.pattern-grid {
+    background: 
+        linear-gradient(rgba(0, 255, 255, 0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0, 255, 255, 0.03) 1px, transparent 1px),
+        linear-gradient(135deg, #0a1520 0%, #1a2530 100%);
+    background-size: 20px 20px, 20px 20px, 100% 100%;
+}
+
+.project-card-visual.pattern-dots {
+    background: 
+        radial-gradient(rgba(0, 255, 255, 0.1) 1px, transparent 1px),
+        linear-gradient(135deg, #0a1520 0%, #1a2530 100%);
+    background-size: 15px 15px, 100% 100%;
+}
+
+.project-card-visual.pattern-lines {
+    background: 
+        repeating-linear-gradient(
+            -45deg,
+            transparent,
+            transparent 10px,
+            rgba(0, 255, 255, 0.02) 10px,
+            rgba(0, 255, 255, 0.02) 20px
+        ),
+        linear-gradient(135deg, #0a1520 0%, #1a2530 100%);
+}
+
+.project-card-visual.pattern-circuit {
+    background: 
+        linear-gradient(90deg, rgba(0, 255, 255, 0.05) 1px, transparent 1px),
+        linear-gradient(rgba(0, 255, 255, 0.05) 1px, transparent 1px),
+        linear-gradient(135deg, #0a1520 0%, #15202a 50%, #1a2530 100%);
+    background-size: 40px 40px, 40px 40px, 100% 100%;
+}
+
+.project-card-content {
+    padding: 1.75rem;
+    position: relative;
+    z-index: 2;
+}
+
+.project-card-number {
+    font-family: var(--font-display);
+    font-size: 0.7rem;
+    color: rgba(0, 255, 255, 0.6);
+    letter-spacing: 0.2em;
+    margin-bottom: 0.75rem;
+}
+
+.project-card-title {
+    font-family: var(--font-display);
+    font-size: 1.4rem;
+    font-weight: 600;
+    color: #fff;
+    margin-bottom: 0.75rem;
+    line-height: 1.3;
+}
+
+.project-card-desc {
+    font-size: 0.9rem;
+    color: rgba(255, 255, 255, 0.6);
+    line-height: 1.5;
+    margin-bottom: 1.25rem;
+}
+
+.project-card-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+}
+
+.project-tag {
+    font-size: 0.7rem;
+    padding: 0.35rem 0.75rem;
+    background: rgba(0, 255, 255, 0.1);
+    color: rgba(0, 255, 255, 0.9);
+    border-radius: 4px;
+    font-weight: 500;
+    letter-spacing: 0.02em;
+    border: 1px solid rgba(0, 255, 255, 0.2);
+}
+
+/* Hover overlay with details */
+.project-card-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 20, 30, 0.95);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 2rem;
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.3s ease;
+    z-index: 10;
+}
+
+.project-card:hover .project-card-overlay {
+    opacity: 1;
+    visibility: visible;
+}
+
+.project-overlay-title {
+    font-family: var(--font-display);
+    font-size: 1.5rem;
+    color: #00ffff;
+    margin-bottom: 1rem;
+}
+
+.project-overlay-desc {
+    font-size: 0.95rem;
+    color: rgba(255, 255, 255, 0.8);
+    line-height: 1.6;
+    margin-bottom: 1.5rem;
+}
+
+.project-overlay-features {
+    list-style: none;
+    margin-bottom: 1.5rem;
+}
+
+.project-overlay-features li {
+    font-size: 0.85rem;
+    color: rgba(255, 255, 255, 0.7);
+    padding: 0.4rem 0;
+    padding-left: 1.25rem;
+    position: relative;
+}
+
+.project-overlay-features li::before {
+    content: '→';
+    position: absolute;
+    left: 0;
+    color: #00ffff;
+}
+
+.project-view-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.75rem 1.5rem;
+    background: transparent;
+    border: 1px solid #00ffff;
+    color: #00ffff;
+    font-family: var(--font-display);
+    font-size: 0.85rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    width: fit-content;
+}
+
+.project-view-btn:hover {
+    background: #00ffff;
+    color: #000;
+}
+
+/* Section header for work */
+.work-section-header {
+    text-align: center;
+    margin-bottom: 4rem;
+}
+
+.work-section-label {
+    font-family: var(--font-display);
+    font-size: 0.8rem;
+    color: #00ffff;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    margin-bottom: 1rem;
+}
+
+.work-section-title {
+    font-family: var(--font-display);
+    font-size: clamp(2rem, 5vw, 3.5rem);
+    color: #fff;
+    font-weight: 600;
+    margin-bottom: 1rem;
+}
+
+.work-section-subtitle {
+    font-size: 1.1rem;
+    color: rgba(255, 255, 255, 0.6);
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+/* Mobile responsive */
+@media (max-width: 768px) {
+    .projects-grid {
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+        padding: 0 1rem;
+    }
+    
+    .project-card-visual {
+        height: 180px;
+    }
+    
+    .project-card-content {
+        padding: 1.25rem;
+    }
+    
+    .project-card-title {
+        font-size: 1.2rem;
+    }
+    
+    .project-card-overlay {
+        padding: 1.5rem;
+    }
+    
+    .work-section-header {
+        margin-bottom: 2.5rem;
+        padding: 0 1rem;
+    }
+}
