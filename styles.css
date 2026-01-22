@@ -3100,7 +3100,7 @@ code {
 
 .experience-meta .location {
     font-size: 0.85rem;
-    color: rgba(255, 255, 255, 0.6);
+    color: #ffffff;
 }
 
 .experience-meta .date {
@@ -3117,7 +3117,7 @@ code {
 
 .experience-duties li {
     font-size: 0.9rem;
-    color: rgba(255, 255, 255, 0.75);
+    color: #ffffff;
     line-height: 1.6;
     padding: 0.5rem 0;
     padding-left: 1.5rem;
@@ -3167,7 +3167,7 @@ code {
 
 .education-meta .degree {
     font-size: 0.9rem;
-    color: rgba(255, 255, 255, 0.7);
+    color: #ffffff;
 }
 
 .education-meta .grad-date {
@@ -3211,7 +3211,7 @@ code {
 
 .skill-items {
     font-size: 0.9rem;
-    color: rgba(255, 255, 255, 0.8);
+    color: #ffffff;
     flex: 1;
 }
 
