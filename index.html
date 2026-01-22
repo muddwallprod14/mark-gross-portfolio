@@ -78,6 +78,7 @@
         <div class="nav-links">
             <a href="#about">About</a>
             <a href="#work">Work</a>
+            <a href="#demos">Demos</a>
             <a href="#planning">Project Managing</a>
             <a href="#applications">Applications</a>
             <a href="#resume">Resume</a>
@@ -389,6 +390,398 @@
 
         </div>
     </section>
+
+    <!-- Tool Demos Section -->
+    <section id="demos" class="demos-section">
+        <div class="section-header">
+            <span class="section-tag">In Action</span>
+            <h2 class="glitch" data-text="Tool Demos">Tool Demos</h2>
+            <p class="section-subtitle">Visual walkthroughs of production tools and interfaces</p>
+        </div>
+
+        <div class="demos-grid">
+            <!-- Job Monitor Demo -->
+            <div class="demo-card">
+                <div class="demo-header">
+                    <h3>Job Monitor Platform</h3>
+                    <span class="demo-tag">React Dashboard</span>
+                </div>
+                <div class="demo-mockup dashboard-mockup">
+                    <div class="mockup-browser">
+                        <div class="browser-bar">
+                            <div class="browser-dots">
+                                <span class="dot red"></span>
+                                <span class="dot yellow"></span>
+                                <span class="dot green"></span>
+                            </div>
+                            <div class="browser-url">localhost:3000/dashboard</div>
+                        </div>
+                        <div class="dashboard-ui">
+                            <div class="dash-sidebar">
+                                <div class="sidebar-logo">JM</div>
+                                <div class="sidebar-item active">Dashboard</div>
+                                <div class="sidebar-item">Jobs</div>
+                                <div class="sidebar-item">Farms</div>
+                                <div class="sidebar-item">Alerts</div>
+                            </div>
+                            <div class="dash-main">
+                                <div class="dash-header-row">
+                                    <h4>Render Farm Status</h4>
+                                    <span class="live-indicator"><span class="pulse"></span> Live</span>
+                                </div>
+                                <div class="stats-row">
+                                    <div class="stat-card">
+                                        <div class="stat-value">247</div>
+                                        <div class="stat-label">Active Jobs</div>
+                                    </div>
+                                    <div class="stat-card">
+                                        <div class="stat-value">89%</div>
+                                        <div class="stat-label">Farm Utilization</div>
+                                    </div>
+                                    <div class="stat-card">
+                                        <div class="stat-value">12</div>
+                                        <div class="stat-label">Queued</div>
+                                    </div>
+                                    <div class="stat-card alert">
+                                        <div class="stat-value">3</div>
+                                        <div class="stat-label">Failed</div>
+                                    </div>
+                                </div>
+                                <div class="jobs-table">
+                                    <div class="table-header">
+                                        <span>Job Name</span>
+                                        <span>Artist</span>
+                                        <span>Progress</span>
+                                        <span>Status</span>
+                                    </div>
+                                    <div class="table-row">
+                                        <span>shot_010_comp_v003</span>
+                                        <span>J. Smith</span>
+                                        <div class="progress-bar"><div class="progress" style="width: 78%"></div></div>
+                                        <span class="status rendering">Rendering</span>
+                                    </div>
+                                    <div class="table-row">
+                                        <span>env_forest_lighting</span>
+                                        <span>M. Chen</span>
+                                        <div class="progress-bar"><div class="progress" style="width: 100%"></div></div>
+                                        <span class="status complete">Complete</span>
+                                    </div>
+                                    <div class="table-row">
+                                        <span>char_hero_anim_v012</span>
+                                        <span>A. Garcia</span>
+                                        <div class="progress-bar"><div class="progress" style="width: 34%"></div></div>
+                                        <span class="status rendering">Rendering</span>
+                                    </div>
+                                    <div class="table-row">
+                                        <span>fx_explosion_sim</span>
+                                        <span>K. Lee</span>
+                                        <div class="progress-bar error"><div class="progress" style="width: 67%"></div></div>
+                                        <span class="status failed">Failed</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="demo-caption">
+                    <p>Real-time WebSocket updates show job progress across multiple render farms. Status changes propagate instantly to all connected clients.</p>
+                </div>
+            </div>
+
+            <!-- Meshy 3D Demo -->
+            <div class="demo-card">
+                <div class="demo-header">
+                    <h3>Meshy 3D Asset Pipeline</h3>
+                    <span class="demo-tag">PyQt5 Application</span>
+                </div>
+                <div class="demo-mockup pyqt-mockup">
+                    <div class="pyqt-window">
+                        <div class="pyqt-titlebar">
+                            <span class="window-title">Meshy 3D Generator - Asset Pipeline Tool</span>
+                            <div class="window-controls">
+                                <span class="ctrl minimize">−</span>
+                                <span class="ctrl maximize">□</span>
+                                <span class="ctrl close">×</span>
+                            </div>
+                        </div>
+                        <div class="pyqt-menubar">
+                            <span>File</span>
+                            <span>Edit</span>
+                            <span>Pipeline</span>
+                            <span>Help</span>
+                        </div>
+                        <div class="pyqt-content">
+                            <div class="pyqt-sidebar">
+                                <div class="input-section">
+                                    <div class="section-title">Input Image</div>
+                                    <div class="image-dropzone">
+                                        <div class="concept-preview">
+                                            <div class="concept-icon">🎨</div>
+                                            <span>concept_sword_v02.png</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="settings-section">
+                                    <div class="section-title">Generation Settings</div>
+                                    <div class="setting-row">
+                                        <label>Topology</label>
+                                        <select><option>Quad-dominant</option></select>
+                                    </div>
+                                    <div class="setting-row">
+                                        <label>Texture Res</label>
+                                        <select><option>2048 × 2048</option></select>
+                                    </div>
+                                    <div class="setting-row">
+                                        <label>Export Format</label>
+                                        <select><option>USD + GLB</option></select>
+                                    </div>
+                                </div>
+                                <button class="generate-btn">Generate 3D Asset</button>
+                            </div>
+                            <div class="pyqt-main">
+                                <div class="viewport-3d">
+                                    <div class="model-preview">
+                                        <div class="wireframe-cube"></div>
+                                        <div class="axis-gizmo">
+                                            <span class="x">X</span>
+                                            <span class="y">Y</span>
+                                            <span class="z">Z</span>
+                                        </div>
+                                    </div>
+                                    <div class="viewport-controls">
+                                        <span>Orbit</span>
+                                        <span>Pan</span>
+                                        <span class="active">Wireframe</span>
+                                        <span>Textured</span>
+                                    </div>
+                                </div>
+                                <div class="output-panel">
+                                    <div class="output-header">
+                                        <span class="status-badge success">✓ Generation Complete</span>
+                                        <span class="time">2.4s</span>
+                                    </div>
+                                    <div class="output-files">
+                                        <div class="file-item"><span class="icon">📦</span> sword_asset.usd</div>
+                                        <div class="file-item"><span class="icon">📦</span> sword_asset.glb</div>
+                                        <div class="file-item"><span class="icon">🎨</span> sword_diffuse.png</div>
+                                        <div class="file-item"><span class="icon">🎨</span> sword_normal.png</div>
+                                    </div>
+                                    <button class="publish-btn">Publish to ShotGrid</button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="pyqt-statusbar">
+                            <span>Connected to Meshy API</span>
+                            <span class="right">Pipeline: Production</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="demo-caption">
+                    <p>Concept art drops into the tool, AI generates production-ready 3D with PBR textures, and one-click publishes to the asset library.</p>
+                </div>
+            </div>
+
+            <!-- AE Marker Demo -->
+            <div class="demo-card">
+                <div class="demo-header">
+                    <h3>AE Marker Exporter</h3>
+                    <span class="demo-tag">ExtendScript Panel</span>
+                </div>
+                <div class="demo-mockup ae-mockup">
+                    <div class="ae-interface">
+                        <div class="ae-header">
+                            <div class="ae-logo">Ae</div>
+                            <span class="ae-title">After Effects 2024</span>
+                        </div>
+                        <div class="ae-workspace">
+                            <div class="ae-timeline">
+                                <div class="timeline-header">
+                                    <span class="comp-name">main_comp_v004</span>
+                                    <span class="duration">00:00:30:00</span>
+                                </div>
+                                <div class="timeline-ruler">
+                                    <div class="marker" style="left: 10%;" data-label="Intro"></div>
+                                    <div class="marker" style="left: 25%;" data-label="Logo In"></div>
+                                    <div class="marker" style="left: 50%;" data-label="Main Content"></div>
+                                    <div class="marker" style="left: 75%;" data-label="CTA"></div>
+                                    <div class="marker" style="left: 90%;" data-label="Outro"></div>
+                                    <div class="playhead" style="left: 35%;"></div>
+                                </div>
+                                <div class="timeline-tracks">
+                                    <div class="track">
+                                        <span class="track-name">▼ Text Layers</span>
+                                        <div class="track-bar"></div>
+                                    </div>
+                                    <div class="track">
+                                        <span class="track-name">▼ Graphics</span>
+                                        <div class="track-bar" style="width: 80%; margin-left: 10%;"></div>
+                                    </div>
+                                    <div class="track">
+                                        <span class="track-name">▼ Background</span>
+                                        <div class="track-bar"></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="ae-panel marker-panel">
+                                <div class="panel-header">
+                                    <span>Marker Exporter</span>
+                                    <span class="panel-menu">☰</span>
+                                </div>
+                                <div class="panel-content">
+                                    <div class="marker-list">
+                                        <div class="marker-item">
+                                            <span class="time">00:03:00</span>
+                                            <span class="label">Intro</span>
+                                            <span class="dur">2s</span>
+                                        </div>
+                                        <div class="marker-item">
+                                            <span class="time">00:07:15</span>
+                                            <span class="label">Logo In</span>
+                                            <span class="dur">1s</span>
+                                        </div>
+                                        <div class="marker-item selected">
+                                            <span class="time">00:15:00</span>
+                                            <span class="label">Main Content</span>
+                                            <span class="dur">10s</span>
+                                        </div>
+                                        <div class="marker-item">
+                                            <span class="time">00:22:15</span>
+                                            <span class="label">CTA</span>
+                                            <span class="dur">3s</span>
+                                        </div>
+                                        <div class="marker-item">
+                                            <span class="time">00:27:00</span>
+                                            <span class="label">Outro</span>
+                                            <span class="dur">3s</span>
+                                        </div>
+                                    </div>
+                                    <div class="panel-actions">
+                                        <button class="ae-btn primary">Export JSON</button>
+                                        <button class="ae-btn">Import JSON</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="json-output">
+                            <div class="json-header">markers.json</div>
+                            <pre class="json-code">[
+  {"time": 3.0, "label": "Intro", "duration": 2},
+  {"time": 7.5, "label": "Logo In", "duration": 1},
+  {"time": 15.0, "label": "Main Content", "duration": 10},
+  {"time": 22.5, "label": "CTA", "duration": 3},
+  {"time": 27.0, "label": "Outro", "duration": 3}
+]</pre>
+                        </div>
+                    </div>
+                </div>
+                <div class="demo-caption">
+                    <p>Bidirectional sync between AE timeline markers and JSON files enables data-driven animation and automated editorial workflows.</p>
+                </div>
+            </div>
+
+            <!-- ShotGrid Dashboard Demo -->
+            <div class="demo-card">
+                <div class="demo-header">
+                    <h3>ShotGrid Workload Dashboard</h3>
+                    <span class="demo-tag">PyQt5 Widget</span>
+                </div>
+                <div class="demo-mockup shotgrid-mockup">
+                    <div class="sg-widget">
+                        <div class="sg-header">
+                            <div class="sg-logo">SG</div>
+                            <span class="sg-title">Artist Workload Dashboard</span>
+                            <div class="sg-filters">
+                                <select><option>All Departments</option></select>
+                                <select><option>This Week</option></select>
+                            </div>
+                        </div>
+                        <div class="sg-content">
+                            <div class="artist-cards">
+                                <div class="artist-card">
+                                    <div class="artist-avatar">JS</div>
+                                    <div class="artist-info">
+                                        <span class="artist-name">Jake Smith</span>
+                                        <span class="artist-dept">Compositing</span>
+                                    </div>
+                                    <div class="workload-bar">
+                                        <div class="workload-fill high" style="width: 85%;"></div>
+                                        <span class="workload-label">85%</span>
+                                    </div>
+                                    <div class="task-count">
+                                        <span class="count ip">4 IP</span>
+                                        <span class="count rdy">2 RDY</span>
+                                    </div>
+                                </div>
+                                <div class="artist-card">
+                                    <div class="artist-avatar">MC</div>
+                                    <div class="artist-info">
+                                        <span class="artist-name">Maria Chen</span>
+                                        <span class="artist-dept">Lighting</span>
+                                    </div>
+                                    <div class="workload-bar">
+                                        <div class="workload-fill medium" style="width: 60%;"></div>
+                                        <span class="workload-label">60%</span>
+                                    </div>
+                                    <div class="task-count">
+                                        <span class="count ip">3 IP</span>
+                                        <span class="count rdy">1 RDY</span>
+                                    </div>
+                                </div>
+                                <div class="artist-card">
+                                    <div class="artist-avatar">KL</div>
+                                    <div class="artist-info">
+                                        <span class="artist-name">Kevin Lee</span>
+                                        <span class="artist-dept">FX</span>
+                                    </div>
+                                    <div class="workload-bar">
+                                        <div class="workload-fill critical" style="width: 95%;"></div>
+                                        <span class="workload-label">95%</span>
+                                    </div>
+                                    <div class="task-count">
+                                        <span class="count ip">6 IP</span>
+                                        <span class="count rdy">3 RDY</span>
+                                    </div>
+                                </div>
+                                <div class="artist-card">
+                                    <div class="artist-avatar">AG</div>
+                                    <div class="artist-info">
+                                        <span class="artist-name">Ana Garcia</span>
+                                        <span class="artist-dept">Animation</span>
+                                    </div>
+                                    <div class="workload-bar">
+                                        <div class="workload-fill low" style="width: 35%;"></div>
+                                        <span class="workload-label">35%</span>
+                                    </div>
+                                    <div class="task-count">
+                                        <span class="count ip">2 IP</span>
+                                        <span class="count rdy">0 RDY</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="sg-summary">
+                                <div class="summary-card">
+                                    <div class="summary-value">15</div>
+                                    <div class="summary-label">Active Tasks</div>
+                                </div>
+                                <div class="summary-card">
+                                    <div class="summary-value">69%</div>
+                                    <div class="summary-label">Avg Capacity</div>
+                                </div>
+                                <div class="summary-card alert">
+                                    <div class="summary-value">2</div>
+                                    <div class="summary-label">Overloaded</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="demo-caption">
+                    <p>Producers get instant visibility into artist capacity. Real-time ShotGrid sync highlights overloaded team members for better task distribution.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
     <!-- Project Planning Section -->
     <section id="planning" class="planning-section">
         <div class="section-header">
