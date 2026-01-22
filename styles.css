@@ -2636,16 +2636,44 @@ code {
    ============================================ */
 
 .projects-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(380px, 1fr));
+    display: flex;
     gap: 2rem;
-    max-width: 1400px;
+    max-width: 100%;
     margin: 0 auto;
+    overflow-x: auto;
+    overflow-y: hidden;
+    padding: 1rem 0 2rem 0;
+    scroll-snap-type: x mandatory;
+    scrollbar-width: thin;
+    scrollbar-color: rgba(0, 255, 255, 0.3) transparent;
+    -webkit-overflow-scrolling: touch;
+}
+
+.projects-grid::-webkit-scrollbar {
+    height: 6px;
+}
+
+.projects-grid::-webkit-scrollbar-track {
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 3px;
+}
+
+.projects-grid::-webkit-scrollbar-thumb {
+    background: rgba(0, 255, 255, 0.3);
+    border-radius: 3px;
+}
+
+.projects-grid::-webkit-scrollbar-thumb:hover {
+    background: rgba(0, 255, 255, 0.5);
 }
 
 .project-card {
     position: relative;
     background: rgba(10, 10, 15, 0.95);
+    min-width: 380px;
+    max-width: 420px;
+    flex-shrink: 0;
+    scroll-snap-align: start;
     border-radius: 12px;
     overflow: hidden;
     transition: all 0.4s var(--ease-out-expo);
@@ -2976,9 +3004,13 @@ code {
 /* Mobile responsive */
 @media (max-width: 768px) {
     .projects-grid {
-        grid-template-columns: 1fr;
         gap: 1.5rem;
-        padding: 0 1rem;
+        padding: 0 1rem 2rem 1rem;
+    }
+    
+    .project-card {
+        min-width: 300px;
+        max-width: 340px;
     }
     
     .project-card-visual {
