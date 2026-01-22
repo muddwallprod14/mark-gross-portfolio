@@ -3568,6 +3568,83 @@ code {
 .status.complete { background: rgba(39, 202, 64, 0.2); color: #27ca40; }
 .status.failed { background: rgba(255, 95, 86, 0.2); color: #ff5f56; }
 
+/* Terminal Mockup */
+.terminal-window {
+    background: #1a1a2e;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+    font-family: 'Monaco', 'Menlo', 'Consolas', monospace;
+}
+
+.terminal-bar {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 0.75rem 1rem;
+    background: #0d0d1a;
+}
+
+.terminal-title {
+    flex: 1;
+    text-align: center;
+    font-size: 0.7rem;
+    color: rgba(255, 255, 255, 0.5);
+}
+
+.terminal-content {
+    padding: 1rem;
+    min-height: 280px;
+    font-size: 0.65rem;
+    line-height: 1.6;
+}
+
+.terminal-line {
+    white-space: nowrap;
+    overflow: hidden;
+}
+
+.terminal-line .prompt {
+    color: #00ffff;
+    margin-right: 0.5rem;
+}
+
+.terminal-line.output {
+    color: rgba(255, 255, 255, 0.8);
+}
+
+.terminal-line.output.dim {
+    color: rgba(255, 255, 255, 0.6);
+}
+
+.terminal-line.output.cyan {
+    color: #00ffff;
+    font-weight: bold;
+}
+
+.terminal-line.output.bold {
+    font-weight: bold;
+    color: #fff;
+}
+
+.terminal-line .green {
+    color: #27ca40;
+}
+
+.terminal-line .red {
+    color: #ff5f56;
+}
+
+.terminal-line .cursor {
+    color: #00ffff;
+    animation: blink 1s infinite;
+}
+
+@keyframes blink {
+    0%, 50% { opacity: 1; }
+    51%, 100% { opacity: 0; }
+}
+
 /* PyQt Mockup */
 .pyqt-window {
     background: #2d2d30;
