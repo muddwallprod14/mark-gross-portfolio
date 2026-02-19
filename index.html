@@ -75,7 +75,7 @@
         <div class="nav-links">
             <a href="#about">About</a>
             <a href="#work">Work</a>
-            <a href="#demos">Demos</a>
+            <a href="#demos">Shaders</a>
             <a href="#reel">Reel</a>
             <a href="#applications">Applications</a>
             <a href="#resume">Resume</a>
@@ -145,246 +145,148 @@
         <div class="work-section-header">
             <span class="work-section-label">Selected Work</span>
             <h2 class="work-section-title glitch" data-text="Projects">Projects</h2>
-            <p class="work-section-subtitle">Pipeline tools, production systems, and creative automation built for VFX and game studios.</p>
+            <p class="work-section-subtitle">Technical art tools, shaders, and pipeline utilities for VFX and real-time pipelines.</p>
         </div>
         
         <div class="projects-grid">
             
-            <!-- Project 1: UAT Automation CLI -->
+            <!-- Project 1: Houdini Tools -->
             <div class="project-card">
                 <div class="project-card-visual pattern-grid">
                     <svg class="project-icon" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <rect x="8" y="12" width="48" height="40" rx="4" stroke="#00ffff" stroke-width="2"/>
-                        <path d="M8 22h48" stroke="#00ffff" stroke-width="2"/>
-                        <text x="14" y="19" font-family="monospace" font-size="6" fill="#27ca40">$_</text>
-                        <text x="14" y="34" font-family="monospace" font-size="5" fill="#00ffff">$ uat run --all</text>
-                        <text x="14" y="42" font-family="monospace" font-size="5" fill="#27ca40">✓ PASSED (12/12)</text>
-                        <text x="14" y="50" font-family="monospace" font-size="5" fill="#888">100% success</text>
+                        <path d="M16 12h32v40H16z" stroke="#00ffff" stroke-width="2" fill="none"/>
+                        <path d="M24 20h16M24 28h16M24 36h10" stroke="#00ffff" stroke-width="2"/>
+                        <circle cx="20" cy="20" r="2" fill="#00ffff"/>
+                        <circle cx="20" cy="28" r="2" fill="#00ffff"/>
+                        <circle cx="20" cy="36" r="2" fill="#00ffff"/>
                     </svg>
                 </div>
                 <div class="project-card-content">
                     <div class="project-card-number">01</div>
-                    <h3 class="project-card-title">UAT Automation CLI</h3>
-                    <p class="project-card-desc">Terminal-based testing framework for VFX/Media pipelines with automated validation, logging, and reporting.</p>
+                    <h3 class="project-card-title">Houdini Tools</h3>
+                    <p class="project-card-desc">Custom nodes, shelf tools, and procedural workflows for Houdini — SOPs, dynamics, and pipeline integration.</p>
                     <div class="project-card-tags">
+                        <span class="project-tag">Houdini</span>
+                        <span class="project-tag">VEX</span>
                         <span class="project-tag">Python</span>
-                        <span class="project-tag">CLI</span>
-                        <span class="project-tag">FFprobe</span>
                     </div>
                 </div>
                 <div class="project-card-overlay">
-                    <h4 class="project-overlay-title">UAT Automation CLI</h4>
-                    <p class="project-overlay-desc">Production-ready CLI tool for automated QA testing of media assets, deliverables, and pipeline outputs.</p>
+                    <h4 class="project-overlay-title">Houdini Tools</h4>
+                    <p class="project-overlay-desc">SOP networks, VEX snippets, and Python-based automation for FX and cinematic pipelines.</p>
                     <ul class="project-overlay-features">
-                        <li>File validation (format, size, checksum)</li>
-                        <li>Video QC (codec, resolution, metadata)</li>
-                        <li>JSON schema validation</li>
-                        <li>HTML/JSON test reports</li>
+                        <li>Custom SOPs and procedural geometry</li>
+                        <li>VEX and Python scripting</li>
+                        <li>Dynamics and simulation helpers</li>
+                        <li>Pipeline and export utilities</li>
                     </ul>
                     <div class="project-role">
-                        <strong>Role:</strong> Sole developer — designed test framework architecture, validators, CLI interface, and report generation.
-                    </div>
-                    <div class="project-code-section">
-                        <button class="code-tab-toggle" onclick="this.classList.toggle('active'); this.nextElementSibling.classList.toggle('active');">
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
-                            View Code Snippet
-                        </button>
-                        <div class="code-tab-content">
-                            <pre><span class="comment"># Terminal Usage</span>
-$ python uat_automation.py init my_project
-$ python uat_automation.py run my_project_tests
-$ python uat_automation.py validate video.mp4
-
-<span class="keyword">class</span> <span class="function">Validators</span>:
-    <span class="keyword">@staticmethod</span>
-    <span class="keyword">def</span> <span class="function">validate_video_codec</span>(path, expected_codec):
-        result = subprocess.run([
-            <span class="string">'ffprobe'</span>, <span class="string">'-v'</span>, <span class="string">'quiet'</span>,
-            <span class="string">'-print_format'</span>, <span class="string">'json'</span>,
-            <span class="string">'-show_streams'</span>, path
-        ], capture_output=<span class="keyword">True</span>)
-        
-        data = json.loads(result.stdout)
-        codec = data[<span class="string">'streams'</span>][0][<span class="string">'codec_name'</span>]
-        
-        <span class="keyword">return</span> TestResult(
-            status=<span class="string">"PASSED"</span> <span class="keyword">if</span> codec == expected_codec <span class="keyword">else</span> <span class="string">"FAILED"</span>
-        )</pre>
-                        </div>
+                        <strong>Role:</strong> Technical artist — built tools for real-time and cinematic pipelines at Blur Studio and related workflows.
                     </div>
                 </div>
             </div>
 
-            <!-- Project 2: Meshy 3D Asset Pipeline -->
+            <!-- Project 2: Blueprint Tools -->
             <div class="project-card">
                 <div class="project-card-visual pattern-dots">
                     <svg class="project-icon" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M32 8L8 20v24l24 12 24-12V20L32 8z" stroke="#00ffff" stroke-width="2" fill="none"/>
-                        <path d="M8 20l24 12 24-12" stroke="#00ffff" stroke-width="2"/>
-                        <path d="M32 32v24" stroke="#00ffff" stroke-width="2"/>
-                        <circle cx="32" cy="24" r="6" fill="#00ffff" fill-opacity="0.3" stroke="#00ffff"/>
-                        <path d="M48 8l8 4v8" stroke="#27ca40" stroke-width="2"/>
+                        <rect x="10" y="10" width="44" height="44" rx="4" stroke="#00ffff" stroke-width="2"/>
+                        <path d="M22 22h20v6H22zM22 34h12v4H22z" stroke="#00ffff" stroke-width="2" fill="none"/>
+                        <circle cx="28" cy="25" r="2" fill="#27ca40"/>
+                        <path d="M34 38l6 4" stroke="#00ffff" stroke-width="2"/>
                     </svg>
                 </div>
                 <div class="project-card-content">
                     <div class="project-card-number">02</div>
-                    <h3 class="project-card-title">Meshy 3D Asset Pipeline</h3>
-                    <p class="project-card-desc">AI-powered concept-to-3D tool integrated into production pipelines for rapid asset generation and validation.</p>
+                    <h3 class="project-card-title">Blueprint Tools</h3>
+                    <p class="project-card-desc">Unreal Engine Blueprint utilities for gameplay, animation, and real-time pipeline integration.</p>
                     <div class="project-card-tags">
-                        <span class="project-tag">PyQt5</span>
-                        <span class="project-tag">Meshy AI</span>
-                        <span class="project-tag">USD</span>
+                        <span class="project-tag">Unreal</span>
+                        <span class="project-tag">Blueprint</span>
+                        <span class="project-tag">C++</span>
                     </div>
                 </div>
                 <div class="project-card-overlay">
-                    <h4 class="project-overlay-title">Meshy 3D Asset Pipeline</h4>
-                    <p class="project-overlay-desc">Streamlines concept art to production-ready 3D with automated validation, USD export, and asset library integration.</p>
+                    <h4 class="project-overlay-title">Blueprint Tools</h4>
+                    <p class="project-overlay-desc">Reusable Blueprint components and C++ extensions for real-time experiences and in-engine tooling.</p>
                     <ul class="project-overlay-features">
-                        <li>Concept art to 3D conversion</li>
-                        <li>PBR texture generation</li>
-                        <li>USD/GLB/FBX export</li>
-                        <li>Asset library publishing</li>
+                        <li>Gameplay and animation Blueprints</li>
+                        <li>Editor utilities and asset helpers</li>
+                        <li>Real-time pipeline integration</li>
+                        <li>Performance and iteration support</li>
                     </ul>
                     <div class="project-role">
-                        <strong>Role:</strong> Sole developer — built PyQt5 interface, Meshy API integration, asset validation pipeline, and ShotGrid publishing hooks.
-                    </div>
-                    <div class="project-code-section">
-                        <button class="code-tab-toggle" onclick="this.classList.toggle('active'); this.nextElementSibling.classList.toggle('active');">
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
-                            View Code Snippet
-                        </button>
-                        <div class="code-tab-content">
-                            <pre><span class="keyword">class</span> <span class="function">MeshyPipeline</span>:
-    <span class="keyword">def</span> <span class="function">process_concept</span>(self, image_path):
-        <span class="comment"># Upload to Meshy AI</span>
-        task_id = self.meshy_api.<span class="function">create_task</span>(image_path)
-        
-        <span class="comment"># Poll for completion</span>
-        result = self.<span class="function">wait_for_result</span>(task_id)
-        
-        <span class="comment"># Validate and convert to USD</span>
-        usd_path = self.<span class="function">convert_to_usd</span>(result.glb_path)
-        
-        <span class="comment"># Publish to asset library</span>
-        self.shotgrid.<span class="function">publish_asset</span>(
-            usd_path, 
-            asset_type=<span class="string">"prop"</span>
-        )</pre>
-                        </div>
+                        <strong>Role:</strong> Technical artist — developed Blueprint tools to support real-time and cinematic pipelines.
                     </div>
                 </div>
             </div>
 
-            <!-- Project 3: AE Marker Exporter -->
+            <!-- Project 3: Vertex Shader -->
             <div class="project-card">
                 <div class="project-card-visual pattern-lines">
                     <svg class="project-icon" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <rect x="10" y="10" width="44" height="44" rx="4" stroke="#00ffff" stroke-width="2"/>
-                        <text x="32" y="38" font-family="Arial" font-weight="bold" font-size="18" fill="#00ffff" text-anchor="middle">Ae</text>
-                        <path d="M10 50h10l4-8 6 12 6-16 8 12h10" stroke="#ff9500" stroke-width="2" fill="none"/>
+                        <path d="M32 8v20l20 28H12L32 28V8z" stroke="#00ffff" stroke-width="2" fill="none"/>
+                        <circle cx="32" cy="8" r="3" fill="#00ffff"/>
+                        <path d="M20 56l12-20 12 20" stroke="#ff9500" stroke-width="2" fill="none"/>
                     </svg>
                 </div>
                 <div class="project-card-content">
                     <div class="project-card-number">03</div>
-                    <h3 class="project-card-title">AE Marker Exporter</h3>
-                    <p class="project-card-desc">Bidirectional JSON sync for After Effects markers enabling data-driven motion graphics.</p>
+                    <h3 class="project-card-title">Vertex Shader</h3>
+                    <p class="project-card-desc">Custom vertex shaders for deformation, animation, and look dev — HLSL/GLSL and node-based materials.</p>
                     <div class="project-card-tags">
-                        <span class="project-tag">ExtendScript</span>
-                        <span class="project-tag">JSON</span>
-                        <span class="project-tag">After Effects</span>
+                        <span class="project-tag">HLSL</span>
+                        <span class="project-tag">GLSL</span>
+                        <span class="project-tag">Materials</span>
                     </div>
                 </div>
                 <div class="project-card-overlay">
-                    <h4 class="project-overlay-title">AE Marker Exporter</h4>
-                    <p class="project-overlay-desc">Export and import composition markers as JSON for automated timelines and external data integration.</p>
+                    <h4 class="project-overlay-title">Vertex Shader</h4>
+                    <p class="project-overlay-desc">Vertex-level shader work for mesh deformation, procedural animation, and stylized or realistic rendering.</p>
                     <ul class="project-overlay-features">
-                        <li>Export markers to JSON</li>
-                        <li>Import JSON to markers</li>
-                        <li>Duration & comment support</li>
-                        <li>Data-driven animation</li>
+                        <li>Vertex displacement and morph targets</li>
+                        <li>Custom lighting and normals</li>
+                        <li>Unreal / Unity material graphs</li>
+                        <li>Performance-conscious real-time shaders</li>
                     </ul>
                     <div class="project-role">
-                        <strong>Role:</strong> Sole developer — wrote ExtendScript panel, JSON schema design, and integration with editorial workflows.
-                    </div>
-                    <div class="project-code-section">
-                        <button class="code-tab-toggle" onclick="this.classList.toggle('active'); this.nextElementSibling.classList.toggle('active');">
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
-                            View Code Snippet
-                        </button>
-                        <div class="code-tab-content">
-                            <pre><span class="keyword">function</span> <span class="function">exportMarkersToJSON</span>(comp) {
-    <span class="keyword">var</span> markers = [];
-    <span class="keyword">var</span> markerProp = comp.markerProperty;
-    
-    <span class="keyword">for</span> (<span class="keyword">var</span> i = 1; i <= markerProp.numKeys; i++) {
-        markers.push({
-            time: markerProp.keyTime(i),
-            comment: markerProp.keyValue(i).comment,
-            duration: markerProp.keyValue(i).duration
-        });
-    }
-    
-    <span class="keyword">return</span> JSON.stringify(markers, <span class="keyword">null</span>, 2);
-}</pre>
-                        </div>
+                        <strong>Role:</strong> Technical artist — shader development for real-time and cinematic pipelines.
                     </div>
                 </div>
             </div>
 
-            <!-- Project 4: ShotGrid Workload Dashboard -->
+            <!-- Project 4: Blendshape / FACS UI (Simplex-style) -->
             <div class="project-card">
                 <div class="project-card-visual pattern-grid">
                     <svg class="project-icon" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <rect x="8" y="8" width="20" height="20" rx="3" stroke="#00ffff" stroke-width="2"/>
-                        <rect x="36" y="8" width="20" height="20" rx="3" stroke="#00ffff" stroke-width="2"/>
-                        <rect x="8" y="36" width="20" height="20" rx="3" stroke="#00ffff" stroke-width="2"/>
-                        <rect x="36" y="36" width="20" height="20" rx="3" stroke="#00ffff" stroke-width="2"/>
-                        <circle cx="18" cy="18" r="4" fill="#00ffff"/>
-                        <circle cx="46" cy="18" r="4" fill="#00ffff" fill-opacity="0.6"/>
-                        <circle cx="18" cy="46" r="4" fill="#00ffff" fill-opacity="0.8"/>
-                        <rect x="42" y="42" width="8" height="8" fill="#00ffff" fill-opacity="0.4"/>
+                        <circle cx="32" cy="24" r="12" stroke="#00ffff" stroke-width="2" fill="none"/>
+                        <path d="M20 40c0-6 6-12 12-12s12 6 12 12" stroke="#00ffff" stroke-width="2" fill="none"/>
+                        <path d="M26 28l4 4 8-8" stroke="#27ca40" stroke-width="2"/>
+                        <rect x="8" y="48" width="48" height="8" rx="2" stroke="#00ffff" stroke-width="2" fill="none"/>
+                        <rect x="12" y="50" width="12" height="4" rx="1" fill="#00ffff" fill-opacity="0.5"/>
                     </svg>
                 </div>
                 <div class="project-card-content">
                     <div class="project-card-number">04</div>
-                    <h3 class="project-card-title">ShotGrid Workload Dashboard</h3>
-                    <p class="project-card-desc">Artist capacity visualization widget pulling real-time task data from ShotGrid API.</p>
+                    <h3 class="project-card-title">Blendshape & FACS UI</h3>
+                    <p class="project-card-desc">Cross-package UI for building and controlling blendshapes, combos, and FACS-based facial rigs — inspired by tools like <a href="https://github.com/blurstudio/Simplex" target="_blank" rel="noopener noreferrer">Simplex</a>.</p>
                     <div class="project-card-tags">
-                        <span class="project-tag">PyQt5</span>
-                        <span class="project-tag">ShotGrid API</span>
-                        <span class="project-tag">Data Viz</span>
+                        <span class="project-tag">Python</span>
+                        <span class="project-tag">Qt</span>
+                        <span class="project-tag">Maya</span>
                     </div>
                 </div>
                 <div class="project-card-overlay">
-                    <h4 class="project-overlay-title">ShotGrid Workload Dashboard</h4>
-                    <p class="project-overlay-desc">Visual dashboard showing artist task allocation and project health metrics.</p>
+                    <h4 class="project-overlay-title">Blendshape & FACS UI</h4>
+                    <p class="project-overlay-desc">Intuitive UI for complex shapes, combos, and transitions — FACS-oriented, scriptable, and pipeline-friendly. Similar in spirit to <a href="https://github.com/blurstudio/Simplex" target="_blank" rel="noopener noreferrer">Blur Studio’s Simplex</a>.</p>
                     <ul class="project-overlay-features">
-                        <li>Real-time ShotGrid sync</li>
-                        <li>Artist workload bars</li>
-                        <li>Department filtering</li>
-                        <li>Task status tracking</li>
+                        <li>Build, edit, and drive blendshapes and combos</li>
+                        <li>FACS-aware layout and combo depth</li>
+                        <li>Spline interpolation, in-betweens, transitions</li>
+                        <li>Fully scriptable Python API, human-readable JSON</li>
                     </ul>
                     <div class="project-role">
-                        <strong>Role:</strong> Sole developer — built PyQt5 widget, ShotGrid API integration, custom data visualization components.
-                    </div>
-                    <div class="project-code-section">
-                        <button class="code-tab-toggle" onclick="this.classList.toggle('active'); this.nextElementSibling.classList.toggle('active');">
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
-                            View Code Snippet
-                        </button>
-                        <div class="code-tab-content">
-                            <pre><span class="keyword">def</span> <span class="function">get_artist_workload</span>(self, artist_id):
-    tasks = self.sg.<span class="function">find</span>(<span class="string">"Task"</span>, [
-        [<span class="string">"task_assignees"</span>, <span class="string">"is"</span>, {<span class="string">"type"</span>: <span class="string">"HumanUser"</span>, <span class="string">"id"</span>: artist_id}],
-        [<span class="string">"sg_status_list"</span>, <span class="string">"not_in"</span>, [<span class="string">"fin"</span>, <span class="string">"omt"</span>]]
-    ], [<span class="string">"content"</span>, <span class="string">"sg_status_list"</span>, <span class="string">"due_date"</span>])
-    
-    <span class="keyword">return</span> {
-        <span class="string">"total"</span>: len(tasks),
-        <span class="string">"in_progress"</span>: sum(1 <span class="keyword">for</span> t <span class="keyword">in</span> tasks <span class="keyword">if</span> t[<span class="string">"sg_status_list"</span>] == <span class="string">"ip"</span>),
-        <span class="string">"tasks"</span>: tasks
-    }</pre>
-                        </div>
+                        <strong>Reference:</strong> <a href="https://github.com/blurstudio/Simplex" target="_blank" rel="noopener noreferrer">Simplex</a> (Blur Studio) — cross-package blendshape UI, Qt/Python, JSON-driven. Built with the full Facial Action Coding System in mind.
                     </div>
                 </div>
             </div>
@@ -392,353 +294,75 @@ $ python uat_automation.py validate video.mp4
         </div>
     </section>
 
-    <!-- Tool Demos Section -->
-    <section id="demos" class="demos-section">
+    <!-- Shader & Post Process Showcase -->
+    <section id="demos" class="demos-section shader-showcase">
         <div class="section-header">
-            <span class="section-tag">In Action</span>
-            <h2 class="glitch" data-text="Tool Demos">Tool Demos</h2>
-            <p class="section-subtitle">Visual walkthroughs of production tools and interfaces</p>
+            <span class="section-tag">Technical Art</span>
+            <h2 class="glitch" data-text="Shaders & Post Process">Shaders & Post Process</h2>
+            <p class="section-subtitle">Custom shaders, materials, and post-processing effects</p>
         </div>
 
-        <div class="demos-grid">
-            <!-- UAT Automation CLI Demo -->
-            <div class="demo-card">
-                <div class="demo-header">
-                    <h3>UAT Automation CLI</h3>
-                    <span class="demo-tag">Terminal Tool</span>
-                </div>
-                <div class="demo-mockup terminal-mockup">
-                    <div class="terminal-window">
-                        <div class="terminal-bar">
-                            <div class="browser-dots">
-                                <span class="dot red"></span>
-                                <span class="dot yellow"></span>
-                                <span class="dot green"></span>
-                            </div>
-                            <div class="terminal-title">uat_automation.py — zsh</div>
-                        </div>
-                        <div class="terminal-content">
-                            <div class="terminal-line"><span class="prompt">$</span> python uat_automation.py run delivery_tests</div>
-                            <div class="terminal-line output"></div>
-                            <div class="terminal-line output cyan">============================================================</div>
-                            <div class="terminal-line output cyan">  Running Test Suite: delivery_tests</div>
-                            <div class="terminal-line output cyan">============================================================</div>
-                            <div class="terminal-line output"></div>
-                            <div class="terminal-line output dim">[1/6] File Exists Check... <span class="green">PASSED</span> (0.001s)</div>
-                            <div class="terminal-line output dim">[2/6] File Format Check... <span class="green">PASSED</span> (0.001s)</div>
-                            <div class="terminal-line output dim">[3/6] File Size Check... <span class="green">PASSED</span> (0.002s)</div>
-                            <div class="terminal-line output dim">[4/6] Video Codec Check... <span class="green">PASSED</span> (0.156s)</div>
-                            <div class="terminal-line output dim">[5/6] Resolution Check... <span class="green">PASSED</span> (0.089s)</div>
-                            <div class="terminal-line output dim">[6/6] Checksum Validation... <span class="green">PASSED</span> (0.234s)</div>
-                            <div class="terminal-line output"></div>
-                            <div class="terminal-line output">────────────────────────────────────────────────────────────</div>
-                            <div class="terminal-line output bold">Test Summary</div>
-                            <div class="terminal-line output">  Total:    6</div>
-                            <div class="terminal-line output">  <span class="green">Passed:   6</span></div>
-                            <div class="terminal-line output">  <span class="red">Failed:   0</span></div>
-                            <div class="terminal-line output">  Duration: 0.48s</div>
-                            <div class="terminal-line output">  Success:  100.0%</div>
-                            <div class="terminal-line output"></div>
-                            <div class="terminal-line output green bold">✓ ALL TESTS PASSED</div>
-                            <div class="terminal-line output"></div>
-                            <div class="terminal-line"><span class="prompt">$</span> <span class="cursor">▌</span></div>
-                        </div>
+        <div class="shader-grid">
+            <!-- Featured: Full Technical Art Portfolio on ArtStation -->
+            <a href="https://www.artstation.com/artwork/lDJVgJ" target="_blank" rel="noopener noreferrer" class="shader-card shader-featured">
+                <div class="shader-image">
+                    <div class="shader-placeholder shader-artstation">
+                        <span class="shader-placeholder-icon">🎨</span>
+                        <span>View on ArtStation</span>
                     </div>
                 </div>
-                <div class="demo-caption">
-                    <p>CLI-based testing framework validates media assets, checks codecs/resolution via FFprobe, and generates detailed reports.</p>
+                <div class="shader-info">
+                    <h3>Technical Art Portfolio</h3>
+                    <span class="shader-tag">Full Showcase</span>
+                    <p>PBR materials, toon shaders, procedural effects, and post-process work — view the complete collection on ArtStation.</p>
+                </div>
+            </a>
+
+            <!-- PBR Materials -->
+            <div class="shader-card">
+                <div class="shader-image shader-pbr">
+                    <div class="shader-placeholder"><span>PBR</span></div>
+                </div>
+                <div class="shader-info">
+                    <h3>PBR Materials</h3>
+                    <span class="shader-tag">Physically Based</span>
+                    <p>Metallic-roughness and specular workflows for realistic surface response.</p>
                 </div>
             </div>
 
-            <!-- Meshy 3D Demo -->
-            <div class="demo-card">
-                <div class="demo-header">
-                    <h3>Meshy 3D Asset Pipeline</h3>
-                    <span class="demo-tag">PyQt5 Application</span>
+            <!-- Toon / Cel Shading -->
+            <div class="shader-card">
+                <div class="shader-image shader-toon">
+                    <div class="shader-placeholder"><span>Toon</span></div>
                 </div>
-                <div class="demo-mockup pyqt-mockup">
-                    <div class="pyqt-window">
-                        <div class="pyqt-titlebar">
-                            <span class="window-title">Meshy 3D Generator - Asset Pipeline Tool</span>
-                            <div class="window-controls">
-                                <span class="ctrl minimize">−</span>
-                                <span class="ctrl maximize">□</span>
-                                <span class="ctrl close">×</span>
-                            </div>
-                        </div>
-                        <div class="pyqt-menubar">
-                            <span>File</span>
-                            <span>Edit</span>
-                            <span>Pipeline</span>
-                            <span>Help</span>
-                        </div>
-                        <div class="pyqt-content">
-                            <div class="pyqt-sidebar">
-                                <div class="input-section">
-                                    <div class="section-title">Input Image</div>
-                                    <div class="image-dropzone">
-                                        <div class="concept-preview">
-                                            <div class="concept-icon">🎨</div>
-                                            <span>concept_sword_v02.png</span>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="settings-section">
-                                    <div class="section-title">Generation Settings</div>
-                                    <div class="setting-row">
-                                        <label>Topology</label>
-                                        <select><option>Quad-dominant</option></select>
-                                    </div>
-                                    <div class="setting-row">
-                                        <label>Texture Res</label>
-                                        <select><option>2048 × 2048</option></select>
-                                    </div>
-                                    <div class="setting-row">
-                                        <label>Export Format</label>
-                                        <select><option>USD + GLB</option></select>
-                                    </div>
-                                </div>
-                                <button class="generate-btn">Generate 3D Asset</button>
-                            </div>
-                            <div class="pyqt-main">
-                                <div class="viewport-3d">
-                                    <div class="model-preview">
-                                        <div class="wireframe-cube"></div>
-                                        <div class="axis-gizmo">
-                                            <span class="x">X</span>
-                                            <span class="y">Y</span>
-                                            <span class="z">Z</span>
-                                        </div>
-                                    </div>
-                                    <div class="viewport-controls">
-                                        <span>Orbit</span>
-                                        <span>Pan</span>
-                                        <span class="active">Wireframe</span>
-                                        <span>Textured</span>
-                                    </div>
-                                </div>
-                                <div class="output-panel">
-                                    <div class="output-header">
-                                        <span class="status-badge success">✓ Generation Complete</span>
-                                        <span class="time">2.4s</span>
-                                    </div>
-                                    <div class="output-files">
-                                        <div class="file-item"><span class="icon">📦</span> sword_asset.usd</div>
-                                        <div class="file-item"><span class="icon">📦</span> sword_asset.glb</div>
-                                        <div class="file-item"><span class="icon">🎨</span> sword_diffuse.png</div>
-                                        <div class="file-item"><span class="icon">🎨</span> sword_normal.png</div>
-                                    </div>
-                                    <button class="publish-btn">Publish to ShotGrid</button>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="pyqt-statusbar">
-                            <span>Connected to Meshy API</span>
-                            <span class="right">Pipeline: Production</span>
-                        </div>
-                    </div>
-                </div>
-                <div class="demo-caption">
-                    <p>Concept art drops into the tool, AI generates production-ready 3D with PBR textures, and one-click publishes to the asset library.</p>
+                <div class="shader-info">
+                    <h3>Toon & Cel Shading</h3>
+                    <span class="shader-tag">Stylized</span>
+                    <p>Custom ramp and outline shaders for stylized, non-photoreal rendering.</p>
                 </div>
             </div>
 
-            <!-- AE Marker Demo -->
-            <div class="demo-card">
-                <div class="demo-header">
-                    <h3>AE Marker Exporter</h3>
-                    <span class="demo-tag">ExtendScript Panel</span>
+            <!-- Procedural Shaders -->
+            <div class="shader-card">
+                <div class="shader-image shader-procedural">
+                    <div class="shader-placeholder"><span>Procedural</span></div>
                 </div>
-                <div class="demo-mockup ae-mockup">
-                    <div class="ae-interface">
-                        <div class="ae-header">
-                            <div class="ae-logo">Ae</div>
-                            <span class="ae-title">After Effects 2024</span>
-                        </div>
-                        <div class="ae-workspace">
-                            <div class="ae-timeline">
-                                <div class="timeline-header">
-                                    <span class="comp-name">main_comp_v004</span>
-                                    <span class="duration">00:00:30:00</span>
-                                </div>
-                                <div class="timeline-ruler">
-                                    <div class="marker" style="left: 10%;" data-label="Intro"></div>
-                                    <div class="marker" style="left: 25%;" data-label="Logo In"></div>
-                                    <div class="marker" style="left: 50%;" data-label="Main Content"></div>
-                                    <div class="marker" style="left: 75%;" data-label="CTA"></div>
-                                    <div class="marker" style="left: 90%;" data-label="Outro"></div>
-                                    <div class="playhead" style="left: 35%;"></div>
-                                </div>
-                                <div class="timeline-tracks">
-                                    <div class="track">
-                                        <span class="track-name">▼ Text Layers</span>
-                                        <div class="track-bar"></div>
-                                    </div>
-                                    <div class="track">
-                                        <span class="track-name">▼ Graphics</span>
-                                        <div class="track-bar" style="width: 80%; margin-left: 10%;"></div>
-                                    </div>
-                                    <div class="track">
-                                        <span class="track-name">▼ Background</span>
-                                        <div class="track-bar"></div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="ae-panel marker-panel">
-                                <div class="panel-header">
-                                    <span>Marker Exporter</span>
-                                    <span class="panel-menu">☰</span>
-                                </div>
-                                <div class="panel-content">
-                                    <div class="marker-list">
-                                        <div class="marker-item">
-                                            <span class="time">00:03:00</span>
-                                            <span class="label">Intro</span>
-                                            <span class="dur">2s</span>
-                                        </div>
-                                        <div class="marker-item">
-                                            <span class="time">00:07:15</span>
-                                            <span class="label">Logo In</span>
-                                            <span class="dur">1s</span>
-                                        </div>
-                                        <div class="marker-item selected">
-                                            <span class="time">00:15:00</span>
-                                            <span class="label">Main Content</span>
-                                            <span class="dur">10s</span>
-                                        </div>
-                                        <div class="marker-item">
-                                            <span class="time">00:22:15</span>
-                                            <span class="label">CTA</span>
-                                            <span class="dur">3s</span>
-                                        </div>
-                                        <div class="marker-item">
-                                            <span class="time">00:27:00</span>
-                                            <span class="label">Outro</span>
-                                            <span class="dur">3s</span>
-                                        </div>
-                                    </div>
-                                    <div class="panel-actions">
-                                        <button class="ae-btn primary">Export JSON</button>
-                                        <button class="ae-btn">Import JSON</button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="json-output">
-                            <div class="json-header">markers.json</div>
-                            <pre class="json-code">[
-  {"time": 3.0, "label": "Intro", "duration": 2},
-  {"time": 7.5, "label": "Logo In", "duration": 1},
-  {"time": 15.0, "label": "Main Content", "duration": 10},
-  {"time": 22.5, "label": "CTA", "duration": 3},
-  {"time": 27.0, "label": "Outro", "duration": 3}
-]</pre>
-                        </div>
-                    </div>
-                </div>
-                <div class="demo-caption">
-                    <p>Bidirectional sync between AE timeline markers and JSON files enables data-driven animation and automated editorial workflows.</p>
+                <div class="shader-info">
+                    <h3>Procedural Generation</h3>
+                    <span class="shader-tag">Node-based</span>
+                    <p>Noise, patterns, and procedural textures driven by UVs and world space.</p>
                 </div>
             </div>
 
-            <!-- ShotGrid Dashboard Demo -->
-            <div class="demo-card">
-                <div class="demo-header">
-                    <h3>ShotGrid Workload Dashboard</h3>
-                    <span class="demo-tag">PyQt5 Widget</span>
+            <!-- Post Process Effects -->
+            <div class="shader-card">
+                <div class="shader-image shader-postprocess">
+                    <div class="shader-placeholder"><span>Post</span></div>
                 </div>
-                <div class="demo-mockup shotgrid-mockup">
-                    <div class="sg-widget">
-                        <div class="sg-header">
-                            <div class="sg-logo">SG</div>
-                            <span class="sg-title">Artist Workload Dashboard</span>
-                            <div class="sg-filters">
-                                <select><option>All Departments</option></select>
-                                <select><option>This Week</option></select>
-                            </div>
-                        </div>
-                        <div class="sg-content">
-                            <div class="artist-cards">
-                                <div class="artist-card">
-                                    <div class="artist-avatar">JS</div>
-                                    <div class="artist-info">
-                                        <span class="artist-name">Jake Smith</span>
-                                        <span class="artist-dept">Compositing</span>
-                                    </div>
-                                    <div class="workload-bar">
-                                        <div class="workload-fill high" style="width: 85%;"></div>
-                                        <span class="workload-label">85%</span>
-                                    </div>
-                                    <div class="task-count">
-                                        <span class="count ip">4 IP</span>
-                                        <span class="count rdy">2 RDY</span>
-                                    </div>
-                                </div>
-                                <div class="artist-card">
-                                    <div class="artist-avatar">MC</div>
-                                    <div class="artist-info">
-                                        <span class="artist-name">Maria Chen</span>
-                                        <span class="artist-dept">Lighting</span>
-                                    </div>
-                                    <div class="workload-bar">
-                                        <div class="workload-fill medium" style="width: 60%;"></div>
-                                        <span class="workload-label">60%</span>
-                                    </div>
-                                    <div class="task-count">
-                                        <span class="count ip">3 IP</span>
-                                        <span class="count rdy">1 RDY</span>
-                                    </div>
-                                </div>
-                                <div class="artist-card">
-                                    <div class="artist-avatar">KL</div>
-                                    <div class="artist-info">
-                                        <span class="artist-name">Kevin Lee</span>
-                                        <span class="artist-dept">FX</span>
-                                    </div>
-                                    <div class="workload-bar">
-                                        <div class="workload-fill critical" style="width: 95%;"></div>
-                                        <span class="workload-label">95%</span>
-                                    </div>
-                                    <div class="task-count">
-                                        <span class="count ip">6 IP</span>
-                                        <span class="count rdy">3 RDY</span>
-                                    </div>
-                                </div>
-                                <div class="artist-card">
-                                    <div class="artist-avatar">AG</div>
-                                    <div class="artist-info">
-                                        <span class="artist-name">Ana Garcia</span>
-                                        <span class="artist-dept">Animation</span>
-                                    </div>
-                                    <div class="workload-bar">
-                                        <div class="workload-fill low" style="width: 35%;"></div>
-                                        <span class="workload-label">35%</span>
-                                    </div>
-                                    <div class="task-count">
-                                        <span class="count ip">2 IP</span>
-                                        <span class="count rdy">0 RDY</span>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="sg-summary">
-                                <div class="summary-card">
-                                    <div class="summary-value">15</div>
-                                    <div class="summary-label">Active Tasks</div>
-                                </div>
-                                <div class="summary-card">
-                                    <div class="summary-value">69%</div>
-                                    <div class="summary-label">Avg Capacity</div>
-                                </div>
-                                <div class="summary-card alert">
-                                    <div class="summary-value">2</div>
-                                    <div class="summary-label">Overloaded</div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="demo-caption">
-                    <p>Producers get instant visibility into artist capacity. Real-time ShotGrid sync highlights overloaded team members for better task distribution.</p>
+                <div class="shader-info">
+                    <h3>Post Process</h3>
+                    <span class="shader-tag">Bloom • DoF • Color</span>
+                    <p>Custom bloom, depth of field, color grading, and screen-space effects.</p>
                 </div>
             </div>
         </div>
