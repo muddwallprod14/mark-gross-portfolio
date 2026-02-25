@@ -11,10 +11,7 @@
     if (!overlay) return;
 
     function hl(code) {
-        var safe = code.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
-        safe = safe.replace(/("""[\s\S]*?"""|'''[\s\S]*?''')/g, '<span class="cm">$1</span>');
-        safe = safe.replace(/(#[^\n]*)/g, '<span class="cm">$1</span>');
-        return safe;
+        return code.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
     }
 
     const PROJECTS = {

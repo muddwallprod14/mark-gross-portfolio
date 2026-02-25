@@ -3816,18 +3816,8 @@ a.project-card:hover .project-link-label {
     tab-size: 4;
 }
 
-/* Code text — clean monospace, no heavy highlighting */
-.code-modal-body .kw,
-.code-modal-body .fn,
-.code-modal-body .st,
-.code-modal-body .dc,
-.code-modal-body .num,
-.code-modal-body .op,
-.code-modal-body .cls,
-.code-modal-body .param,
-.code-modal-body .self,
-.code-modal-body .bool { color: inherit; }
-.code-modal-body .cm { color: #6e7681; font-style: italic; }
+/* Code text — plain monospace, no syntax highlighting */
+.code-modal-body span { color: inherit !important; background: none !important; font-style: normal !important; }
 
 .project-card-preview {
     cursor: pointer;
