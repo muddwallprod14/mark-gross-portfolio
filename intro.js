@@ -188,7 +188,7 @@ class IntroExperience {
         this.createLightPortal();
         this.createPS2Particles();
         this.createAmbientLights();
-        this.createUIOverlay();
+        this.createWorldTextGroup();
 
         // Setup controls AFTER everything is created
         this.setupControls();
@@ -485,24 +485,71 @@ class IntroExperience {
         this.scene.add(backLight);
     }
 
-    createUIOverlay() {
-        const overlay = document.createElement('div');
-        overlay.id = 'game-ui-overlay';
-        overlay.innerHTML = `
-            <div class="instruction-text" id="instruction-text">
-                <span class="key-prompt">${this.isMobile ? 'SLIDE UP/DOWN' : 'W / S'}</span>
-                <span class="instruction-label">to move forward/back</span>
-            </div>
-            <div class="enter-light-text" id="enter-light-text">
-                ENTER THE LIGHT
-            </div>
-            <div class="direction-indicator" id="direction-indicator">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                    <path d="M12 19V5M5 12l7-7 7 7"/>
-                </svg>
-            </div>
-        `;
-        this.container.appendChild(overlay);
+    createWorldText(text, position, options = {}) {
+        const fontSize = options.fontSize || 64;
+        const color = options.color || '#00ffff';
+        const maxWidth = options.maxWidth || 1024;
+
+        const canvas = document.createElement('canvas');
+        const ctx = canvas.getContext('2d');
+        canvas.width = maxWidth;
+        canvas.height = fontSize * 2.5;
+
+        ctx.font = `bold ${fontSize}px "Eurostile", "Outfit", sans-serif`;
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'middle';
+
+        ctx.shadowColor = color;
+        ctx.shadowBlur = 20;
+        ctx.fillStyle = color;
+        ctx.fillText(text, canvas.width / 2, canvas.height / 2);
+        ctx.shadowBlur = 40;
+        ctx.globalAlpha = 0.4;
+        ctx.fillText(text, canvas.width / 2, canvas.height / 2);
+        ctx.globalAlpha = 1.0;
+
+        const texture = new THREE.CanvasTexture(canvas);
+        texture.minFilter = THREE.LinearFilter;
+
+        const aspect = canvas.width / canvas.height;
+        const planeHeight = options.scale || 1.2;
+        const planeWidth = planeHeight * aspect;
+        const geometry = new THREE.PlaneGeometry(planeWidth, planeHeight);
+        const material = new THREE.MeshBasicMaterial({
+            map: texture,
+            transparent: true,
+            opacity: options.opacity !== undefined ? options.opacity : 1.0,
+            blending: THREE.AdditiveBlending,
+            depthWrite: false,
+            side: THREE.DoubleSide
+        });
+
+        const mesh = new THREE.Mesh(geometry, material);
+        mesh.position.copy(position);
+        mesh.userData.baseY = position.y;
+        mesh.userData.phase = Math.random() * Math.PI * 2;
+        this.scene.add(mesh);
+        return mesh;
+    }
+
+    createWorldTextGroup() {
+        this.worldTexts = [];
+
+        const moveText = this.isMobile ? 'SLIDE TO MOVE' : 'W / S  TO MOVE';
+        const t1 = this.createWorldText(moveText, new THREE.Vector3(0, 2.8, 10), {
+            fontSize: 52, scale: 1.0, opacity: 0.9
+        });
+        this.worldTexts.push(t1);
+
+        const t2 = this.createWorldText('WALK TOWARD THE LIGHT', new THREE.Vector3(0, 2.6, 0), {
+            fontSize: 48, scale: 0.9, opacity: 0.0
+        });
+        this.worldTexts.push(t2);
+
+        const t3 = this.createWorldText('ENTER THE LIGHT', new THREE.Vector3(0, 3.0, -12), {
+            fontSize: 72, scale: 1.4, opacity: 0.0
+        });
+        this.worldTexts.push(t3);
     }
 
     setupControls() {
@@ -595,18 +642,14 @@ class IntroExperience {
             };
 
             document.addEventListener('pointerlockchange', onPointerLockChange);
-            document.addEventListener('mozpointerlockchange', onPointerLockChange);
-            document.addEventListener('webkitpointerlockchange', onPointerLockChange);
             document.addEventListener('mousemove', (event) => this.onMouseMove(event));
         }
 
         // Mobile touch handlers
         if (this.isMobile) {
             if (startButton) {
-                startButton.addEventListener('touchstart', startExperience, { passive: false });
                 startButton.addEventListener('touchend', startExperience, { passive: false });
             }
-            instructions.addEventListener('touchstart', startExperience, { passive: false });
             instructions.addEventListener('touchend', startExperience, { passive: false });
         }
 
@@ -868,31 +911,34 @@ class IntroExperience {
     }
 
     checkProximityToLight() {
-        if (!this.lightOrb) return;
+        if (!this.lightOrb || !this.worldTexts) return;
         
+        const camZ = this.camera.position.z;
         const distance = this.camera.position.distanceTo(this.lightOrb.position);
-        
-        const enterLightText = document.getElementById('enter-light-text');
-        const instructionText = document.getElementById('instruction-text');
-        
-        if (enterLightText) {
-            if (distance < 12) {
-                enterLightText.classList.add('visible');
-                if (instructionText) instructionText.classList.add('fade-out');
-            } else {
-                enterLightText.classList.remove('visible');
-                if (instructionText) instructionText.classList.remove('fade-out');
-            }
+
+        const moveText = this.worldTexts[0];
+        const walkText = this.worldTexts[1];
+        const enterText = this.worldTexts[2];
+
+        if (moveText) {
+            const d = Math.abs(camZ - 10);
+            moveText.material.opacity = Math.max(0, 1.0 - d / 8) * 0.9;
+        }
+
+        if (walkText) {
+            const d = Math.abs(camZ - 0);
+            walkText.material.opacity = Math.max(0, 1.0 - d / 7) * 0.85;
+        }
+
+        if (enterText) {
+            const targetOpacity = distance < 14 ? Math.min(1.0, (14 - distance) / 6) : 0;
+            enterText.material.opacity = targetOpacity;
         }
 
         if (this.isMobile) {
             const enterBtn = document.getElementById('mobile-enter-btn');
             if (enterBtn) {
-                if (distance < 10) {
-                    enterBtn.style.display = 'flex';
-                } else {
-                    enterBtn.style.display = 'none';
-                }
+                enterBtn.style.display = distance < 10 ? 'flex' : 'none';
             }
         }
 
@@ -996,6 +1042,14 @@ class IntroExperience {
             const wobble = Math.sin(this.wobbleTime * tower.userData.speed + tower.userData.phase) * 0.05;
             tower.position.y = tower.userData.baseY + wobble;
         });
+
+        // Animate world text
+        if (this.worldTexts) {
+            this.worldTexts.forEach((mesh) => {
+                const bob = Math.sin(this.wobbleTime * 0.8 + mesh.userData.phase) * 0.08;
+                mesh.position.y = mesh.userData.baseY + bob;
+            });
+        }
 
         // Animate particles
         if (this.particles) {

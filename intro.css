@@ -183,26 +183,6 @@ body:has(#intro-container:not([style*="display: none"])) #main-content {
     box-shadow: 0 0 24px rgba(0, 255, 255, 0.3);
 }
 
-#intro-hint {
-    position: fixed;
-    bottom: 15%;
-    left: 50%;
-    transform: translateX(-50%);
-    z-index: 10002;
-    opacity: 0;
-    transition: opacity 0.5s ease;
-    pointer-events: none;
-}
-
-#intro-hint span {
-    font-family: 'Eurostile', sans-serif;
-    font-size: 1.5rem;
-    color: #00ffff;
-    text-transform: uppercase;
-    letter-spacing: 0.2em;
-    text-shadow: 0 0 20px rgba(0, 255, 255, 0.8);
-    animation: hintPulse 1.5s ease-in-out infinite;
-}
 
 /* PS2 Style Animations */
 @keyframes ps2TitleGlow {
@@ -233,17 +213,6 @@ body:has(#intro-container:not([style*="display: none"])) #main-content {
     }
 }
 
-@keyframes hintPulse {
-    0%, 100% {
-        opacity: 1;
-        transform: scale(1);
-    }
-    50% {
-        opacity: 0.7;
-        transform: scale(1.05);
-    }
-}
-
 /* Canvas styles */
 #intro-container canvas,
 #intro-canvas {
@@ -260,120 +229,7 @@ body:has(#intro-container:not([style*="display: none"])) #main-content {
     display: none;
 }
 
-/* Game UI Overlay */
-#game-ui-overlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    pointer-events: none;
-    z-index: 10003;
-}
-
-.instruction-text {
-    position: absolute;
-    top: 15%;
-    left: 50%;
-    transform: translateX(-50%);
-    text-align: center;
-    transition: opacity 0.5s ease;
-}
-
-.instruction-text.fade-out {
-    opacity: 0;
-}
-
-.key-prompt {
-    display: block;
-    font-family: 'Eurostile', sans-serif;
-    font-size: 2rem;
-    color: #00ffff;
-    text-transform: uppercase;
-    letter-spacing: 0.2em;
-    text-shadow: 
-        0 0 15px rgba(0, 255, 255, 0.8),
-        2px 2px 0 rgba(0, 0, 0, 0.5);
-    animation: keyPulse 2s ease-in-out infinite;
-}
-
-.instruction-label {
-    display: block;
-    font-family: 'Outfit', sans-serif;
-    font-size: 1rem;
-    color: rgba(100, 200, 255, 0.6);
-    margin-top: 0.5rem;
-    letter-spacing: 0.1em;
-    text-shadow: 1px 1px 0 rgba(0, 0, 0, 0.5);
-}
-
-@keyframes keyPulse {
-    0%, 100% { opacity: 1; transform: scale(1); }
-    50% { opacity: 0.7; transform: scale(1.02); }
-}
-
-.enter-light-text {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    font-family: 'Eurostile', sans-serif;
-    font-size: 3rem;
-    color: #00ffff;
-    text-transform: uppercase;
-    letter-spacing: 0.3em;
-    text-shadow: 
-        0 0 40px rgba(0, 255, 255, 1),
-        0 0 80px rgba(0, 200, 255, 0.6),
-        3px 3px 0 rgba(0, 0, 0, 0.5);
-    opacity: 0;
-    transition: opacity 0.5s ease;
-    text-align: center;
-    pointer-events: none;
-}
-
-.enter-light-text.visible {
-    opacity: 1;
-    animation: enterPulsePS2 1.5s ease-in-out infinite;
-}
-
-@keyframes enterPulsePS2 {
-    0%, 100% {
-        text-shadow: 
-            0 0 30px rgba(0, 255, 255, 0.8),
-            0 0 60px rgba(0, 200, 255, 0.5),
-            3px 3px 0 rgba(0, 0, 0, 0.5);
-        transform: translate(-50%, -50%) scale(1);
-    }
-    50% {
-        text-shadow: 
-            0 0 50px rgba(0, 255, 255, 1),
-            0 0 100px rgba(0, 200, 255, 0.8),
-            3px 3px 0 rgba(0, 0, 0, 0.5);
-        transform: translate(-50%, -50%) scale(1.02);
-    }
-}
-
-.direction-indicator {
-    position: absolute;
-    bottom: 20%;
-    left: 50%;
-    transform: translateX(-50%);
-    color: #00ffff;
-    opacity: 0.6;
-    animation: bounceUp 1.5s ease-in-out infinite;
-}
-
-.direction-indicator svg {
-    width: 48px;
-    height: 48px;
-    filter: drop-shadow(0 0 10px rgba(0, 255, 255, 0.5));
-}
-
-@keyframes bounceUp {
-    0%, 100% { transform: translateX(-50%) translateY(0); }
-    50% { transform: translateX(-50%) translateY(-10px); }
-}
+/* Game UI overlay styles removed — instructions are now 3D world text */
 
 /* Mobile Joystick - Cyan Theme */
 #mobile-joystick {
@@ -479,29 +335,8 @@ body:has(#intro-container:not([style*="display: none"])) #main-content {
         font-size: 2rem;
     }
     
-    #intro-hint {
-        bottom: 25%;
-    }
-    
     #mobile-joystick {
         display: block !important;
-    }
-    
-    .direction-indicator {
-        display: none;
-    }
-    
-    .key-prompt {
-        font-size: 1.5rem;
-    }
-    
-    .enter-light-text {
-        font-size: 1.8rem;
-        letter-spacing: 0.15em;
-    }
-    
-    .instruction-text {
-        top: 10%;
     }
     
     .click-text {
@@ -615,17 +450,6 @@ body:has(#intro-container:not([style*="display: none"])) #main-content {
         height: 100px;
     }
     
-    .enter-light-text {
-        font-size: 1.5rem;
-    }
-    
-    .key-prompt {
-        font-size: 1.2rem;
-    }
-    
-    .instruction-text {
-        top: 5%;
-    }
 }
 
 /* iOS Safari specific fixes */
