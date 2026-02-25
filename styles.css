@@ -3813,6 +3813,9 @@ a.project-card:hover .project-link-label {
     font-size: 0.8rem;
     line-height: 1.65;
     color: #e6edf3;
+    background: none;
+    padding: 0;
+    border-radius: 0;
     tab-size: 4;
 }
 
