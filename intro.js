@@ -671,6 +671,13 @@ class IntroExperience {
                 this.enterLight();
             }, { passive: false });
         }
+
+        // Auto-skip after 15 seconds of no movement inside the 3D experience
+        this._autoSkipTimer = setTimeout(() => {
+            if (!this.hasTransitioned) {
+                this.enterLight();
+            }
+        }, 15000);
     }
 
     setupMobileControls() {
@@ -854,8 +861,8 @@ class IntroExperience {
 
     onKeyDown(event) {
         if (!this.isLocked && !this.isMobile) return;
+        if (this._autoSkipTimer) { clearTimeout(this._autoSkipTimer); this._autoSkipTimer = null; }
         
-        // Only forward/backward movement
         switch (event.code) {
             case 'KeyW':
             case 'ArrowUp':
