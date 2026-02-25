@@ -917,6 +917,15 @@ class TestRunner:
     }
 
     closeBtn.addEventListener('click', closeModal);
+
+    githubBtn.addEventListener('click', function (e) {
+        e.preventDefault();
+        e.stopPropagation();
+        if (currentProject && currentProject.github) {
+            window.open(currentProject.github, '_blank', 'noopener');
+        }
+    });
+
     overlay.addEventListener('click', function (e) {
         if (e.target === overlay) closeModal();
     });
