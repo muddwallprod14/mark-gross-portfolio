@@ -10,53 +10,11 @@
 
     if (!overlay) return;
 
-    function esc(s) {
-        return s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
-    }
-
     function hl(code) {
-        var out = '';
-        var i = 0;
-        while (i < code.length) {
-            var rest = code.slice(i);
-            var m;
-
-            if ((m = rest.match(/^("""|''')([\s\S]*?)\1/))) {
-                out += '<span class="st">' + esc(m[0]) + '</span>';
-                i += m[0].length;
-            } else if ((m = rest.match(/^#[^\n]*/))) {
-                out += '<span class="cm">' + esc(m[0]) + '</span>';
-                i += m[0].length;
-            } else if ((m = rest.match(/^f?("|')((?:\\.|(?!\1)[^\\])*)\1/))) {
-                out += '<span class="st">' + esc(m[0]) + '</span>';
-                i += m[0].length;
-            } else if ((m = rest.match(/^@\w+/))) {
-                out += '<span class="dc">' + esc(m[0]) + '</span>';
-                i += m[0].length;
-            } else if ((m = rest.match(/^(def)\s+(\w+)/))) {
-                out += '<span class="kw">' + esc(m[1]) + '</span> <span class="fn">' + esc(m[2]) + '</span>';
-                i += m[0].length;
-            } else if ((m = rest.match(/^(class)\s+(\w+)/))) {
-                out += '<span class="kw">' + esc(m[1]) + '</span> <span class="cls">' + esc(m[2]) + '</span>';
-                i += m[0].length;
-            } else if ((m = rest.match(/^(import|from|as|return|if|elif|else|for|in|while|try|except|with|raise|yield|pass|break|continue|and|or|not|is|lambda|async|await|global)\b/)) && (i === 0 || /\W/.test(code[i - 1]))) {
-                out += '<span class="kw">' + esc(m[0]) + '</span>';
-                i += m[0].length;
-            } else if ((m = rest.match(/^self\b/)) && (i === 0 || /\W/.test(code[i - 1]))) {
-                out += '<span class="self">self</span>';
-                i += 4;
-            } else if ((m = rest.match(/^(True|False|None)\b/)) && (i === 0 || /\W/.test(code[i - 1]))) {
-                out += '<span class="bool">' + esc(m[0]) + '</span>';
-                i += m[0].length;
-            } else if ((m = rest.match(/^\d+\.?\d*/)) && (i === 0 || /\W/.test(code[i - 1]))) {
-                out += '<span class="num">' + esc(m[0]) + '</span>';
-                i += m[0].length;
-            } else {
-                out += esc(code[i]);
-                i++;
-            }
-        }
-        return out;
+        var safe = code.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+        safe = safe.replace(/("""[\s\S]*?"""|'''[\s\S]*?''')/g, '<span class="cm">$1</span>');
+        safe = safe.replace(/(#[^\n]*)/g, '<span class="cm">$1</span>');
+        return safe;
     }
 
     const PROJECTS = {

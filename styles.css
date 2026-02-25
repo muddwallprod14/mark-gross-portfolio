@@ -3816,18 +3816,18 @@ a.project-card:hover .project-link-label {
     tab-size: 4;
 }
 
-/* Syntax highlighting - GitHub Dark theme */
-.code-modal-body .kw { color: #ff7b72; }
-.code-modal-body .fn { color: #d2a8ff; }
-.code-modal-body .st { color: #a5d6ff; }
-.code-modal-body .cm { color: #8b949e; font-style: italic; }
-.code-modal-body .dc { color: #79c0ff; }
-.code-modal-body .num { color: #79c0ff; }
-.code-modal-body .op { color: #ff7b72; }
-.code-modal-body .cls { color: #ffa657; }
-.code-modal-body .param { color: #ffa657; }
-.code-modal-body .self { color: #ff7b72; }
-.code-modal-body .bool { color: #79c0ff; }
+/* Code text — clean monospace, no heavy highlighting */
+.code-modal-body .kw,
+.code-modal-body .fn,
+.code-modal-body .st,
+.code-modal-body .dc,
+.code-modal-body .num,
+.code-modal-body .op,
+.code-modal-body .cls,
+.code-modal-body .param,
+.code-modal-body .self,
+.code-modal-body .bool { color: inherit; }
+.code-modal-body .cm { color: #6e7681; font-style: italic; }
 
 .project-card-preview {
     cursor: pointer;
