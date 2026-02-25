@@ -359,10 +359,19 @@ code {
 .hero-subtitle {
     font-size: 1.125rem;
     color: rgba(255, 255, 255, 0.85);
-    margin-bottom: 2.5rem;
+    margin-bottom: 0.75rem;
     max-width: 500px;
     opacity: 0;
     animation: fadeInUp 0.8s var(--ease-out-expo) 0.6s forwards;
+}
+
+.hero-open-to {
+    font-size: 0.9rem;
+    color: rgba(255, 255, 255, 0.7);
+    margin-bottom: 2.5rem;
+    max-width: 560px;
+    opacity: 0;
+    animation: fadeInUp 0.8s var(--ease-out-expo) 0.65s forwards;
 }
 
 .hero-cta {
@@ -1628,6 +1637,83 @@ code {
     border-bottom: none;
 }
 
+/* === Tools & Projects Section === */
+.projects-section {
+    padding: 6rem 4rem;
+    background: transparent;
+    position: relative;
+}
+
+.projects-section .section-header {
+    margin-bottom: 3rem;
+}
+
+.projects-section .section-subtitle {
+    color: rgba(255, 255, 255, 0.7);
+    font-size: 1rem;
+    margin-top: 0.5rem;
+}
+
+.projects-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.5rem;
+    max-width: 1000px;
+    margin: 0 auto;
+}
+
+.project-card {
+    padding: 1.5rem 1.75rem;
+    background: rgba(20, 20, 20, 0.7);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 12px;
+    transition: all 0.3s ease;
+}
+
+.project-card:hover {
+    border-color: rgba(0, 255, 255, 0.3);
+    transform: translateY(-2px);
+    box-shadow: 0 12px 40px rgba(0, 255, 255, 0.08);
+}
+
+.project-card h3 {
+    font-family: var(--font-display);
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: #fff;
+    margin-bottom: 0.35rem;
+    text-transform: none;
+    letter-spacing: 0;
+}
+
+.project-context {
+    display: inline-block;
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: #00d4ff;
+    margin-bottom: 0.75rem;
+}
+
+.project-card p {
+    font-size: 0.9rem;
+    color: rgba(255, 255, 255, 0.75);
+    line-height: 1.55;
+    margin: 0;
+}
+
+@media (max-width: 768px) {
+    .projects-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .projects-section {
+        padding: 4rem 1.5rem;
+    }
+}
+
 /* === Contact Section === */
 .contact-section {
     padding: 6rem 4rem;
@@ -1651,8 +1737,23 @@ code {
 }
 
 .contact-content > p {
-    margin-bottom: 2rem;
+    margin-bottom: 1.5rem;
     color: rgba(255, 255, 255, 0.85);
+}
+
+.contact-cta {
+    margin-bottom: 1.5rem;
+}
+
+.contact-cta .btn {
+    background: rgba(255, 255, 255, 0.95);
+    color: var(--text-primary);
+}
+
+.contact-cta .btn:hover {
+    background: #fff;
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
 }
 
 .contact-links {
