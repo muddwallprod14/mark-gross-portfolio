@@ -13,6 +13,225 @@
     function hl() { /* no-op, kept for compat */ }
 
     const PROJECTS = {
+        'hdri-light-rig': {
+            context: 'Personal · Open Source',
+            title: 'HDRI Light Rig Manager',
+            desc: 'USD-native look dev lighting tool for Houdini Solaris — HDRI browser, turntable rig, contact sheet renderer. Built with pxr USD Python API, PySide2, and Karma.',
+            github: 'https://github.com/muddwallprod14/hdri-light-rig-manager',
+            tabs: [
+                { name: 'usd_scene_builder.py', code:
+`from pxr import Usd, UsdGeom, UsdLux, UsdShade, Sdf, Gf, Vt, Kind
+
+
+class LookDevSceneBuilder:
+    """Builds a USD look dev stage from scratch using
+    Pixar's USD Python API — DCC-agnostic."""
+
+    DEFAULT_CONFIG = {
+        "hdri_path": "",
+        "hdri_rotation": 0.0,
+        "hdri_exposure": 0.0,
+        "turntable_frames": 120,
+        "cam_distance": 5.0,
+        "cam_height": 1.2,
+    }
+
+    def __init__(self, stage_path=None, config=None):
+        self.config = dict(self.DEFAULT_CONFIG)
+        if config:
+            self.config.update(config)
+
+        if stage_path:
+            self.stage = Usd.Stage.CreateNew(stage_path)
+        else:
+            self.stage = Usd.Stage.CreateInMemory()
+
+        UsdGeom.SetStageUpAxis(self.stage, UsdGeom.Tokens.y)
+        UsdGeom.SetStageMetersPerUnit(self.stage, 0.01)
+
+    def build(self):
+        """Construct the full look dev scene."""
+        self._create_root()
+        self._create_dome_light()
+        self._create_turntable()
+        self._create_camera()
+        self._create_ground_plane()
+        self._create_asset_anchor()
+        return self.stage
+
+    def _create_dome_light(self):
+        """UsdLuxDomeLight with HDRI texture and rotation."""
+        dome_path = "/LookDev/Lighting/DomeLight"
+        self._dome_light = UsdLux.DomeLight.Define(
+            self.stage, dome_path
+        )
+
+        if self.config["hdri_path"]:
+            self._dome_light.CreateTextureFileAttr(
+                self.config["hdri_path"]
+            )
+
+        self._dome_light.CreateExposureAttr(
+            self.config["hdri_exposure"]
+        )
+        self._dome_light.CreateTextureFormatAttr(
+            UsdLux.Tokens.latlong
+        )
+
+        xformable = UsdGeom.Xformable(
+            self._dome_light.GetPrim()
+        )
+        rotate_op = xformable.AddRotateYOp(
+            opSuffix="hdriRotation"
+        )
+        rotate_op.Set(self.config["hdri_rotation"])
+
+    def _create_turntable(self):
+        """Animated Y rotation over the frame range."""
+        self._turntable = UsdGeom.Xform.Define(
+            self.stage, "/LookDev/Turntable"
+        )
+        xformable = UsdGeom.Xformable(
+            self._turntable.GetPrim()
+        )
+        rotate_op = xformable.AddRotateYOp(
+            opSuffix="turntable"
+        )
+
+        num_frames = self.config["turntable_frames"]
+        self.stage.SetStartTimeCode(1)
+        self.stage.SetEndTimeCode(num_frames)
+        rotate_op.Set(0.0, Usd.TimeCode(1))
+        rotate_op.Set(360.0, Usd.TimeCode(num_frames))
+
+    def add_hdri_variant_set(self, hdri_map):
+        """USD VariantSet for pipeline-native HDRI switching."""
+        dome_prim = self._dome_light.GetPrim()
+        vset = dome_prim.GetVariantSets().AddVariantSet(
+            "hdriEnvironment"
+        )
+        for name, path in hdri_map.items():
+            vset.AddVariant(name)
+            vset.SetVariantSelection(name)
+            with vset.GetVariantEditContext():
+                self._dome_light.GetTextureFileAttr().Set(path)` },
+                { name: 'rig_controller.py', code:
+`import json
+import os
+
+class RigController:
+    """Bridge between Qt panel and Houdini LOP HDA.
+    Drives HDA parms inside Houdini, or manipulates
+    the USD stage directly when running standalone."""
+
+    def __init__(self, hda_node_path=None):
+        self._hda_node = None
+        self._usd_builder = None
+
+        if HOU_AVAILABLE and hda_node_path:
+            self._hda_node = hou.node(hda_node_path)
+
+    @classmethod
+    def find_in_scene(cls):
+        """Auto-detect the LookDev HDA in the scene."""
+        for node in hou.node("/stage").allSubChildren():
+            if node.type().name().startswith(
+                "mg::lookdev_light_rig"
+            ):
+                return cls(hda_node_path=node.path())
+        raise RuntimeError("No Look Dev Light Rig found.")
+
+    def set_hdri(self, filepath):
+        if self._hda_node:
+            self._hda_node.parm("hdri_path").set(filepath)
+        if self._usd_builder:
+            self._usd_builder.set_hdri(filepath)
+
+    def set_hdri_rotation(self, degrees):
+        if self._hda_node:
+            self._hda_node.parm("hdri_rotation").set(
+                float(degrees)
+            )
+
+    def save_preset(self, preset_path):
+        """Save current rig state to JSON."""
+        state = self.get_state()
+        os.makedirs(os.path.dirname(preset_path), exist_ok=True)
+        with open(preset_path, "w") as f:
+            json.dump(state, f, indent=2)
+
+    def load_preset(self, preset_path):
+        """Load a JSON preset and apply to the rig."""
+        with open(preset_path, "r") as f:
+            state = json.load(f)
+        self.apply_state(state)
+
+    def get_state(self):
+        return {
+            "hdri_path": self.get_hdri(),
+            "hdri_rotation": self.get_hdri_rotation(),
+            "hdri_exposure": self.get_hdri_exposure(),
+            "hdri_tint": list(self.get_hdri_tint()),
+            "turntable_frames": self.get_turntable_frames(),
+            "cam_distance": self.get_camera_distance(),
+        }` },
+                { name: 'contact_sheet.py', code:
+`import os
+import math
+import time
+
+class ContactSheetGenerator:
+    """Batch renders asset under every HDRI in the library
+    and composites a labeled comparison grid image."""
+
+    def __init__(self, rig_controller, library,
+                 cell_size=(480, 270), columns=4):
+        self.rig = rig_controller
+        self.library = library
+        self.cell_width, self.cell_height = cell_size
+        self.columns = columns
+
+    def generate(self, turntable_frame=None,
+                 render_method="opengl",
+                 progress_callback=None):
+        entries = self.library.get_entries()
+        if not entries:
+            raise ValueError("No HDRIs found in library.")
+
+        if turntable_frame is None:
+            total = self.rig.get_turntable_frames()
+            turntable_frame = int(total * 0.375)
+
+        renders = []
+        original_hdri = self.rig.get_hdri()
+
+        try:
+            for i, entry in enumerate(entries):
+                if progress_callback:
+                    progress_callback(
+                        i, len(entries), entry.name
+                    )
+                self.rig.set_hdri(entry.filepath)
+
+                render_path = os.path.join(
+                    self.output_dir,
+                    f"_contact_{i:03d}_{entry.name}.jpg"
+                )
+                self._render_frame(
+                    render_path, render_method,
+                    turntable_frame
+                )
+                renders.append({
+                    "path": render_path,
+                    "name": entry.name,
+                })
+        finally:
+            self.rig.set_hdri(original_hdri)
+
+        output_path = self._composite_grid(renders)
+        return output_path` }
+            ]
+        },
         'houdini-tools': {
             context: 'Blur Studio',
             title: 'Houdini & Unreal Pipeline Tools',
