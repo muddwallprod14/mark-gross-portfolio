@@ -148,7 +148,7 @@
             <p class="section-subtitle">What I've built for artists and pipelines</p>
         </div>
         <div class="projects-grid">
-            <div class="project-card">
+            <div class="project-card project-card-preview" data-project="houdini-tools">
                 <span class="project-context">Blur Studio</span>
                 <h3>Houdini & Unreal Pipeline Tools</h3>
                 <p>HDAs, shelf tools, and in-engine integration for cinematic and interactive production. Built alongside artists and engineers.</p>
@@ -158,8 +158,9 @@
                     <span class="project-tag">Houdini</span>
                     <span class="project-tag">Unreal</span>
                 </div>
+                <span class="project-link-label">View Code Preview →</span>
             </div>
-            <div class="project-card">
+            <div class="project-card project-card-preview" data-project="pipeline-automation">
                 <span class="project-context">The Picture Production Company</span>
                 <h3>Pipeline & Media Automation</h3>
                 <p>Python tools and APIs for asset validation, media processing, and delivery. Cross-departmental rollouts across proprietary systems.</p>
@@ -168,8 +169,9 @@
                     <span class="project-tag">REST APIs</span>
                     <span class="project-tag">Automation</span>
                 </div>
+                <span class="project-link-label">View Code Preview →</span>
             </div>
-            <a href="https://github.com/muddwallprod14/shader-behavioral-tree-addon" target="_blank" rel="noopener" class="project-card project-card-link">
+            <div class="project-card project-card-preview" data-project="shader-addon">
                 <span class="project-context">Personal · Open Source</span>
                 <h3>Blender Shader Add-on</h3>
                 <p>Procedural toon and behavioral shader tools — node-based materials with conditional logic and a Blender UI panel.</p>
@@ -178,9 +180,9 @@
                     <span class="project-tag">Blender API</span>
                     <span class="project-tag">Shaders</span>
                 </div>
-                <span class="project-link-label">View on GitHub →</span>
-            </a>
-            <div class="project-card">
+                <span class="project-link-label">View Code Preview →</span>
+            </div>
+            <div class="project-card project-card-preview" data-project="ttf-pipeline">
                 <span class="project-context">The Third Floor</span>
                 <h3>Real-time Viz & Pipeline Support</h3>
                 <p>Workflow tooling and previs pipelines; development and testing of real-time visualization tools and interactive content delivery.</p>
@@ -189,8 +191,9 @@
                     <span class="project-tag">Pipeline</span>
                     <span class="project-tag">Real-time</span>
                 </div>
+                <span class="project-link-label">View Code Preview →</span>
             </div>
-            <a href="https://github.com/muddwallprod14/UnrealSynopticRigger" target="_blank" rel="noopener" class="project-card project-card-link">
+            <div class="project-card project-card-preview" data-project="synoptic-rigger">
                 <span class="project-context">Personal · Open Source</span>
                 <h3>Unreal Synoptic Rigger</h3>
                 <p>Full character rigging suite for Unreal Engine — biped, quadruped, bird, and fish rigs with FK/IK blending, synoptic UI, and Control Rig integration.</p>
@@ -200,9 +203,9 @@
                     <span class="project-tag">Rigging</span>
                     <span class="project-tag">Qt UI</span>
                 </div>
-                <span class="project-link-label">View on GitHub →</span>
-            </a>
-            <a href="https://github.com/muddwallprod14/flex-json-editor" target="_blank" rel="noopener" class="project-card project-card-link">
+                <span class="project-link-label">View Code Preview →</span>
+            </div>
+            <div class="project-card project-card-preview" data-project="json-editor">
                 <span class="project-context">The Picture Production Company · Open Source</span>
                 <h3>Flex JSON Config Editor</h3>
                 <p>Flask web app for editing pipeline JSON configs across LA and London offices — MongoDB integration, SSH remote commands, and live file watching.</p>
@@ -212,9 +215,9 @@
                     <span class="project-tag">MongoDB</span>
                     <span class="project-tag">Pipeline</span>
                 </div>
-                <span class="project-link-label">View on GitHub →</span>
-            </a>
-            <a href="https://github.com/muddwallprod14/watermarker-tool" target="_blank" rel="noopener" class="project-card project-card-link">
+                <span class="project-link-label">View Code Preview →</span>
+            </div>
+            <div class="project-card project-card-preview" data-project="watermarker">
                 <span class="project-context">Personal · Open Source</span>
                 <h3>Video Watermarker</h3>
                 <p>PyQt5 desktop tool for batch watermarking video files via FFmpeg — adjustable text, position, colour, opacity with threaded processing.</p>
@@ -224,9 +227,9 @@
                     <span class="project-tag">FFmpeg</span>
                     <span class="project-tag">Qt UI</span>
                 </div>
-                <span class="project-link-label">View on GitHub →</span>
-            </a>
-            <a href="https://github.com/muddwallprod14/uat-automation" target="_blank" rel="noopener" class="project-card project-card-link">
+                <span class="project-link-label">View Code Preview →</span>
+            </div>
+            <div class="project-card project-card-preview" data-project="uat-automation">
                 <span class="project-context">Personal · Open Source</span>
                 <h3>UAT Automation CLI</h3>
                 <p>Terminal-based testing framework for VFX pipelines — test suite management, asset validation with checksums, and multi-format reporting (JSON, HTML).</p>
@@ -236,8 +239,8 @@
                     <span class="project-tag">Testing</span>
                     <span class="project-tag">Pipeline</span>
                 </div>
-                <span class="project-link-label">View on GitHub →</span>
-            </a>
+                <span class="project-link-label">View Code Preview →</span>
+            </div>
         </div>
     </section>
 
@@ -474,7 +477,37 @@
         </div>
     </div>
 
+    <!-- Code Preview Modal -->
+    <div class="code-modal-overlay" id="codeModalOverlay">
+        <div class="code-modal">
+            <div class="code-modal-titlebar">
+                <div class="code-modal-dots">
+                    <span class="dot dot-red"></span>
+                    <span class="dot dot-yellow"></span>
+                    <span class="dot dot-green"></span>
+                </div>
+                <div class="code-modal-tabs" id="codeModalTabs"></div>
+                <button class="code-modal-close" id="codeModalClose" aria-label="Close">&times;</button>
+            </div>
+            <div class="code-modal-header">
+                <div>
+                    <span class="code-modal-context" id="codeModalContext"></span>
+                    <h3 id="codeModalTitle"></h3>
+                    <p id="codeModalDesc"></p>
+                </div>
+                <a href="#" id="codeModalGithub" target="_blank" rel="noopener" class="code-modal-github-btn">
+                    <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>
+                    View Full Source
+                </a>
+            </div>
+            <div class="code-modal-body" id="codeModalBody">
+                <pre><code id="codeModalCode"></code></pre>
+            </div>
+        </div>
+    </div>
+
     <script src="script.js"></script>
+    <script src="code-modal.js"></script>
     </div><!-- End main-content -->
 
     <!-- Three.js Intro Script -->

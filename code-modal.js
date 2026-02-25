@@ -1,0 +1,729 @@
+(function () {
+    const overlay = document.getElementById('codeModalOverlay');
+    const titleEl = document.getElementById('codeModalTitle');
+    const contextEl = document.getElementById('codeModalContext');
+    const descEl = document.getElementById('codeModalDesc');
+    const codeEl = document.getElementById('codeModalCode');
+    const tabsEl = document.getElementById('codeModalTabs');
+    const githubBtn = document.getElementById('codeModalGithub');
+    const closeBtn = document.getElementById('codeModalClose');
+
+    if (!overlay) return;
+
+    function hl(code) {
+        return code
+            .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
+            .replace(/("""[\s\S]*?"""|'''[\s\S]*?''')/g, '<span class="st">$1</span>')
+            .replace(/(#[^\n]*)/g, '<span class="cm">$1</span>')
+            .replace(/\b(def)\s+(\w+)/g, '<span class="kw">$1</span> <span class="fn">$2</span>')
+            .replace(/\b(class)\s+(\w+)/g, '<span class="kw">$1</span> <span class="cls">$2</span>')
+            .replace(/\b(import|from|as|return|if|elif|else|for|in|while|try|except|with|raise|yield|pass|break|continue|and|or|not|is|lambda|async|await|global)\b/g, '<span class="kw">$1</span>')
+            .replace(/\b(self)\b/g, '<span class="self">$1</span>')
+            .replace(/\b(True|False|None)\b/g, '<span class="bool">$1</span>')
+            .replace(/\b(\d+\.?\d*)\b/g, '<span class="num">$1</span>')
+            .replace(/(f?&quot;[^&]*?&quot;|f?'[^']*?')/g, '<span class="st">$1</span>')
+            .replace(/(@\w+)/g, '<span class="dc">$1</span>');
+    }
+
+    const PROJECTS = {
+        'houdini-tools': {
+            context: 'Blur Studio',
+            title: 'Houdini & Unreal Pipeline Tools',
+            desc: 'HDAs, shelf tools, and in-engine integration built alongside artists for cinematic production at Blur Studio.',
+            github: null,
+            tabs: [
+                { name: 'hda_builder.py', code:
+`class HDABuilder:
+    """Automates creation of Houdini Digital Assets
+    with standardized parameters and UI layouts."""
+
+    def __init__(self, hda_name, category="Custom"):
+        self.hda_name = hda_name
+        self.category = category
+        self.parameters = []
+        self.node_network = None
+
+    def add_parameter(self, name, parm_type, default=None, 
+                      label=None, range_min=None, range_max=None):
+        """Register a parameter with type validation."""
+        parm = {
+            "name": name,
+            "type": parm_type,
+            "default": default,
+            "label": label or name.replace("_", " ").title(),
+            "range": (range_min, range_max)
+        }
+        self.parameters.append(parm)
+        return self
+
+    def build(self, target_node):
+        """Compile the HDA definition and install it 
+        into the current Houdini session."""
+        definition = target_node.type().definition()
+        template_group = definition.parmTemplateGroup()
+
+        for parm in self.parameters:
+            template = self._create_template(parm)
+            template_group.append(template)
+
+        definition.setParmTemplateGroup(template_group)
+        return definition
+
+    def _create_template(self, parm):
+        import hou
+        type_map = {
+            "float": hou.FloatParmTemplate,
+            "int": hou.IntParmTemplate,
+            "toggle": hou.ToggleParmTemplate,
+            "string": hou.StringParmTemplate,
+            "color": hou.FloatParmTemplate,
+        }
+        factory = type_map.get(parm["type"], hou.FloatParmTemplate)
+        num_components = 3 if parm["type"] == "color" else 1
+        return factory(parm["name"], parm["label"], num_components)` },
+                { name: 'shelf_tool.py', code:
+`def create_scatter_tool():
+    """Shelf tool: Scatter selected geo onto a surface
+    with density controls and collision avoidance."""
+    import hou
+
+    selection = hou.selectedNodes()
+    if not selection:
+        hou.ui.displayMessage("Select a geometry node first.")
+        return
+
+    source = selection[0]
+    parent = source.parent()
+
+    scatter = parent.createNode("scatter", "controlled_scatter")
+    scatter.setInput(0, source)
+    scatter.parm("npts").set(500)
+
+    attrib_noise = parent.createNode("attribnoise", "density_noise")
+    attrib_noise.setInput(0, scatter)
+    attrib_noise.parm("attribs").set("density")
+
+    copy_to_points = parent.createNode("copytopoints", "instance_geo")
+    copy_to_points.setInput(1, attrib_noise)
+
+    parent.layoutChildren()
+    copy_to_points.setDisplayFlag(True)
+    copy_to_points.setRenderFlag(True)` }
+            ]
+        },
+        'pipeline-automation': {
+            context: 'The Picture Production Company',
+            title: 'Pipeline & Media Automation',
+            desc: 'Python tools for asset validation, media delivery, and cross-departmental pipeline automation.',
+            github: null,
+            tabs: [
+                { name: 'asset_validator.py', code:
+`class AssetValidator:
+    """Validates media assets against delivery specifications
+    before handoff to downstream departments."""
+
+    VALID_CODECS = {"prores", "dnxhd", "h264", "exr"}
+    VALID_FRAMERATES = {23.976, 24.0, 25.0, 29.97, 30.0}
+
+    def __init__(self, spec_path):
+        self.spec = self._load_spec(spec_path)
+        self.errors = []
+        self.warnings = []
+
+    def validate(self, asset_path):
+        """Run all validation checks on an asset."""
+        self.errors.clear()
+        self.warnings.clear()
+
+        metadata = self._probe_media(asset_path)
+        if not metadata:
+            self.errors.append(f"Cannot read: {asset_path}")
+            return False
+
+        self._check_codec(metadata)
+        self._check_resolution(metadata)
+        self._check_framerate(metadata)
+        self._check_colorspace(metadata)
+        self._check_audio_channels(metadata)
+
+        return len(self.errors) == 0
+
+    def _check_resolution(self, meta):
+        expected = self.spec.get("resolution")
+        actual = (meta["width"], meta["height"])
+        if expected and actual != tuple(expected):
+            self.errors.append(
+                f"Resolution mismatch: expected "
+                f"{expected}, got {actual}"
+            )
+
+    def _check_framerate(self, meta):
+        fps = meta.get("framerate", 0)
+        if fps not in self.VALID_FRAMERATES:
+            self.warnings.append(
+                f"Non-standard framerate: {fps}"
+            )` },
+                { name: 'delivery_pipeline.py', code:
+`class DeliveryPipeline:
+    """Orchestrates file delivery from editorial
+    to client-facing storage with logging."""
+
+    def __init__(self, config):
+        self.source = config["source_root"]
+        self.dest = config["delivery_root"]
+        self.manifest = []
+
+    def process_batch(self, file_list):
+        """Validate, transcode, and deliver a batch."""
+        results = {"delivered": 0, "failed": 0, "skipped": 0}
+
+        for filepath in file_list:
+            validator = AssetValidator(self.spec_path)
+            if not validator.validate(filepath):
+                results["failed"] += 1
+                self._log_errors(filepath, validator.errors)
+                continue
+
+            dest_path = self._compute_dest(filepath)
+            if os.path.exists(dest_path):
+                results["skipped"] += 1
+                continue
+
+            self._safe_copy(filepath, dest_path)
+            self.manifest.append({
+                "source": filepath,
+                "dest": dest_path,
+                "timestamp": datetime.now().isoformat()
+            })
+            results["delivered"] += 1
+
+        self._write_manifest()
+        return results` }
+            ]
+        },
+        'shader-addon': {
+            context: 'Personal · Open Source',
+            title: 'Blender Shader Add-on',
+            desc: 'Procedural toon and behavioral shader tools with conditional logic and a Blender UI panel.',
+            github: 'https://github.com/muddwallprod14/shader-behavioral-tree-addon',
+            tabs: [
+                { name: 'behavioral_tree.py', code:
+`import bpy
+
+class ShaderBehaviorTree:
+    """Builds a conditional shader graph using Blender's
+    node system — selects materials based on object state."""
+
+    def __init__(self, material_name="BehavioralShader"):
+        self.mat = bpy.data.materials.new(material_name)
+        self.mat.use_nodes = True
+        self.tree = self.mat.node_tree
+        self.tree.nodes.clear()
+        self.output = self.tree.nodes.new("ShaderNodeOutputMaterial")
+
+    def add_condition(self, label, threshold=0.5):
+        """Add a conditional branch that switches shader
+        paths based on an input value."""
+        mix = self.tree.nodes.new("ShaderNodeMixShader")
+        mix.label = label
+
+        compare = self.tree.nodes.new("ShaderNodeMath")
+        compare.operation = "GREATER_THAN"
+        compare.inputs[1].default_value = threshold
+        compare.label = f"{label}_condition"
+
+        self.tree.links.new(compare.outputs[0], mix.inputs[0])
+        return mix, compare
+
+    def build_toon_branch(self):
+        """Create a cel-shaded material path with
+        quantized diffuse and rim lighting."""
+        diffuse = self.tree.nodes.new("ShaderNodeBsdfDiffuse")
+        ramp = self.tree.nodes.new("ShaderNodeValToRGB")
+        ramp.color_ramp.elements[0].position = 0.3
+        ramp.color_ramp.elements[1].position = 0.31
+
+        shader_to_rgb = self.tree.nodes.new("ShaderNodeShaderToRGB")
+        self.tree.links.new(diffuse.outputs[0], shader_to_rgb.inputs[0])
+        self.tree.links.new(shader_to_rgb.outputs[0], ramp.inputs[0])
+        return ramp` },
+                { name: 'toon_shader.py', code:
+`class ToonShaderBuilder:
+    """Creates a complete cel/toon shader with edge
+    detection, color banding, and specular highlights."""
+
+    def __init__(self, mat_name="ToonMaterial"):
+        self.mat = bpy.data.materials.new(mat_name)
+        self.mat.use_nodes = True
+        self.nodes = self.mat.node_tree.nodes
+        self.links = self.mat.node_tree.links
+        self.nodes.clear()
+
+    def build(self, base_color=(0.8, 0.2, 0.2, 1.0),
+              bands=3, rim_strength=0.7):
+        """Assemble the full toon shader network."""
+        output = self.nodes.new("ShaderNodeOutputMaterial")
+        diffuse = self.nodes.new("ShaderNodeBsdfDiffuse")
+        diffuse.inputs["Color"].default_value = base_color
+
+        to_rgb = self.nodes.new("ShaderNodeShaderToRGB")
+        self.links.new(diffuse.outputs[0], to_rgb.inputs[0])
+
+        ramp = self.nodes.new("ShaderNodeValToRGB")
+        self._setup_bands(ramp, bands)
+        self.links.new(to_rgb.outputs[0], ramp.inputs[0])
+
+        rim = self._build_rim_light(rim_strength)
+        mix = self.nodes.new("ShaderNodeMixRGB")
+        mix.blend_type = "ADD"
+        self.links.new(ramp.outputs[0], mix.inputs[1])
+        self.links.new(rim.outputs[0], mix.inputs[2])
+
+        emission = self.nodes.new("ShaderNodeEmission")
+        self.links.new(mix.outputs[0], emission.inputs[0])
+        self.links.new(emission.outputs[0], output.inputs[0])
+
+        return self.mat` }
+            ]
+        },
+        'ttf-pipeline': {
+            context: 'The Third Floor',
+            title: 'Real-time Viz & Pipeline Support',
+            desc: 'Workflow tooling and previs pipelines for real-time visualization and content delivery.',
+            github: null,
+            tabs: [
+                { name: 'scene_publisher.py', code:
+`class ScenePublisher:
+    """Publishes previs scenes to the review pipeline
+    with version control and dependency tracking."""
+
+    def __init__(self, project_root, show_code):
+        self.project_root = project_root
+        self.show_code = show_code
+        self.version_db = {}
+
+    def publish(self, scene_path, department, notes=""):
+        """Version up and publish a scene file."""
+        version = self._next_version(scene_path)
+        dest = self._build_publish_path(
+            scene_path, department, version
+        )
+
+        dependencies = self._scan_dependencies(scene_path)
+        self._copy_with_deps(scene_path, dest, dependencies)
+
+        manifest = {
+            "scene": scene_path,
+            "published_to": dest,
+            "version": version,
+            "department": department,
+            "dependencies": dependencies,
+            "notes": notes,
+            "timestamp": datetime.now().isoformat(),
+            "user": os.getenv("USER", "unknown")
+        }
+
+        self._register_version(manifest)
+        self._notify_downstream(manifest)
+        return manifest
+
+    def _scan_dependencies(self, scene_path):
+        """Walk the scene graph to find referenced
+        assets (textures, caches, rigs)."""
+        deps = []
+        with open(scene_path, 'r') as f:
+            for line in f:
+                if any(ext in line for ext in 
+                       ['.abc', '.fbx', '.usd', '.exr']):
+                    ref = self._extract_ref(line)
+                    if ref and os.path.exists(ref):
+                        deps.append(ref)
+        return deps` }
+            ]
+        },
+        'synoptic-rigger': {
+            context: 'Personal · Open Source',
+            title: 'Unreal Synoptic Rigger',
+            desc: 'Character rigging suite for Unreal Engine — biped, quadruped, bird, and fish with FK/IK, Control Rig integration.',
+            github: 'https://github.com/muddwallprod14/UnrealSynopticRigger',
+            tabs: [
+                { name: 'UnrealSynopticRigger.py', code:
+`import unreal
+from dataclasses import dataclass
+from enum import Enum
+from typing import Dict, List, Tuple, Optional
+
+class RigType(Enum):
+    BIPED = "biped"
+    QUADRUPED = "quadruped"
+    BIRD = "bird"
+    FISH = "fish"
+    CUSTOM = "custom"
+
+class ControlType(Enum):
+    FK = "fk"
+    IK = "ik"
+    SPLINE = "spline"
+
+@dataclass
+class BoneInfo:
+    name: str
+    parent: Optional[str]
+    position: Tuple[float, float, float]
+    rotation: Tuple[float, float, float]
+    scale: Tuple[float, float, float] = (1.0, 1.0, 1.0)
+    control_type: ControlType = ControlType.FK
+
+class UnrealSynopticRigger:
+    """Blur Studio-inspired rigging tool for Unreal Engine.
+    Provides synoptic UI for FK/IK control across
+    biped, quadruped, bird, and fish rigs."""
+
+    def __init__(self):
+        self.editor_util = unreal.EditorUtilityLibrary()
+        self.current_rig = None
+        self.rig_presets = {}
+        self._load_rig_presets()
+
+    def create_rig(self, rig_type, skeleton_asset):
+        """Build a complete rig from a preset template."""
+        preset = self.rig_presets.get(rig_type)
+        if not preset:
+            raise ValueError(f"Unknown rig type: {rig_type}")
+
+        skeleton = self._load_skeleton(skeleton_asset)
+        for bone in preset.bones:
+            self._add_bone(skeleton, bone)
+
+        for name, ctrl in preset.controls.items():
+            self._create_control(skeleton, name, ctrl)
+
+        self._apply_constraints(skeleton, preset.constraints)
+        self._build_synoptic_ui(skeleton, preset)
+        return skeleton` },
+                { name: 'UnrealSynopticUI.py', code:
+`class SynopticPanel:
+    """Interactive UI panel that maps clickable body
+    regions to rig controls — similar to Blur Studio's
+    production synoptic interface."""
+
+    def __init__(self, rig, theme="dark"):
+        self.rig = rig
+        self.theme = theme
+        self.regions = {}
+        self.selected_controls = []
+
+    def build_panel(self, rig_type):
+        """Generate the synoptic panel layout based
+        on the rig type's bone hierarchy."""
+        layout = self._get_layout_template(rig_type)
+
+        for region_name, region_data in layout.items():
+            self.regions[region_name] = {
+                "bounds": region_data["bounds"],
+                "controls": region_data["controls"],
+                "color": self._theme_color(region_name),
+                "hover_color": self._theme_hover(region_name),
+            }
+
+        return self.regions
+
+    def on_click(self, x, y, modifier_keys=None):
+        """Handle click on the synoptic panel — select
+        the matching rig control(s)."""
+        hit_region = self._hit_test(x, y)
+        if not hit_region:
+            return
+
+        controls = self.regions[hit_region]["controls"]
+        if modifier_keys and "shift" in modifier_keys:
+            self.selected_controls.extend(controls)
+        else:
+            self.selected_controls = list(controls)
+
+        self._select_in_viewport(self.selected_controls)
+        self._highlight_region(hit_region)` }
+            ]
+        },
+        'json-editor': {
+            context: 'The Picture Production Company · Open Source',
+            title: 'Flex JSON Config Editor',
+            desc: 'Flask web app for editing pipeline JSON configs with MongoDB, SSH, and live file watching.',
+            github: 'https://github.com/muddwallprod14/flex-json-editor',
+            tabs: [
+                { name: 'flex_json_editor_web.py', code:
+`from flask import Flask, render_template, request, jsonify
+from flask_cors import CORS
+from pymongo import MongoClient
+from watchdog.observers import Observer
+from watchdog.events import FileSystemEventHandler
+
+app = Flask(__name__)
+CORS(app)
+
+data_cache = {
+    'master': {'data': [], 'path': '', 'loaded': False},
+    'farm': {'data': [], 'path': '', 'loaded': False}
+}
+
+class LogHandler(FileSystemEventHandler):
+    """Watches log files for changes and triggers
+    real-time updates to the web UI."""
+    def on_modified(self, event):
+        if not event.is_directory and event.src_path.endswith('.log'):
+            update_log_data()
+
+def connect_to_mongodb():
+    """Initialize MongoDB for persistent config storage."""
+    global mongo_client, mongo_db, mongo_collection
+    try:
+        mongo_client = MongoClient(
+            CONFIG['MONGO_CONNECTION_STRING'],
+            serverSelectionTimeoutMS=5000
+        )
+        mongo_client.admin.command('ping')
+        mongo_db = mongo_client[CONFIG['MONGO_DATABASE_NAME']]
+        mongo_collection = mongo_db[CONFIG['MONGO_COLLECTION_NAME']]
+        return True
+    except Exception as e:
+        print(f"MongoDB connection failed: {e}")
+        return False
+
+@app.route('/api/save', methods=['POST'])
+def save_config():
+    """Save edited JSON config with version tracking."""
+    data = request.get_json()
+    region = data.get('region', 'LA')
+    config_data = data.get('config')
+
+    backup = create_backup(region)
+    write_config(region, config_data)
+
+    if mongo_collection:
+        mongo_collection.insert_one({
+            'region': region,
+            'backup_path': backup,
+            'timestamp': datetime.now().isoformat(),
+            'user': data.get('user', 'unknown')
+        })
+
+    return jsonify({"status": "saved", "backup": backup})` }
+            ]
+        },
+        'watermarker': {
+            context: 'Personal · Open Source',
+            title: 'Video Watermarker',
+            desc: 'PyQt5 desktop app for batch watermarking video files via FFmpeg with threaded processing.',
+            github: 'https://github.com/muddwallprod14/watermarker-tool',
+            tabs: [
+                { name: 'watermarker.py', code:
+`from PyQt5.QtWidgets import (
+    QMainWindow, QWidget, QVBoxLayout, QPushButton,
+    QLabel, QFileDialog, QComboBox, QSlider,
+    QProgressBar, QListWidget, QGroupBox, QLineEdit
+)
+from PyQt5.QtCore import Qt, QThread, pyqtSignal
+
+class FFmpegWorker(QThread):
+    """Background thread for FFmpeg watermark rendering
+    with progress reporting and cancellation support."""
+    progress = pyqtSignal(int)
+    finished = pyqtSignal(str, bool)
+
+    def __init__(self, input_file, output_file, 
+                 watermark_text, position, opacity,
+                 font_size, font_color):
+        super().__init__()
+        self.input_file = input_file
+        self.output_file = output_file
+        self.watermark_text = watermark_text
+        self.position = position
+        self.opacity = opacity
+        self.font_size = font_size
+        self.font_color = font_color
+        self.cancelled = False
+
+    def run(self):
+        opacity_ff = float(self.opacity) / 100
+        color_hex = self.font_color.name()[1:]
+
+        position_map = {
+            "Top-Left": "x=10:y=10",
+            "Top-Right": "x=main_w-text_w-10:y=10",
+            "Bottom-Left": "x=10:y=main_h-text_h-10",
+            "Bottom-Right": "x=main_w-text_w-10:y=main_h-text_h-10",
+            "Center": "x=(main_w-text_w)/2:y=(main_h-text_h)/2"
+        }
+
+        cmd = [
+            'ffmpeg', '-i', self.input_file,
+            '-vf',
+            f"drawtext=text='{self.watermark_text}':"
+            f"{position_map[self.position]}:"
+            f"fontsize={self.font_size}:"
+            f"fontcolor={color_hex}@{opacity_ff}",
+            '-codec:a', 'copy', '-y',
+            self.output_file
+        ]
+
+        process = subprocess.Popen(
+            cmd, stderr=subprocess.PIPE,
+            universal_newlines=True
+        )
+
+        while True:
+            if self.cancelled:
+                process.terminate()
+                self.finished.emit(self.input_file, False)
+                return
+            line = process.stderr.readline()
+            if not line and process.poll() is not None:
+                break
+
+        self.finished.emit(
+            self.input_file, process.returncode == 0
+        )` }
+            ]
+        },
+        'uat-automation': {
+            context: 'Personal · Open Source',
+            title: 'UAT Automation CLI',
+            desc: 'Terminal-based testing framework for VFX pipelines with asset validation and multi-format reporting.',
+            github: 'https://github.com/muddwallprod14/uat-automation',
+            tabs: [
+                { name: 'uat_automation.py', code:
+`from dataclasses import dataclass
+from enum import Enum
+from typing import Dict, List
+from pathlib import Path
+import hashlib, time
+
+class TestStatus(Enum):
+    PENDING = "pending"
+    PASSED = "passed"
+    FAILED = "failed"
+    SKIPPED = "skipped"
+
+@dataclass
+class TestResult:
+    name: str
+    status: TestStatus
+    duration: float
+    message: str = ""
+    details: Dict = None
+
+class Validators:
+    """Asset validation functions for VFX delivery."""
+
+    @staticmethod
+    def validate_file_integrity(path, expected_hash):
+        """Verify file hasn't been corrupted via SHA-256."""
+        start = time.time()
+        sha = hashlib.sha256()
+        with open(path, 'rb') as f:
+            for chunk in iter(lambda: f.read(8192), b''):
+                sha.update(chunk)
+
+        actual = sha.hexdigest()
+        passed = actual == expected_hash
+        return TestResult(
+            name="File Integrity (SHA-256)",
+            status=TestStatus.PASSED if passed 
+                   else TestStatus.FAILED,
+            duration=time.time() - start,
+            message=f"Hash {'match' if passed else 'mismatch'}",
+            details={
+                "expected": expected_hash,
+                "actual": actual
+            }
+        )
+
+class TestRunner:
+    """Executes test suites and collects results."""
+
+    def __init__(self, logger):
+        self.logger = logger
+        self.results = []
+
+    def run_suite(self, suite):
+        self.logger.header(f"Running: {suite.name}")
+        for test_def in suite.tests:
+            result = self._execute_test(test_def)
+            self.results.append(result)
+            if result.status == TestStatus.PASSED:
+                self.logger.success(result.name)
+            else:
+                self.logger.error(
+                    f"{result.name}: {result.message}"
+                )
+        return self.results` }
+            ]
+        }
+    };
+
+    let currentProject = null;
+
+    function openModal(projectId) {
+        const proj = PROJECTS[projectId];
+        if (!proj) return;
+        currentProject = proj;
+
+        contextEl.textContent = proj.context;
+        titleEl.textContent = proj.title;
+        descEl.textContent = proj.desc;
+
+        if (proj.github) {
+            githubBtn.href = proj.github;
+            githubBtn.style.display = 'inline-flex';
+        } else {
+            githubBtn.style.display = 'none';
+        }
+
+        tabsEl.innerHTML = '';
+        proj.tabs.forEach(function (tab, i) {
+            var btn = document.createElement('button');
+            btn.className = 'code-modal-tab' + (i === 0 ? ' active' : '');
+            btn.textContent = tab.name;
+            btn.addEventListener('click', function () {
+                showTab(i);
+            });
+            tabsEl.appendChild(btn);
+        });
+
+        showTab(0);
+        overlay.classList.add('active');
+        document.body.style.overflow = 'hidden';
+    }
+
+    function showTab(index) {
+        if (!currentProject) return;
+        var tabs = tabsEl.querySelectorAll('.code-modal-tab');
+        tabs.forEach(function (t, i) {
+            t.classList.toggle('active', i === index);
+        });
+        codeEl.innerHTML = hl(currentProject.tabs[index].code);
+    }
+
+    function closeModal() {
+        overlay.classList.remove('active');
+        document.body.style.overflow = '';
+        currentProject = null;
+    }
+
+    closeBtn.addEventListener('click', closeModal);
+    overlay.addEventListener('click', function (e) {
+        if (e.target === overlay) closeModal();
+    });
+    document.addEventListener('keydown', function (e) {
+        if (e.key === 'Escape' && overlay.classList.contains('active')) {
+            closeModal();
+        }
+    });
+
+    document.querySelectorAll('.project-card-preview').forEach(function (card) {
+        card.addEventListener('click', function () {
+            var projectId = card.getAttribute('data-project');
+            openModal(projectId);
+        });
+    });
+})();

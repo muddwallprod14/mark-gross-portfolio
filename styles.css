@@ -4345,3 +4345,243 @@ a.shader-card {
         grid-template-columns: 1fr;
     }
 }
+
+/* === Code Preview Modal === */
+.code-modal-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 10000;
+    background: rgba(0, 0, 0, 0.85);
+    backdrop-filter: blur(8px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s ease, visibility 0.3s ease;
+}
+
+.code-modal-overlay.active {
+    opacity: 1;
+    visibility: visible;
+}
+
+.code-modal {
+    width: 90vw;
+    max-width: 920px;
+    max-height: 85vh;
+    background: #0d1117;
+    border: 1px solid rgba(0, 255, 255, 0.2);
+    border-radius: 12px;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    transform: translateY(30px) scale(0.96);
+    transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+    box-shadow: 0 40px 100px rgba(0, 0, 0, 0.6), 0 0 60px rgba(0, 255, 255, 0.05);
+}
+
+.code-modal-overlay.active .code-modal {
+    transform: translateY(0) scale(1);
+}
+
+.code-modal-titlebar {
+    display: flex;
+    align-items: center;
+    padding: 0.65rem 1rem;
+    background: #161b22;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    gap: 0.75rem;
+    flex-shrink: 0;
+}
+
+.code-modal-dots {
+    display: flex;
+    gap: 6px;
+    flex-shrink: 0;
+}
+
+.code-modal-dots .dot {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+}
+
+.dot-red { background: #ff5f57; }
+.dot-yellow { background: #febc2e; }
+.dot-green { background: #28c840; }
+
+.code-modal-tabs {
+    display: flex;
+    gap: 2px;
+    overflow-x: auto;
+    flex: 1;
+    scrollbar-width: none;
+}
+
+.code-modal-tabs::-webkit-scrollbar { display: none; }
+
+.code-modal-tab {
+    padding: 0.35rem 0.85rem;
+    font-size: 0.72rem;
+    font-family: 'SF Mono', 'Fira Code', 'Consolas', monospace;
+    color: rgba(255, 255, 255, 0.45);
+    background: transparent;
+    border: none;
+    border-radius: 6px 6px 0 0;
+    cursor: pointer;
+    white-space: nowrap;
+    transition: all 0.2s ease;
+}
+
+.code-modal-tab:hover {
+    color: rgba(255, 255, 255, 0.7);
+    background: rgba(255, 255, 255, 0.05);
+}
+
+.code-modal-tab.active {
+    color: #e6edf3;
+    background: #0d1117;
+    border-bottom: 2px solid #00ffff;
+}
+
+.code-modal-close {
+    background: none;
+    border: none;
+    color: rgba(255, 255, 255, 0.5);
+    font-size: 1.5rem;
+    cursor: pointer;
+    padding: 0 0.25rem;
+    line-height: 1;
+    transition: color 0.2s;
+    flex-shrink: 0;
+}
+
+.code-modal-close:hover {
+    color: #fff;
+}
+
+.code-modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    padding: 1.25rem 1.5rem 1rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+    flex-shrink: 0;
+    gap: 1rem;
+}
+
+.code-modal-header h3 {
+    font-family: var(--font-display);
+    font-size: 1.15rem;
+    font-weight: 600;
+    color: #e6edf3;
+    margin: 0.25rem 0 0.3rem;
+}
+
+.code-modal-header p {
+    font-size: 0.82rem;
+    color: rgba(255, 255, 255, 0.55);
+    margin: 0;
+    line-height: 1.5;
+}
+
+.code-modal-context {
+    font-size: 0.7rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: #00d4ff;
+}
+
+.code-modal-github-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.55rem 1rem;
+    background: rgba(0, 255, 255, 0.1);
+    border: 1px solid rgba(0, 255, 255, 0.25);
+    border-radius: 8px;
+    color: #00ffff;
+    font-size: 0.78rem;
+    font-weight: 600;
+    text-decoration: none;
+    white-space: nowrap;
+    transition: all 0.2s ease;
+    flex-shrink: 0;
+}
+
+.code-modal-github-btn:hover {
+    background: rgba(0, 255, 255, 0.2);
+    border-color: rgba(0, 255, 255, 0.5);
+    transform: translateY(-1px);
+}
+
+.code-modal-body {
+    overflow-y: auto;
+    flex: 1;
+    min-height: 0;
+}
+
+.code-modal-body pre {
+    margin: 0;
+    padding: 1.25rem 1.5rem;
+    overflow-x: auto;
+}
+
+.code-modal-body code {
+    font-family: 'SF Mono', 'Fira Code', 'Consolas', 'Monaco', monospace;
+    font-size: 0.8rem;
+    line-height: 1.65;
+    color: #e6edf3;
+    tab-size: 4;
+}
+
+/* Syntax highlighting - GitHub Dark theme */
+.code-modal-body .kw { color: #ff7b72; }
+.code-modal-body .fn { color: #d2a8ff; }
+.code-modal-body .st { color: #a5d6ff; }
+.code-modal-body .cm { color: #8b949e; font-style: italic; }
+.code-modal-body .dc { color: #79c0ff; }
+.code-modal-body .num { color: #79c0ff; }
+.code-modal-body .op { color: #ff7b72; }
+.code-modal-body .cls { color: #ffa657; }
+.code-modal-body .param { color: #ffa657; }
+.code-modal-body .self { color: #ff7b72; }
+.code-modal-body .bool { color: #79c0ff; }
+
+.project-card-preview {
+    cursor: pointer;
+}
+
+.project-card-preview .project-link-label {
+    display: inline-block;
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: #00ffff;
+    margin-top: 0.75rem;
+    letter-spacing: 0.02em;
+    transition: transform 0.2s ease;
+}
+
+.project-card-preview:hover .project-link-label {
+    transform: translateX(4px);
+}
+
+@media (max-width: 768px) {
+    .code-modal {
+        width: 96vw;
+        max-height: 90vh;
+        border-radius: 8px;
+    }
+    .code-modal-header {
+        flex-direction: column;
+        padding: 1rem;
+    }
+    .code-modal-body pre {
+        padding: 1rem;
+    }
+    .code-modal-body code {
+        font-size: 0.7rem;
+    }
+}
