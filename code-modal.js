@@ -10,9 +10,7 @@
 
     if (!overlay) return;
 
-    function hl(code) {
-        return code.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
-    }
+    function hl() { /* no-op, kept for compat */ }
 
     const PROJECTS = {
         'houdini-tools': {
@@ -690,7 +688,7 @@ class TestRunner:
         tabs.forEach(function (t, i) {
             t.classList.toggle('active', i === index);
         });
-        codeEl.innerHTML = hl(currentProject.tabs[index].code);
+        codeEl.textContent = currentProject.tabs[index].code;
     }
 
     function closeModal() {
