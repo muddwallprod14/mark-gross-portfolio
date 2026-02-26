@@ -864,6 +864,265 @@ class TestRunner:
                 )
         return self.results` }
             ]
+        },
+        'meshy-3d-generator': {
+            context: 'Personal · Open Source',
+            title: 'Meshy 3D Generator',
+            desc: 'PyQt5 desktop app for AI-powered image-to-3D model generation — drag-and-drop input, Meshy AI API, threaded processing, multi-format export.',
+            github: 'https://github.com/muddwallprod14/meshy-3d-generator',
+            tabs: [
+                { name: 'api_worker.py', code:
+`class MeshyAPIWorker(QThread):
+    """Background worker for Meshy API calls"""
+    task_created = pyqtSignal(str)
+    progress_updated = pyqtSignal(str, int, str)
+    task_completed = pyqtSignal(str, dict)
+    task_failed = pyqtSignal(str, str)
+    log_message = pyqtSignal(str, str)
+
+    def __init__(self, api_key, image_path, settings):
+        super().__init__()
+        self.api_key = api_key
+        self.image_path = image_path
+        self.settings = settings
+        self.task_id = None
+        self.running = True
+
+    def run(self):
+        try:
+            self.log_message.emit(
+                "INFO",
+                f"Starting 3D generation for: "
+                f"{os.path.basename(self.image_path)}"
+            )
+            task_id = self.create_task()
+            if not task_id:
+                return
+
+            self.task_id = task_id
+            self.task_created.emit(task_id)
+            self.poll_task_status(task_id)
+        except Exception as e:
+            self.log_message.emit("ERROR", f"Error: {str(e)}")
+            if self.task_id:
+                self.task_failed.emit(self.task_id, str(e))
+
+    def create_task(self):
+        """Create an image-to-3D task via Meshy API"""
+        url = "https://api.meshy.ai/v2/image-to-3d"
+        headers = {"Authorization": f"Bearer {self.api_key}"}
+
+        with open(self.image_path, "rb") as f:
+            image_data = base64.b64encode(f.read()).decode()
+
+        ext = Path(self.image_path).suffix.lower()
+        mime_types = {
+            '.png': 'image/png',
+            '.jpg': 'image/jpeg',
+            '.jpeg': 'image/jpeg',
+            '.webp': 'image/webp'
+        }
+
+        payload = {
+            "image_url": f"data:{mime_types.get(ext, 'image/png')}"
+                         f";base64,{image_data}",
+            "enable_pbr": self.settings.get("enable_pbr", True),
+            "ai_model": self.settings.get("ai_model", "meshy-4"),
+            "topology": self.settings.get("topology", "quad"),
+            "target_polycount": self.settings.get(
+                "target_polycount", 30000
+            )
+        }
+
+        response = requests.post(
+            url, headers=headers, json=payload, timeout=60
+        )
+        response.raise_for_status()
+        return response.json().get("result")
+
+    def poll_task_status(self, task_id):
+        """Poll task status until completion"""
+        url = f"https://api.meshy.ai/v2/image-to-3d/{task_id}"
+        headers = {"Authorization": f"Bearer {self.api_key}"}
+
+        while self.running:
+            response = requests.get(url, headers=headers, timeout=30)
+            data = response.json()
+            status = data.get("status", "UNKNOWN")
+            progress = data.get("progress", 0)
+
+            self.progress_updated.emit(task_id, progress, status)
+
+            if status == "SUCCEEDED":
+                self.task_completed.emit(task_id, data)
+                return
+            elif status in ("FAILED", "EXPIRED"):
+                error = data.get("task_error", {}).get(
+                    "message", status
+                )
+                self.task_failed.emit(task_id, error)
+                return
+
+            time.sleep(3)` },
+                { name: 'image_drop.py', code:
+`class ImageDropLabel(QLabel):
+    """Custom label that accepts drag & drop images"""
+    image_dropped = pyqtSignal(str)
+
+    def __init__(self, parent=None):
+        super().__init__(parent)
+        self.setAcceptDrops(True)
+        self.setAlignment(Qt.AlignCenter)
+        self.setMinimumSize(300, 300)
+        self.setStyleSheet(\"\"\"
+            QLabel {
+                border: 2px dashed #555;
+                border-radius: 12px;
+                background: #1a1a1a;
+                color: #888;
+                font-size: 14px;
+            }
+            QLabel:hover {
+                border-color: #0078d4;
+                background: #1e1e1e;
+            }
+        \"\"\")
+        self.setText("Drop image here\\nor click to browse")
+        self.image_path = None
+
+    def dragEnterEvent(self, event):
+        if event.mimeData().hasUrls():
+            event.acceptProposedAction()
+            self.setStyleSheet(
+                self.styleSheet().replace("#555", "#0078d4")
+            )
+
+    def dragLeaveEvent(self, event):
+        self.setStyleSheet(
+            self.styleSheet().replace("#0078d4", "#555")
+        )
+
+    def dropEvent(self, event):
+        self.setStyleSheet(
+            self.styleSheet().replace("#0078d4", "#555")
+        )
+        urls = event.mimeData().urls()
+        if urls:
+            path = urls[0].toLocalFile()
+            if path.lower().endswith(
+                ('.png', '.jpg', '.jpeg', '.webp')
+            ):
+                self.set_image(path)
+                self.image_dropped.emit(path)
+
+    def set_image(self, path):
+        self.image_path = path
+        pixmap = QPixmap(path)
+        scaled = pixmap.scaled(
+            280, 280,
+            Qt.KeepAspectRatio,
+            Qt.SmoothTransformation
+        )
+        self.setPixmap(scaled)
+
+    def mousePressEvent(self, event):
+        if event.button() == Qt.LeftButton:
+            path, _ = QFileDialog.getOpenFileName(
+                self, "Select Image", "",
+                "Images (*.png *.jpg *.jpeg *.webp)"
+            )
+            if path:
+                self.set_image(path)
+                self.image_dropped.emit(path)` },
+                { name: 'meshy_app.py', code:
+`class Meshy3DGenerator(QMainWindow):
+    def __init__(self):
+        super().__init__()
+        self.api_key = ""
+        self.current_worker = None
+        self.tasks = {}
+
+        self.init_ui()
+        self.load_settings()
+
+    def start_generation(self):
+        if not self.api_key or not self.image_drop.image_path:
+            return
+
+        self.generate_btn.setEnabled(False)
+        self.progress_bar.setVisible(True)
+        self.progress_bar.setValue(0)
+
+        settings = {
+            "ai_model": self.model_combo.currentText(),
+            "topology": self.topology_combo.currentText(),
+            "target_polycount": self.polycount_spin.value(),
+            "enable_pbr": self.pbr_check.isChecked()
+        }
+
+        self.current_worker = MeshyAPIWorker(
+            self.api_key,
+            self.image_drop.image_path,
+            settings
+        )
+        self.current_worker.task_created.connect(
+            self.on_task_created
+        )
+        self.current_worker.progress_updated.connect(
+            self.on_progress_updated
+        )
+        self.current_worker.task_completed.connect(
+            self.on_task_completed
+        )
+        self.current_worker.task_failed.connect(
+            self.on_task_failed
+        )
+        self.current_worker.start()
+
+    def on_task_completed(self, task_id, data):
+        self.progress_bar.setValue(100)
+        self.status_label.setText("Complete!")
+        self.generate_btn.setEnabled(True)
+
+        if task_id in self.tasks:
+            self.tasks[task_id].status = TaskStatus.SUCCEEDED
+            self.tasks[task_id].model_url = (
+                data.get("model_urls", {}).get("glb")
+            )
+
+        self.download_glb_btn.setEnabled(True)
+        self.download_fbx_btn.setEnabled(True)
+        self.download_obj_btn.setEnabled(True)
+
+        item = QListWidgetItem(
+            f"\\u2713 {os.path.basename("
+            f"self.image_drop.image_path)} \\u2192 3D Model"
+        )
+        item.setData(Qt.UserRole, data)
+        self.results_list.addItem(item)
+
+    def download_model(self, fmt):
+        selected = self.results_list.currentItem()
+        if not selected:
+            return
+
+        data = selected.data(Qt.UserRole)
+        url = data.get("model_urls", {}).get(fmt)
+        if not url:
+            return
+
+        save_path, _ = QFileDialog.getSaveFileName(
+            self, f"Save {fmt.upper()} File",
+            f"model.{fmt}",
+            f"{fmt.upper()} Files (*.{fmt})"
+        )
+
+        if save_path:
+            response = requests.get(url, timeout=120)
+            with open(save_path, "wb") as f:
+                f.write(response.content)
+            self.log(f"Saved to: {save_path}", "SUCCESS")` }
+            ]
         }
     };
 
