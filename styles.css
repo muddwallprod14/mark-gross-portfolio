@@ -3857,3 +3857,156 @@ a.project-card:hover .project-link-label {
         font-size: 0.7rem;
     }
 }
+
+/* ============================================
+   Recruiter-Focused Additions (2026)
+   ============================================ */
+
+/* Hero tag row: tag + status badge */
+.hero-tag-row {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    margin-bottom: 1.5rem;
+    opacity: 0;
+    animation: fadeInUp 0.8s var(--ease-out-expo) 0.2s forwards;
+}
+.hero-tag-row .hero-tag {
+    margin-bottom: 0;
+    animation: none;
+    opacity: 1;
+}
+
+.status-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.7rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: #aef9c9;
+    background: rgba(20, 200, 130, 0.12);
+    border: 1px solid rgba(20, 200, 130, 0.45);
+    padding: 0.35rem 0.75rem;
+    border-radius: 999px;
+    white-space: nowrap;
+}
+.status-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: #2bdc8a;
+    box-shadow: 0 0 0 0 rgba(43, 220, 138, 0.7);
+    animation: statusPulse 1.8s ease-out infinite;
+}
+@keyframes statusPulse {
+    0%   { box-shadow: 0 0 0 0 rgba(43, 220, 138, 0.6); }
+    70%  { box-shadow: 0 0 0 10px rgba(43, 220, 138, 0); }
+    100% { box-shadow: 0 0 0 0 rgba(43, 220, 138, 0); }
+}
+
+/* Tertiary CTA */
+.btn-ghost {
+    background: transparent;
+    border: 1px solid rgba(255, 255, 255, 0.25);
+    color: var(--text-light);
+}
+.btn-ghost:hover {
+    border-color: var(--text-light);
+    background: rgba(255, 255, 255, 0.06);
+}
+
+/* Resume button in nav */
+.nav-resume {
+    display: inline-flex;
+    align-items: center;
+    height: 32px;
+    padding: 0 0.85rem;
+    font-size: 0.78rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: var(--text-primary, #0a0a0a);
+    background: #00ffff;
+    border-radius: 4px;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+.nav-resume:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 14px rgba(0, 255, 255, 0.35);
+}
+
+/* Recruiter Snapshot strip */
+.recruiter-snapshot {
+    position: relative;
+    z-index: 2;
+    padding: 1.5rem 2rem;
+    background: rgba(8, 12, 18, 0.78);
+    -webkit-backdrop-filter: blur(10px);
+    backdrop-filter: blur(10px);
+    border-top: 1px solid rgba(0, 212, 255, 0.18);
+    border-bottom: 1px solid rgba(0, 212, 255, 0.18);
+}
+.snapshot-grid {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1.5rem;
+}
+.snapshot-item {
+    display: flex;
+    flex-direction: column;
+    gap: 0.35rem;
+    padding-left: 0.85rem;
+    border-left: 2px solid rgba(0, 212, 255, 0.55);
+}
+.snapshot-label {
+    font-size: 0.65rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.18em;
+    color: #00d4ff;
+    opacity: 0.85;
+}
+.snapshot-value {
+    font-size: 0.92rem;
+    font-weight: 500;
+    color: var(--text-light, #f5f5f5);
+    line-height: 1.35;
+}
+@media (max-width: 900px) {
+    .snapshot-grid { grid-template-columns: repeat(2, 1fr); }
+}
+@media (max-width: 520px) {
+    .snapshot-grid { grid-template-columns: 1fr; }
+    .recruiter-snapshot { padding: 1.25rem 1.25rem; }
+}
+
+/* Project highlight pill (top-right of card) */
+.project-card { position: relative; }
+.project-highlight {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    font-size: 0.62rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.14em;
+    color: #001318;
+    background: linear-gradient(135deg, #00ffff 0%, #00d4ff 100%);
+    padding: 0.3rem 0.65rem;
+    border-radius: 4px;
+    box-shadow: 0 2px 12px rgba(0, 212, 255, 0.25);
+    pointer-events: none;
+    white-space: nowrap;
+}
+@media (max-width: 600px) {
+    .project-highlight {
+        position: static;
+        display: inline-block;
+        margin-bottom: 0.5rem;
+    }
+}
