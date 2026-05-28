@@ -13,6 +13,115 @@
     function hl() { /* no-op, kept for compat */ }
 
     const PROJECTS = {
+        'character-validator': {
+            context: 'Personal · Open Source',
+            title: 'Character Import Validator',
+            desc: 'UE 5.4 C++ Editor plugin — validates SkeletalMesh imports against configurable studio rules (skeleton, LODs, materials, physics).',
+            github: 'https://github.com/muddwallprod14/CharacterImportValidator',
+            tabs: [
+                { name: 'CharacterValidator.h', code:
+`#pragma once
+
+#include "CoreMinimal.h"
+#include "ValidationRule.h"
+#include "ValidationConfig.h"
+
+class FCharacterValidator
+{
+public:
+    FCharacterValidator();
+
+    void SetConfig(const FValidationConfig& InConfig);
+    TArray<FValidationResult> ValidateAsset(class USkeletalMesh* Mesh) const;
+    void ExportReport(const TArray<FValidationResult>& Results, const FString& OutputPath) const;
+
+    int32 CountErrors(const TArray<FValidationResult>& Results) const;
+    int32 CountWarnings(const TArray<FValidationResult>& Results) const;
+
+private:
+    FValidationConfig Config;
+    TArray<TSharedPtr<IValidationRule>> Rules;
+
+    void BuildRules();
+};` },
+                { name: 'ValidationRule.h', code:
+`#pragma once
+
+#include "CoreMinimal.h"
+
+UENUM()
+enum class EValidationSeverity : uint8
+{
+    Pass,
+    Warning,
+    Error
+};
+
+struct FValidationResult
+{
+    FString RuleName;
+    EValidationSeverity Severity;
+    FString Message;
+    FString FixSuggestion;
+
+    FValidationResult(const FString& InRuleName, EValidationSeverity InSeverity,
+        const FString& InMessage, const FString& InFix = TEXT(""))
+        : RuleName(InRuleName), Severity(InSeverity), Message(InMessage), FixSuggestion(InFix) {}
+};
+
+class IValidationRule
+{
+public:
+    virtual ~IValidationRule() = default;
+    virtual FString GetRuleName() const = 0;
+    virtual FString GetDescription() const = 0;
+    virtual TArray<FValidationResult> Validate(class USkeletalMesh* Mesh) const = 0;
+};` },
+                { name: 'SkeletonHierarchyRule (excerpt)', code:
+`class FSkeletonHierarchyRule : public IValidationRule
+{
+public:
+    FSkeletonHierarchyRule(const FSkeletonTemplate& InTemplate) : Template(InTemplate) {}
+
+    FString GetRuleName() const override { return TEXT("Skeleton Hierarchy"); }
+    FString GetDescription() const override { return TEXT("Checks bone hierarchy against studio template"); }
+
+    TArray<FValidationResult> Validate(USkeletalMesh* Mesh) const override
+    {
+        TArray<FValidationResult> Results;
+        const FReferenceSkeleton& RefSkel = Mesh->GetRefSkeleton();
+
+        for (const auto& Pair : Template.BoneToParent)
+        {
+            int32 BoneIdx = RefSkel.FindBoneIndex(FName(*Pair.Key));
+            if (BoneIdx == INDEX_NONE)
+            {
+                Results.Add(FValidationResult(GetRuleName(), EValidationSeverity::Error,
+                    FString::Printf(TEXT("Missing required bone: %s"), *Pair.Key),
+                    TEXT("Add bone to skeleton or update template")));
+                continue;
+            }
+
+            int32 ParentIdx = RefSkel.GetParentIndex(BoneIdx);
+            FString ActualParent = ParentIdx != INDEX_NONE
+                ? RefSkel.GetBoneName(ParentIdx).ToString() : TEXT("");
+
+            if (!ActualParent.Equals(Pair.Value, ESearchCase::IgnoreCase))
+            {
+                Results.Add(FValidationResult(GetRuleName(), EValidationSeverity::Error,
+                    FString::Printf(TEXT("Bone '%s' parent: expected '%s', got '%s'"),
+                        *Pair.Key, *Pair.Value, *ActualParent),
+                    TEXT("Fix bone hierarchy in DCC")));
+            }
+        }
+        return Results;
+    }
+
+private:
+    FSkeletonTemplate Template;
+};` }
+            ]
+        },
         'hdri-light-rig': {
             context: 'Personal · Open Source',
             title: 'HDRI Light Rig Manager',
