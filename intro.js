@@ -672,12 +672,12 @@ class IntroExperience {
             }, { passive: false });
         }
 
-        // Auto-skip after 15 seconds of no movement inside the 3D experience
+        // Auto-skip after 3 seconds — recruiters need content fast
         this._autoSkipTimer = setTimeout(() => {
             if (!this.hasTransitioned) {
                 this.enterLight();
             }
-        }, 15000);
+        }, 3000);
     }
 
     setupMobileControls() {
