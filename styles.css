@@ -3981,8 +3981,51 @@ a.project-card:hover .project-link-label {
     .snapshot-grid { grid-template-columns: repeat(2, 1fr); }
 }
 @media (max-width: 520px) {
-    .snapshot-grid { grid-template-columns: 1fr; }
+    .snapshot-grid { grid-template-columns: 1fr; gap: 1rem; }
     .recruiter-snapshot { padding: 1.25rem 1.25rem; }
+    .snapshot-value { font-size: 0.85rem; }
+}
+
+/* Mobile hero/nav fixes */
+@media (max-width: 600px) {
+    .hero-tag-row {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.5rem;
+        margin-bottom: 1rem;
+    }
+    .hero-tag {
+        font-size: 0.72rem !important;
+        letter-spacing: 0.1em !important;
+    }
+    .status-badge {
+        font-size: 0.6rem;
+        padding: 0.3rem 0.6rem;
+    }
+    .hero-subtitle {
+        font-size: 0.95rem;
+        max-width: 100%;
+    }
+    .hero-open-to {
+        font-size: 0.78rem;
+        max-width: 100%;
+    }
+    .hero-cta {
+        flex-wrap: wrap;
+        gap: 0.65rem;
+    }
+    .hero-cta .btn {
+        padding: 0.75rem 1.25rem;
+        font-size: 0.75rem;
+        width: 100%;
+        justify-content: center;
+    }
+    .nav-resume {
+        display: none;
+    }
+    .nav-links {
+        gap: 0.6rem !important;
+    }
 }
 
 /* Project highlight pill (top-right of card) */
